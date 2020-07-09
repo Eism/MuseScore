@@ -4,7 +4,6 @@ import MuseScore.Dock 1.0
 
 import MuseScore.UiComponents 1.0
 import MuseScore.Scores 1.0
-import MuseScore.Extensions 1.0
 
 DockPage {
     id: homePage
@@ -37,7 +36,7 @@ DockPage {
             console.info("loadCentral: " + name)
             switch (name) {
             case "scores":      currentComp = scoresComp; break
-            case "extensions":  currentComp = extensionsComp; break
+            case "add-ons":     currentComp = addonsComp; break
             case "audio":       currentComp = audioComp; break
             case "feautured":   currentComp = feauturedComp; break
             case "learn":       currentComp = learnComp; break
@@ -62,8 +61,8 @@ DockPage {
     }
 
     Component {
-        id: extensionsComp
-        ExtensionsModule {}
+        id: addonsComp
+        AddonsContent {}
     }
 
     Component {
