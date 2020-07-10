@@ -43,6 +43,9 @@ public:
         UiFirst         = 100,
         UiLast          = 199,
 
+        ExtensionsFirst = 200,
+        ExtensionsLast  = 299,
+
         NotationFirst   = 1000,
         NotationLast    = 1299
     };
