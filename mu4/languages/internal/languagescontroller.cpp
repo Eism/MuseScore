@@ -86,11 +86,11 @@ Ret LanguagesController::install(const QString& languageCode)
         languagesShareDir.mkpath(languagesShareDir.absolutePath());
     }
 
-//    Ret unpack = extensionUnpacker()->unpack(languageArchivePath, languagesShareDir.absolutePath());
-//    if (!unpack) {
-//        LOGE() << "Error unpack" << unpack.code();
-//        return unpack;
-//    }
+    Ret unpack = languageUnpacker()->unpack(languageCode, languageArchivePath, languagesShareDir.absolutePath());
+    if (!unpack) {
+        LOGE() << "Error unpack" << unpack.code();
+        return unpack;
+    }
 
     QFile languageArchive(languageArchivePath);
     languageArchive.remove();
@@ -178,9 +178,9 @@ RetVal<LanguagesHash> LanguagesController::parseLanguagesConfig(const QByteArray
 
 bool LanguagesController::isLanguageExists(const QString& languageCode) const
 {
-    // TODO change
-    QDir languageDir(configuration()->languagesSharePath() + "/" + languageCode);
-    return languageDir.exists();
+    QDir languagesDir(configuration()->languagesSharePath());
+    QStringList files = languagesDir.entryList({ QString("*%1.qm").arg(languageCode) }, QDir::Files);
+    return !files.empty();
 }
 
 RetVal<LanguagesHash> LanguagesController::correctLanguagesStates(LanguagesHash& languages) const
@@ -240,9 +240,15 @@ RetVal<QString> LanguagesController::downloadLanguage(const QString& languageCod
 
 Ret LanguagesController::removeLanguage(const QString& languageCode) const
 {
-    QDir languageDir(configuration()->languagesSharePath() + "/" + languageCode);
-    if (!languageDir.removeRecursively()) {
-        return make_ret(Err::ErrorRemoveLanguageDirectory);
+    QDir languageDir(configuration()->languagesSharePath());
+    QStringList files = languageDir.entryList({ QString("*%1.qm").arg(languageCode) }, QDir::Files);
+    for (const QString& fileName: files) {
+        QString filePath(languageDir.absolutePath() + "/" + fileName);
+        QFile file(filePath);
+        if (!file.remove()) {
+            LOGE() << "Error remove file" << filePath << file.errorString();
+            return make_ret(Err::ErrorRemoveLanguageDirectory);
+        }
     }
 
     return make_ret(Err::NoError);

@@ -22,6 +22,7 @@
 
 #include "internal/languagesconfiguration.h"
 #include "internal/languagescontroller.h"
+#include "internal/languageunpacker.h"
 #include "view/languagelistmodel.h"
 
 using namespace mu::languages;
@@ -42,6 +43,7 @@ void LanguagesModule::registerExports()
 {
     framework::ioc()->registerExport<ILanguagesConfiguration>(moduleName(), m_languagesConfiguration);
     framework::ioc()->registerExport<ILanguagesController>(moduleName(), new LanguagesController());
+    framework::ioc()->registerExport<ILanguageUnpacker>(moduleName(), new LanguageUnpacker());
 }
 
 void LanguagesModule::registerResources()

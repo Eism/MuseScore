@@ -22,6 +22,7 @@
 #include "modularity/ioc.h"
 #include "../ilanguagescontroller.h"
 #include "../ilanguagesconfiguration.h"
+#include "../ilanguageunpacker.h"
 #include "iglobalconfiguration.h"
 
 namespace mu {
@@ -29,6 +30,7 @@ namespace languages {
 class LanguagesController : public ILanguagesController
 {
     INJECT(languages, ILanguagesConfiguration, configuration)
+    INJECT(languages, ILanguageUnpacker, languageUnpacker)
     INJECT(languages, framework::IGlobalConfiguration, globalConfiguration)
 
 public:

@@ -30,10 +30,13 @@ set(MODULE_SRC
     ${CMAKE_CURRENT_LIST_DIR}/languageserrors.h
     ${CMAKE_CURRENT_LIST_DIR}/ilanguagesconfiguration.h
     ${CMAKE_CURRENT_LIST_DIR}/ilanguagescontroller.h
+    ${CMAKE_CURRENT_LIST_DIR}/ilanguageunpacker.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/languagesconfiguration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/languagesconfiguration.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/languagescontroller.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/languagescontroller.h
+    ${CMAKE_CURRENT_LIST_DIR}/internal/languageunpacker.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/internal/languageunpacker.h
     ${CMAKE_CURRENT_LIST_DIR}/view/languagelistmodel.cpp
     ${CMAKE_CURRENT_LIST_DIR}/view/languagelistmodel.h
     )

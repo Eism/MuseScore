@@ -63,10 +63,17 @@ QHash<int, QByteArray> LanguageListModel::roleNames() const
 
 void LanguageListModel::load()
 {
+    m_list.clear();
+
     ValCh<LanguagesHash> languages = languagesController()->languages();
 
     beginResetModel();
-    m_list = languages.val.values();
+    QList<Language> languageList = languages.val.values();
+    std::sort(languageList.begin(), languageList.end(), [](const Language& l, const Language& r){
+        return l.code < r.code;
+    });
+
+    m_list = languageList;
     endResetModel();
 
     RetCh<Language> languageChanged = languagesController()->languageChanged();
@@ -74,7 +81,7 @@ void LanguageListModel::load()
         for (int i = 0; i < m_list.count(); i++) {
             if (m_list[i].code == newLanguage.code) {
                 m_list[i] = newLanguage;
-                QModelIndex index = createIndex(0, i);
+                QModelIndex index = createIndex(i, 0);
                 emit dataChanged(index, index);
                 return;
             }
@@ -85,10 +92,7 @@ void LanguageListModel::load()
 void LanguageListModel::updateList()
 {
     languagesController()->refreshLanguages();
-
-    beginResetModel();
-    m_list = languagesController()->languages().val.values();
-    endResetModel();
+    load();
 }
 
 void LanguageListModel::install(int index)

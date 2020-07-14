@@ -16,39 +16,32 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_LANGUAGES_LANGUAGESCONFIGURATION_H
-#define MU_LANGUAGES_LANGUAGESCONFIGURATION_H
+#ifndef MU_LANGUAGES_LANGUAGEUNPACKER_H
+#define MU_LANGUAGES_LANGUAGEUNPACKER_H
 
-#include "modularity/ioc.h"
-#include "../ilanguagesconfiguration.h"
-#include "iglobalconfiguration.h"
+#include "retval.h"
+
+#include "../ilanguageunpacker.h"
+
+class MQZipReader;
 
 namespace mu {
 namespace languages {
-class LanguagesConfiguration : public ILanguagesConfiguration
+class LanguageUnpacker : public ILanguageUnpacker
 {
-    INJECT(languages, framework::IGlobalConfiguration, globalConfiguration)
-
 public:
-    LanguagesConfiguration() = default;
+    LanguageUnpacker() = default;
 
-    void init();
-
-    QUrl languagesUpdateUrl() const override;
-    QUrl languagesFileServerUrl() const override;
-
-    ValCh<LanguagesHash> languages() const override;
-    Ret setLanguages(const LanguagesHash& languages) const override;
-
-    QString languagesSharePath() const override;
-    QString languagesDataPath() const override;
+    Ret unpack(const QString& languageCode, const QString& source, const QString& destination) const override;
 
 private:
-    LanguagesHash parseLanguagesConfig(const QByteArray& json) const;
+    Ret checkDirectoryIsWritable(const QString& directoryPath) const;
+    Ret checkFreeSpace(const QString& directoryPath, quint64 neededSpace) const;
 
-    async::Channel<LanguagesHash> m_languagesHashChanged;
+    Ret removePreviousVersion(const QString& path, const QString& languageCode) const;
+    Ret unzip(const MQZipReader* zip, const QString& destination) const;
 };
 }
 }
 
-#endif // MU_LANGUAGES_LANGUAGESCONFIGURATION_H
+#endif // MU_LANGUAGES_LANGUAGEUNPACKER_H

@@ -36,8 +36,6 @@ static const Settings::Key LANGUAGES_JSON(module_name, "languages/languagesJson"
 void LanguagesConfiguration::init()
 {
     settings()->valueChanged(LANGUAGES_JSON).onReceive(nullptr, [this](const Val& val) {
-        LOGD() << "EXTENSION_Json changed: " << val.toString();
-
         LanguagesHash languagesHash = parseLanguagesConfig(io::pathToQString(val.toString()).toLocal8Bit());
         m_languagesHashChanged.send(languagesHash);
     });

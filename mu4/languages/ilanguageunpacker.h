@@ -16,39 +16,26 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_LANGUAGES_LANGUAGESCONFIGURATION_H
-#define MU_LANGUAGES_LANGUAGESCONFIGURATION_H
+#ifndef MU_LANGUAGES_ILANGUAGEUNPACKER_H
+#define MU_LANGUAGES_ILANGUAGEUNPACKER_H
 
-#include "modularity/ioc.h"
-#include "../ilanguagesconfiguration.h"
-#include "iglobalconfiguration.h"
+#include <QString>
+
+#include "modularity/imoduleexport.h"
+#include "ret.h"
 
 namespace mu {
 namespace languages {
-class LanguagesConfiguration : public ILanguagesConfiguration
+class ILanguageUnpacker : MODULE_EXPORT_INTERFACE
 {
-    INJECT(languages, framework::IGlobalConfiguration, globalConfiguration)
+    INTERFACE_ID(ILanguageUnpacker)
 
 public:
-    LanguagesConfiguration() = default;
+    virtual ~ILanguageUnpacker() = default;
 
-    void init();
-
-    QUrl languagesUpdateUrl() const override;
-    QUrl languagesFileServerUrl() const override;
-
-    ValCh<LanguagesHash> languages() const override;
-    Ret setLanguages(const LanguagesHash& languages) const override;
-
-    QString languagesSharePath() const override;
-    QString languagesDataPath() const override;
-
-private:
-    LanguagesHash parseLanguagesConfig(const QByteArray& json) const;
-
-    async::Channel<LanguagesHash> m_languagesHashChanged;
+    virtual Ret unpack(const QString& languageCode, const QString& source, const QString& destination) const = 0;
 };
 }
 }
 
-#endif // MU_LANGUAGES_LANGUAGESCONFIGURATION_H
+#endif // MU_LANGUAGES_ILANGUAGEUNPACKER_H
