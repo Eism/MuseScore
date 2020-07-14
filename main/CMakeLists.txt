@@ -91,6 +91,7 @@ if (BUILD_UI_MU4)
         audio_midi
         userscores
         extensions
+        languages
         importexport
         notation
         notation_scene

@@ -55,6 +55,9 @@ public:
         NetworkFirst    = 500,
         NetworkLast     = 599,
 
+        LanguagesFirst = 600,
+        LanguagesLast  = 699,
+
         NotationFirst   = 1000,
         NotationLast    = 1299
     };
