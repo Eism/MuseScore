@@ -55,13 +55,13 @@ inline Ret make_ret(Err e)
     case Err::ErrorRemoveLanguageDirectory: return Ret(static_cast<int>(Err::ErrorRemoveLanguageDirectory),
                                                        trc("languages", "Error remove language directory"));
     case Err::UnpackDestinationReadOnly: return Ret(static_cast<int>(Err::UnpackDestinationReadOnly),
-                                                    trc("extensions", "Cannot import extension on read-only storage"));
+                                                    trc("languages", "Cannot import extension on read-only storage"));
     case Err::UnpackNoFreeSpace: return Ret(static_cast<int>(Err::UnpackNoFreeSpace),
-                                            trc("extensions", "Cannot import extension on full storage"));
+                                            trc("languages", "Cannot import extension on full storage"));
     case Err::UnpackErrorRemovePreviousVersion: return Ret(static_cast<int>(Err::UnpackErrorRemovePreviousVersion),
-                                                           trc("extensions", "Error removing previous version"));
+                                                           trc("languages", "Error removing previous version"));
     case Err::UnpackError: return Ret(static_cast<int>(Err::UnpackError),
-                                      trc("extensions", "Error unpacking extension"));
+                                      trc("languages", "Error unpacking extension"));
     }
 
     return Ret(static_cast<int>(e));
