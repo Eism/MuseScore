@@ -19,6 +19,8 @@
 #include "languagescontroller.h"
 
 #include <QDir>
+#include <QTranslator>
+#include <QCoreApplication>
 
 #include "log.h"
 #include "mscore/downloadUtils.h"
@@ -26,6 +28,15 @@
 
 using namespace mu;
 using namespace mu::languages;
+
+static const QString DEFAULT_LANGUAGE("system");
+
+void LanguagesController::init()
+{
+    QString code = configuration()->language();
+    LOGD() << "==========" << code;
+    loadLanguage(code);
+}
 
 Ret LanguagesController::refreshLanguages()
 {
@@ -122,6 +133,10 @@ Ret LanguagesController::uninstall(const QString& languageCode)
         return remove;
     }
 
+    if (languagesHash[languageCode].isCurrent) {
+        resetLanguageByDefault();
+    }
+
     languagesHash[languageCode].status = LanguageStatus::Status::NoInstalled;
     Ret ret = configuration()->setLanguages(languagesHash);
     if (!ret) {
@@ -131,6 +146,40 @@ Ret LanguagesController::uninstall(const QString& languageCode)
     m_languageChanged.send(languagesHash[languageCode]);
 
     return make_ret(Err::NoError);
+}
+
+Ret LanguagesController::changeLanguage(const QString& languageCode)
+{
+    LanguagesHash languageHash = this->languages().val;
+    if (!languageHash.contains(languageCode)) {
+        return make_ret(Err::ErrorLanguageNotFound);
+    }
+
+    for (QTranslator* t: m_translatorList) {
+        qApp->removeTranslator(t);
+        delete t;
+    }
+    m_translatorList.clear();
+
+    Ret load = loadLanguage(languageCode);
+    if (!load) {
+        return load;
+    }
+
+    QString previousLanguage = configuration()->language();
+
+    Ret save = configuration()->setLanguage(languageCode);
+    if (!save) {
+        return save;
+    }
+
+    languageHash[previousLanguage].isCurrent = false;
+    m_languageChanged.send(languageHash[previousLanguage]);
+
+    languageHash[languageCode].isCurrent = true;
+    m_languageChanged.send(languageHash[languageCode]);
+
+    return save;
 }
 
 RetCh<Language> LanguagesController::languageChanged()
@@ -188,11 +237,15 @@ RetVal<LanguagesHash> LanguagesController::correctLanguagesStates(LanguagesHash&
     RetVal<LanguagesHash> result;
     bool isNeedUpdate = false;
 
+    QString currentLanguage = configuration()->language();
+
     for (Language& language: languages) {
         if (language.status == LanguageStatus::Status::Installed && !isLanguageExists(language.code)) {
             language.status = LanguageStatus::Status::NoInstalled;
             isNeedUpdate = true;
         }
+
+        language.isCurrent = (language.code == currentLanguage);
     }
 
     if (isNeedUpdate) {
@@ -229,7 +282,7 @@ RetVal<QString> LanguagesController::downloadLanguage(const QString& languageCod
 
     if (!js->saveFile()) {
         LOGE() << "Error save file";
-        result.ret = make_ret(Err::ErrorLoadingLanguage);
+        result.ret = make_ret(Err::ErrorDownloadLanguage);
         return result;
     }
 
@@ -252,4 +305,41 @@ Ret LanguagesController::removeLanguage(const QString& languageCode) const
     }
 
     return make_ret(Err::NoError);
+}
+
+Ret LanguagesController::loadLanguage(const QString &languageCode)
+{
+    QDir languageDir(configuration()->languagesSharePath());
+    QStringList files = languageDir.entryList({ QString("*%1.qm").arg(languageCode) }, QDir::Files);
+
+    for (const QString& fileName: files) {
+        QFileInfo file(fileName);
+        QString filePath(languageDir.absolutePath() + "/" + file.baseName());
+
+        QTranslator* translator = new QTranslator;
+        bool ok = translator->load(filePath);
+        if (ok) {
+            qApp->installTranslator(translator);
+            m_translatorList.append(translator);
+        } else {
+            LOGE() << "Error load translate" << filePath;
+            delete translator;
+        }
+    }
+
+    QLocale locale(languageCode);
+    QLocale::setDefault(locale);
+    qApp->setLayoutDirection(locale.textDirection());
+
+    return make_ret(Err::NoError);
+}
+
+void LanguagesController::resetLanguageByDefault()
+{
+    Ret load = loadLanguage(DEFAULT_LANGUAGE);
+    if (!load) {
+        return;
+    }
+
+    configuration()->setLanguage(DEFAULT_LANGUAGE);
 }

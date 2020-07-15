@@ -25,6 +25,8 @@
 #include "../ilanguageunpacker.h"
 #include "iglobalconfiguration.h"
 
+class QTranslator;
+
 namespace mu {
 namespace languages {
 class LanguagesController : public ILanguagesController
@@ -36,10 +38,14 @@ class LanguagesController : public ILanguagesController
 public:
     LanguagesController() = default;
 
+    void init();
+
     Ret refreshLanguages() override;
     ValCh<LanguagesHash> languages() override;
     Ret install(const QString& languageCode) override;
     Ret uninstall(const QString& languageCode) override;
+
+    Ret changeLanguage(const QString &languageCode) override;
 
     RetCh<Language> languageChanged() override;
 
@@ -52,8 +58,13 @@ private:
     RetVal<QString> downloadLanguage(const QString& languageCode) const;
     Ret removeLanguage(const QString& languageCode) const;
 
+    Ret loadLanguage(const QString& languageCode);
+
+    void resetLanguageByDefault();
+
 private:
     async::Channel<Language> m_languageChanged;
+    QList<QTranslator*> m_translatorList;
 };
 }
 }

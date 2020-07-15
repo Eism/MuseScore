@@ -39,7 +39,8 @@ public:
     enum Roles {
         rName = Qt::UserRole + 1,
         rFileSize,
-        rStatus
+        rStatus,
+        rIsCurrent
     };
 
     QVariant data(const QModelIndex& index, int role) const override;
@@ -51,6 +52,7 @@ public:
     Q_INVOKABLE void updateList();
     Q_INVOKABLE void install(int index);
     Q_INVOKABLE void uninstall(int index);
+    Q_INVOKABLE void setLanguage(int index);
 
 private:
     QHash<int, QByteArray> m_roles;

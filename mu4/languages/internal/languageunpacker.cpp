@@ -80,8 +80,10 @@ Ret LanguageUnpacker::checkFreeSpace(const QString& directoryPath, quint64 neede
 
 Ret LanguageUnpacker::removePreviousVersion(const QString& path, const QString& languageCode) const
 {
-    QStringList files = QDir(path).entryList({ QString("*%1.qm").arg(languageCode) }, QDir::Files);
-    for (const QString& filePath: files) {
+    QDir languageDir(path);
+    QStringList files = languageDir.entryList({ QString("*%1.qm").arg(languageCode) }, QDir::Files);
+    for (const QString& fileName: files) {
+        QString filePath(languageDir.absolutePath() + "/" + fileName);
         QFile file(filePath);
         if (!file.remove()) {
             LOGE() << "Error remove file" << filePath << file.errorString();

@@ -30,7 +30,7 @@ enum class Err {
     UnknownError    = int(Ret::Code::LanguagesFirst),
 
     ErrorParseConfig,
-    ErrorLoadingLanguage,
+    ErrorDownloadLanguage,
     ErrorLanguageNotFound,
     ErrorRemoveLanguageDirectory,
 
@@ -48,8 +48,8 @@ inline Ret make_ret(Err e)
     case Err::UnknownError: return Ret(static_cast<int>(Ret::Code::UnknownError));
     case Err::ErrorParseConfig: return Ret(static_cast<int>(Err::ErrorParseConfig),
                                            trc("languages", "Error parsing response from server"));
-    case Err::ErrorLoadingLanguage: return Ret(static_cast<int>(Err::ErrorLoadingLanguage),
-                                               trc("languages", "Error loading language"));
+    case Err::ErrorDownloadLanguage: return Ret(static_cast<int>(Err::ErrorDownloadLanguage),
+                                                trc("languages", "Error download language"));
     case Err::ErrorLanguageNotFound: return Ret(static_cast<int>(Err::ErrorLanguageNotFound),
                                                 trc("languages", "Language not found"));
     case Err::ErrorRemoveLanguageDirectory: return Ret(static_cast<int>(Err::ErrorRemoveLanguageDirectory),

@@ -45,6 +45,7 @@ struct Language
     QString name;
     QString fileName;
     double fileSize = 0.0;
+    bool isCurrent = false;
     LanguageStatus::Status status = LanguageStatus::Status::Undefined;
 
     Language() = default;

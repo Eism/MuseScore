@@ -28,6 +28,7 @@
 using namespace mu::languages;
 
 static LanguagesConfiguration* m_languagesConfiguration = new LanguagesConfiguration();
+static LanguagesController* m_languagesController = new LanguagesController();
 
 static void languages_init_qrc()
 {
@@ -42,7 +43,7 @@ std::string LanguagesModule::moduleName() const
 void LanguagesModule::registerExports()
 {
     framework::ioc()->registerExport<ILanguagesConfiguration>(moduleName(), m_languagesConfiguration);
-    framework::ioc()->registerExport<ILanguagesController>(moduleName(), new LanguagesController());
+    framework::ioc()->registerExport<ILanguagesController>(moduleName(), m_languagesController);
     framework::ioc()->registerExport<ILanguageUnpacker>(moduleName(), new LanguageUnpacker());
 }
 
@@ -59,5 +60,6 @@ void LanguagesModule::registerUiTypes()
 
 void LanguagesModule::onInit()
 {
+    m_languagesController->init();
     m_languagesConfiguration->init();
 }

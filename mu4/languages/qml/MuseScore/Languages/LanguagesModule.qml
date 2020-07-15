@@ -64,6 +64,8 @@ Rectangle {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
+                        spacing: 4
+
                         FlatButton {
                             text: qsTrc("languages", "Install")
                             width: 60
@@ -72,6 +74,16 @@ Rectangle {
 
                             onClicked: {
                                 languageListModel.install(index)
+                            }
+                        }
+                        FlatButton {
+                            text: qsTrc("languages", "Set as language")
+                            width: 60
+
+                            visible: status === LanguageStatus.Installed && !isCurrent
+
+                            onClicked: {
+                                languageListModel.setLanguage(index)
                             }
                         }
                         FlatButton {

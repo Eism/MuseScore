@@ -32,13 +32,27 @@ using namespace mu::languages;
 
 static std::string module_name("languages");
 static const Settings::Key LANGUAGES_JSON(module_name, "languages/languagesJson");
+static const Settings::Key LANGUAGE("ui", "ui/application/language");
 
 void LanguagesConfiguration::init()
 {
+    settings()->addItem(LANGUAGE, Val("system"));
     settings()->valueChanged(LANGUAGES_JSON).onReceive(nullptr, [this](const Val& val) {
         LanguagesHash languagesHash = parseLanguagesConfig(io::pathToQString(val.toString()).toLocal8Bit());
         m_languagesHashChanged.send(languagesHash);
     });
+}
+
+QString LanguagesConfiguration::language() const
+{
+    return io::pathToQString(settings()->value(LANGUAGE).toString());
+}
+
+Ret LanguagesConfiguration::setLanguage(const QString& languageCode) const
+{
+    Val value(languageCode.toStdString());
+    settings()->setValue(LANGUAGE, value);
+    return make_ret(Err::NoError);
 }
 
 QUrl LanguagesConfiguration::languagesUpdateUrl() const
@@ -108,10 +122,10 @@ LanguagesHash LanguagesConfiguration::parseLanguagesConfig(const QByteArray& jso
 
 QString LanguagesConfiguration::languagesSharePath() const
 {
-    return io::pathToQString(globalConfiguration()->sharePath() + "/languages");
+    return io::pathToQString(globalConfiguration()->sharePath() + "/locale");
 }
 
 QString LanguagesConfiguration::languagesDataPath() const
 {
-    return io::pathToQString(globalConfiguration()->dataPath() + "/languages");
+    return io::pathToQString(globalConfiguration()->dataPath() + "/locale");
 }

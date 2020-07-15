@@ -28,6 +28,7 @@ LanguageListModel::LanguageListModel(QObject* parent)
     m_roles.insert(rName, "name");
     m_roles.insert(rFileSize, "fileSize");
     m_roles.insert(rStatus, "status");
+    m_roles.insert(rIsCurrent, "isCurrent");
 }
 
 QVariant LanguageListModel::data(const QModelIndex& index, int role) const
@@ -45,6 +46,8 @@ QVariant LanguageListModel::data(const QModelIndex& index, int role) const
         return QVariant::fromValue(item.fileSize);
     case rStatus:
         return QVariant::fromValue(static_cast<int>(item.status));
+    case rIsCurrent:
+        return QVariant::fromValue(item.isCurrent);
     }
 
     return QVariant();
@@ -103,7 +106,7 @@ void LanguageListModel::install(int index)
 
     Ret ret = languagesController()->install(m_list.at(index).code);
     if (!ret) {
-        LOGE() << "Error" << ret.code();
+        LOGE() << "Error" << ret.code() << ret.text();
         return;
     }
 }
@@ -116,7 +119,20 @@ void LanguageListModel::uninstall(int index)
 
     Ret ret = languagesController()->uninstall(m_list.at(index).code);
     if (!ret) {
-        LOGE() << "Error" << ret.code();
+        LOGE() << "Error" << ret.code() << ret.text();
+        return;
+    }
+}
+
+void LanguageListModel::setLanguage(int index)
+{
+    if (index < 0 || index > m_list.count()) {
+        return;
+    }
+
+    Ret ret = languagesController()->changeLanguage(m_list.at(index).code);
+    if (!ret) {
+        LOGE() << "Error" << ret.code() << ret.text();
         return;
     }
 }
