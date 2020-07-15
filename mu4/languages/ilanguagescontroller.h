@@ -39,7 +39,7 @@ public:
     virtual Ret install(const QString& languageCode) = 0;
     virtual Ret uninstall(const QString& languageCode) = 0;
 
-    virtual Ret changeLanguage(const QString& languageCode) = 0;
+    virtual Ret setLanguage(const QString& languageCode) = 0;
 
     virtual RetCh<Language> languageChanged() = 0;
 };

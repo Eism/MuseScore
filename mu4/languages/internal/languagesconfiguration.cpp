@@ -43,12 +43,12 @@ void LanguagesConfiguration::init()
     });
 }
 
-QString LanguagesConfiguration::language() const
+QString LanguagesConfiguration::currentLanguageCode() const
 {
     return io::pathToQString(settings()->value(LANGUAGE).toString());
 }
 
-Ret LanguagesConfiguration::setLanguage(const QString& languageCode) const
+Ret LanguagesConfiguration::setCurrentLanguageCode(const QString& languageCode) const
 {
     Val value(languageCode.toStdString());
     settings()->setValue(LANGUAGE, value);

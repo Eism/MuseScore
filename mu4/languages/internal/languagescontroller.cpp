@@ -33,7 +33,7 @@ static const QString DEFAULT_LANGUAGE("system");
 
 void LanguagesController::init()
 {
-    QString code = configuration()->language();
+    QString code = configuration()->currentLanguageCode();
     LOGD() << "==========" << code;
     loadLanguage(code);
 }
@@ -148,7 +148,7 @@ Ret LanguagesController::uninstall(const QString& languageCode)
     return make_ret(Err::NoError);
 }
 
-Ret LanguagesController::changeLanguage(const QString& languageCode)
+Ret LanguagesController::setLanguage(const QString& languageCode)
 {
     LanguagesHash languageHash = this->languages().val;
     if (!languageHash.contains(languageCode)) {
@@ -166,9 +166,9 @@ Ret LanguagesController::changeLanguage(const QString& languageCode)
         return load;
     }
 
-    QString previousLanguage = configuration()->language();
+    QString previousLanguage = configuration()->currentLanguageCode();
 
-    Ret save = configuration()->setLanguage(languageCode);
+    Ret save = configuration()->setCurrentLanguageCode(languageCode);
     if (!save) {
         return save;
     }
@@ -210,8 +210,6 @@ RetVal<LanguagesHash> LanguagesController::parseLanguagesConfig(const QByteArray
 
         QJsonObject value = jsodDoc.object().value(key).toObject();
 
-        // TODO instruments, mscore, tours
-
         Language language;
         language.code = key;
         language.name = value.value("name").toString();
@@ -237,7 +235,7 @@ RetVal<LanguagesHash> LanguagesController::correctLanguagesStates(LanguagesHash&
     RetVal<LanguagesHash> result;
     bool isNeedUpdate = false;
 
-    QString currentLanguage = configuration()->language();
+    QString currentLanguage = configuration()->currentLanguageCode();
 
     for (Language& language: languages) {
         if (language.status == LanguageStatus::Status::Installed && !isLanguageExists(language.code)) {
@@ -341,5 +339,5 @@ void LanguagesController::resetLanguageByDefault()
         return;
     }
 
-    configuration()->setLanguage(DEFAULT_LANGUAGE);
+    configuration()->setCurrentLanguageCode(DEFAULT_LANGUAGE);
 }

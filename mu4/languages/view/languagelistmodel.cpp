@@ -130,7 +130,7 @@ void LanguageListModel::setLanguage(int index)
         return;
     }
 
-    Ret ret = languagesController()->changeLanguage(m_list.at(index).code);
+    Ret ret = languagesController()->setLanguage(m_list.at(index).code);
     if (!ret) {
         LOGE() << "Error" << ret.code() << ret.text();
         return;

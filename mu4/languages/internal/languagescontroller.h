@@ -45,7 +45,7 @@ public:
     Ret install(const QString& languageCode) override;
     Ret uninstall(const QString& languageCode) override;
 
-    Ret changeLanguage(const QString &languageCode) override;
+    Ret setLanguage(const QString &languageCode) override;
 
     RetCh<Language> languageChanged() override;
 

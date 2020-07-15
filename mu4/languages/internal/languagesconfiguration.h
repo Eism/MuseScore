@@ -34,8 +34,8 @@ public:
 
     void init();
 
-    QString language() const override;
-    Ret setLanguage(const QString& languageCode) const override;
+    QString currentLanguageCode() const override;
+    Ret setCurrentLanguageCode(const QString& languageCode) const override;
 
     QUrl languagesUpdateUrl() const override;
     QUrl languagesFileServerUrl() const override;

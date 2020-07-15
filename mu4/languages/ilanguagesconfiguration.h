@@ -33,8 +33,8 @@ class ILanguagesConfiguration : MODULE_EXPORT_INTERFACE
 public:
     virtual ~ILanguagesConfiguration() = default;
 
-    virtual QString language() const = 0;
-    virtual Ret setLanguage(const QString& languageCode) const = 0;
+    virtual QString currentLanguageCode() const = 0;
+    virtual Ret setCurrentLanguageCode(const QString& languageCode) const = 0;
 
     virtual QUrl languagesUpdateUrl() const = 0;
     virtual QUrl languagesFileServerUrl() const = 0;
