@@ -60,7 +60,7 @@ Rectangle {
                         text: name
                     }
 
-                    Row {
+                    Column {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
@@ -68,7 +68,6 @@ Rectangle {
 
                         FlatButton {
                             text: qsTrc("languages", "Install")
-                            width: 60
 
                             visible: status === LanguageStatus.NoInstalled
 
@@ -78,7 +77,6 @@ Rectangle {
                         }
                         FlatButton {
                             text: qsTrc("languages", "Set as language")
-                            width: 60
 
                             visible: status === LanguageStatus.Installed && !isCurrent
 
@@ -88,7 +86,6 @@ Rectangle {
                         }
                         FlatButton {
                             text: qsTrc("languages", "Uninstall")
-                            width: 60
 
                             visible: status === LanguageStatus.Installed || status === LanguageStatus.NeedUpdate
 

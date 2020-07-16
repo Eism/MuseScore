@@ -74,9 +74,7 @@ QmlDialog {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 FlatButton {
-
-                    width: 100
-                    text: qsTrc("userscores", "Ok")
+                    text: qsTrc("scores", "Ok")
                     onClicked: {
                         var ret = newScoreModel.create()
                         if (ret) {
@@ -87,8 +85,7 @@ QmlDialog {
                 }
 
                 FlatButton {
-                    width: 100
-                    text: qsTrc("userscores", "Cancel")
+                    text: qsTrc("scores", "Cancel")
                     onClicked: {
                         root.ret = {errcode: 3}
                         root.hide()
