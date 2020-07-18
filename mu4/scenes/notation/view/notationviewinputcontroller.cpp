@@ -79,6 +79,13 @@ void NotationViewInputController::mousePressEvent(QMouseEvent* ev)
     m_interactData.beginPoint = logicPos;
     m_interactData.hitElement = m_view->notationInteraction()->hitElement(logicPos, hitWidth());
 
+    if (m_view->notationInteraction()->isClickOnGrip(logicPos)) {
+        m_view->notationInteraction()->startEditGrip(logicPos);
+        return;
+    } else {
+        m_view->notationInteraction()->endEditGrip();
+    }
+
     if (m_interactData.hitElement) {
 
         if (!m_interactData.hitElement->selected()) {
@@ -122,8 +129,10 @@ void NotationViewInputController::mouseMoveEvent(QMouseEvent* ev)
     }
 
     // hit element
-    if (m_interactData.hitElement && m_interactData.hitElement->isMovable()) {
-        if (!m_view->notationInteraction()->isDragStarted()) {
+    if ((m_interactData.hitElement && m_interactData.hitElement->isMovable())
+        || m_view->notationInteraction()->isGripEditStarted()) {
+
+        if (m_interactData.hitElement && !m_view->notationInteraction()->isDragStarted()) {
             startDragElements(m_interactData.hitElement->type(), m_interactData.hitElement->offset());
         }
 

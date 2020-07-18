@@ -106,6 +106,12 @@ public:
     void changeTextCursorPosition(const QPointF& newCursorPos) override;
     async::Notification textEditingChanged() const override;
 
+    // Grip edit
+    bool isGripEditStarted() const override;
+    bool isClickOnGrip(const QPointF &clickPos) override;
+    void startEditGrip(const QPointF& clickPos) override;
+    void endEditGrip() override;
+
 private:
 
     Ms::Score* score() const;
@@ -169,6 +175,8 @@ private:
 
     Ms::EditData m_textEditData;
     async::Notification m_textEditingChanged;
+
+    Ms::EditData m_gripEditData;
 
     DropData m_dropData;
     async::Notification m_dropChanged;

@@ -43,6 +43,7 @@
 #include "libmscore/undo.h"
 #include "libmscore/navigate.h"
 #include "libmscore/keysig.h"
+#include "libmscore/element.h"
 
 #include "notation.h"
 #include "scorecallbacks.h"
@@ -531,6 +532,12 @@ void NotationInteraction::select(Element* e, SelectType type, int staffIdx)
         endEditText();
     }
 
+    if (e->gripsCount() > 0) {
+        m_gripEditData.grips = e->gripsCount();
+        m_gripEditData.curGrip = Grip::NO_GRIP;
+        m_gripEditData.element = e;
+    }
+
     score()->select(e, type, staffIdx);
     m_selectionChanged.notify();
 }
@@ -584,6 +591,11 @@ void NotationInteraction::startDrag(const std::vector<Element*>& elems,
         }
     }
 
+    if (isGripEditStarted()) {
+        m_gripEditData.element->startEditDrag(m_gripEditData);
+        return;
+    }
+
     score()->startCmd();
 
     for (auto& g : m_dragData.dragGroups) {
@@ -632,8 +644,16 @@ void NotationInteraction::drag(const QPointF& fromPos, const QPointF& toPos, Dra
         return;
     }
 
-    for (auto& g : m_dragData.dragGroups) {
-        score()->addRefresh(g->drag(m_dragData.ed));
+    if (isGripEditStarted()) {
+        m_dragData.ed.curGrip = m_gripEditData.curGrip;
+        m_dragData.ed.delta = m_dragData.ed.pos - m_dragData.ed.lastPos;
+        m_dragData.ed.moveDelta = m_dragData.ed.delta - m_dragData.elementOffset;
+        m_dragData.ed.view = m_scoreCallbacks;
+        m_gripEditData.element->editDrag(m_dragData.ed);
+    } else {
+        for (auto& g : m_dragData.dragGroups) {
+            score()->addRefresh(g->drag(m_dragData.ed));
+        }
     }
 
     score()->update();
@@ -669,8 +689,12 @@ void NotationInteraction::drag(const QPointF& fromPos, const QPointF& toPos, Dra
 
 void NotationInteraction::endDrag()
 {
-    for (auto& g : m_dragData.dragGroups) {
-        g->endDrag(m_dragData.ed);
+    if (isGripEditStarted()) {
+        m_gripEditData.element->endEditDrag(m_gripEditData);
+    } else {
+        for (auto& g : m_dragData.dragGroups) {
+            g->endDrag(m_dragData.ed);
+        }
     }
 
     m_dragData.reset();
@@ -1656,9 +1680,19 @@ void NotationInteraction::drawGripPoints(QPainter* painter)
     painter->setPen(QPen(MScore::frameMarginColor, 0.0));
     painter->drawPolyline(polygon);
 
+    m_gripEditData.grip.resize(currentSelectedElement->gripsPositions().size());
+    int i = 0;
+
     for (const QPointF& gripPosition : currentSelectedElement->gripsPositions()) {
         rect.moveCenter(gripPosition);
         painter->drawRect(rect);
+
+        bool isCurrent = (static_cast<int>(m_gripEditData.curGrip) == i);
+        if (isCurrent) {
+            painter->fillRect(rect, MScore::frameMarginColor);
+        }
+
+        m_gripEditData.grip[i++] = rect;
     }
 }
 
@@ -1888,4 +1922,75 @@ void NotationInteraction::changeTextCursorPosition(const QPointF& newCursorPos)
 mu::async::Notification NotationInteraction::textEditingChanged() const
 {
     return m_textEditingChanged;
+}
+
+bool NotationInteraction::isGripEditStarted() const
+{
+    return m_gripEditData.element && m_gripEditData.curGrip != Grip::NO_GRIP;
+}
+
+bool NotationInteraction::isClickOnGrip(const QPointF &clickPos)
+{
+    if (!m_gripEditData.element || m_gripEditData.grip.size() == 0) {
+        return false;
+    }
+
+    const qreal a = m_gripEditData.grip[0].width() * 0.5;
+    for (int i = 0; i < m_gripEditData.grips; ++i) {
+        if (m_gripEditData.grip[i].adjusted(-a, -a, a, a).contains(clickPos)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void NotationInteraction::startEditGrip(const QPointF &clickPos)
+{
+    if (m_gripEditData.grip.size() == 0) {
+        return;
+    }
+
+    const qreal a = m_gripEditData.grip[0].width() * 0.5;
+    for (int i = 0; i < m_gripEditData.grips; ++i) {
+        if (m_gripEditData.grip[i].adjusted(-a, -a, a, a).contains(clickPos)) {
+            m_gripEditData.curGrip = Grip(i);
+
+            std::vector<QLineF> lines;
+            QVector<QLineF> anchorLines = m_gripEditData.element->gripAnchorLines(m_gripEditData.curGrip);
+
+            Element* const page = m_gripEditData.element->findAncestor(ElementType::PAGE);
+            const QPointF pageOffset((page ? page : m_gripEditData.element)->pos());
+            if (!anchorLines.isEmpty()) {
+                for (QLineF& l : anchorLines) {
+                    l.translate(pageOffset);
+                    lines.push_back(l);
+                }
+            }
+
+            resetAnchorLines();
+            setAnchorLines(lines);
+
+            m_gripEditData.element->startEdit(m_gripEditData);
+            return;
+        }
+    }
+}
+
+void NotationInteraction::endEditGrip()
+{
+    if (!m_gripEditData.element) {
+        return;
+    }
+
+    if (!isGripEditStarted()) {
+        return;
+    }
+
+    m_gripEditData.element->endEdit(m_gripEditData);
+    m_gripEditData.curGrip = Grip::NO_GRIP;
+    m_gripEditData.element = nullptr;
+    m_gripEditData.clearData();
+
+    resetAnchorLines();
 }
