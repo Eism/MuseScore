@@ -89,6 +89,12 @@ public:
     virtual void endEditText() = 0;
     virtual void changeTextCursorPosition(const QPointF& newCursorPos) = 0;
     virtual async::Notification textEditingChanged() const = 0;
+
+    // Grip edit
+    virtual bool isGripEditStarted() const = 0;
+    virtual bool isClickOnGrip(const QPointF& clickPos) = 0;
+    virtual void startEditGrip(const QPointF& clickPos) = 0;
+    virtual void endEditGrip() = 0;
 };
 }
 }
