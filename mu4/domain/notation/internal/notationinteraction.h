@@ -111,6 +111,7 @@ public:
     bool isClickOnGrip(const QPointF &clickPos) override;
     void startEditGrip(const QPointF& clickPos) override;
     void endEditGrip() override;
+    async::Notification gripEditingChanged() const override;
 
 private:
 
@@ -177,6 +178,7 @@ private:
     async::Notification m_textEditingChanged;
 
     Ms::EditData m_gripEditData;
+    async::Notification m_gripEditingChanged;
 
     DropData m_dropData;
     async::Notification m_dropChanged;

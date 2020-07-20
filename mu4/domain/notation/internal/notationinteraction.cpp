@@ -60,6 +60,7 @@ NotationInteraction::NotationInteraction(Notation* notation)
     m_scoreCallbacks = new ScoreCallbacks();
     m_dragData.ed.view = new ScoreCallbacks();
     m_dropData.ed.view = new ScoreCallbacks();
+    m_gripEditData.view = new ScoreCallbacks();
 }
 
 NotationInteraction::~NotationInteraction()
@@ -648,7 +649,7 @@ void NotationInteraction::drag(const QPointF& fromPos, const QPointF& toPos, Dra
         m_dragData.ed.curGrip = m_gripEditData.curGrip;
         m_dragData.ed.delta = m_dragData.ed.pos - m_dragData.ed.lastPos;
         m_dragData.ed.moveDelta = m_dragData.ed.delta - m_dragData.elementOffset;
-        m_dragData.ed.view = m_scoreCallbacks;
+        m_dragData.ed.view = m_gripEditData.view;
         m_gripEditData.element->editDrag(m_dragData.ed);
     } else {
         for (auto& g : m_dragData.dragGroups) {
@@ -1665,35 +1666,17 @@ void NotationInteraction::drawGripPoints(QPainter* painter)
         return;
     }
 
-    QPen pen(MScore::defaultColor, 0.0);
-    painter->setPen(pen);
+    std::vector<QPointF> gripsPositions = currentSelectedElement->gripsPositions();
+    m_gripEditData.grip.resize(gripsPositions.size());
 
     qreal d = 4.0 / painter->worldTransform().m11();
     QRectF rect(-d, -d, 2 * d, 2 * d);
-
-    QPolygonF polygon;
-
-    for (const QPointF& gripPosition : currentSelectedElement->gripsPositions()) {
-        polygon << gripPosition;
+    for (int i = 0; i < gripsPositions.size(); i++) {
+        rect.moveCenter(gripsPositions[i]);
+        m_gripEditData.grip[i] = rect;
     }
 
-    painter->setPen(QPen(MScore::frameMarginColor, 0.0));
-    painter->drawPolyline(polygon);
-
-    m_gripEditData.grip.resize(currentSelectedElement->gripsPositions().size());
-    int i = 0;
-
-    for (const QPointF& gripPosition : currentSelectedElement->gripsPositions()) {
-        rect.moveCenter(gripPosition);
-        painter->drawRect(rect);
-
-        bool isCurrent = (static_cast<int>(m_gripEditData.curGrip) == i);
-        if (isCurrent) {
-            painter->fillRect(rect, MScore::frameMarginColor);
-        }
-
-        m_gripEditData.grip[i++] = rect;
-    }
+    currentSelectedElement->drawEditMode(painter, m_gripEditData);
 }
 
 void NotationInteraction::moveSelection(MoveDirection d, MoveSelectionType type)
@@ -1972,6 +1955,7 @@ void NotationInteraction::startEditGrip(const QPointF &clickPos)
             setAnchorLines(lines);
 
             m_gripEditData.element->startEdit(m_gripEditData);
+            m_gripEditingChanged.notify();
             return;
         }
     }
@@ -1993,4 +1977,11 @@ void NotationInteraction::endEditGrip()
     m_gripEditData.clearData();
 
     resetAnchorLines();
+
+    m_gripEditingChanged.notify();
+}
+
+mu::async::Notification NotationInteraction::gripEditingChanged() const
+{
+    return m_gripEditingChanged;
 }

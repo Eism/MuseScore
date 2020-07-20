@@ -81,6 +81,10 @@ Notation::Notation()
         notifyAboutNotationChanged();
     });
 
+    m_interaction->gripEditingChanged().onNotify(this, [this]() {
+        notifyAboutNotationChanged();
+    });
+
     m_interaction->dropChanged().onNotify(this, [this]() {
         notifyAboutNotationChanged();
     });
