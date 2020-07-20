@@ -95,6 +95,7 @@ public:
     virtual bool isClickOnGrip(const QPointF& clickPos) = 0;
     virtual void startEditGrip(const QPointF& clickPos) = 0;
     virtual void endEditGrip() = 0;
+    virtual async::Notification gripEditingChanged() const = 0;
 };
 }
 }
