@@ -10,10 +10,14 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
-#ifndef __LOGINMANAGER_H__
-#define __LOGINMANAGER_H__
+#ifndef MU_CLOUD_CLOUDMANAGER_H
+#define MU_CLOUD_CLOUDMANAGER_H
 
 #include "config.h"
+
+#include "modularity/ioc.h"
+
+#include "../imp3exporter.h"
 
 namespace Ms {
 class ApiRequest;
@@ -22,9 +26,11 @@ class ApiRequest;
 //   LoginManager
 //---------------------------------------------------------
 
-class LoginManager : public QObject
+class CloudManager : public QObject
 {
     Q_OBJECT
+
+    INJECT(account, mu::cloud::IMp3Exporter, mp3Exporter)
 
     enum class RequestType
     {
@@ -39,7 +45,7 @@ class LoginManager : public QObject
     static constexpr int MAX_UPLOAD_TRY_COUNT = 5;
     static constexpr int MAX_REFRESH_LOGIN_RETRY_COUNT = 2;
 
-    QNetworkAccessManager* _networkManager;
+    QNetworkAccessManager* _networkManager = nullptr;
 
     QAction* _uploadAudioMenuAction = nullptr;
     QString _accessToken;
@@ -51,10 +57,10 @@ class LoginManager : public QObject
     QString _updateScoreDataPath;
 
     QString _mediaUrl;
-    QFile* _mp3File;
+    QFile* _mp3File = nullptr;
     int _uploadTryCount = 0;
 
-    QProgressDialog* _progressDialog;
+    QProgressDialog* _progressDialog = nullptr;
 
     void onReplyFinished(ApiRequest*, RequestType);
     void handleReply(QNetworkReply*, RequestType);
@@ -69,6 +75,12 @@ class LoginManager : public QObject
 
     ApiRequest* buildLoginRefreshRequest() const;
 
+    bool save();
+
+#ifdef USE_WEBENGINE
+    void loginInteractive();
+#endif
+
 signals:
     void loginError(const QString& error);
     void loginSuccess();
@@ -82,6 +94,8 @@ signals:
     void tryLoginSuccess();
     void mediaUploadSuccess();
 
+    void loginDialogRequested();
+
 private slots:
     void uploadMedia();
     void mediaUploadFinished();
@@ -94,25 +108,21 @@ public slots:
     void tryLogin();
 
 public:
-    LoginManager(QAction* uploadAudioMenuAction, QObject* parent = 0);
+    explicit CloudManager(QObject *parent = nullptr);
+
+    CloudManager(QAction* uploadAudioMenuAction, QProgressDialog* progress, QObject* parent = 0);
+
+    bool init();
+    void getUser();
     void login(QString login, QString password);
-#ifdef USE_WEBENGINE
-    void loginInteractive();
-#endif
+    bool logout();
+
     void upload(const QString& path, int nid, const QString& title);
     void updateScoreData(const QString& nid, bool newScore);
-    bool hasAccessToken();
-    void getUser();
     void getScoreInfo(int nid);
     void getMediaUrl(const QString& nid, const QString& vid, const QString& format);
 
-    bool save();
-    bool load();
-
-    bool logout();
-
     const QString& userName() const { return _userName; }
-    int uid() const { return _uid; }
     const QUrl& avatar() const { return _avatar; }
 };
 }
