@@ -105,5 +105,11 @@ Rectangle {
             text: "Require"
             onClicked: testModel.require()
         }
+
+        FlatButton {
+            width: 200
+            text: "Widget dialog"
+            onClicked: testModel.openWidgetDialog()
+        }
     }
 }
