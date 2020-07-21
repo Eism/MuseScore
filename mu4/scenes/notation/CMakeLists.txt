@@ -29,6 +29,8 @@ set(MODULE_SRC
     ${NOTATIONVIEW_SRC}
     ${CMAKE_CURRENT_LIST_DIR}/notationscenemodule.cpp
     ${CMAKE_CURRENT_LIST_DIR}/notationscenemodule.h
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationstatusbarmodel.h
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationstatusbarmodel.cpp
     ${CMAKE_CURRENT_LIST_DIR}/iscenenotationconfiguration.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/scenenotationconfiguration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/scenenotationconfiguration.h
