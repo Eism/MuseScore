@@ -46,6 +46,7 @@
 
 #include "../notationerrors.h"
 #include "notationinteraction.h"
+#include "notationaccessibility.h"
 #include "notationundostackcontroller.h"
 #include "notationstyle.h"
 
@@ -70,6 +71,7 @@ Notation::Notation()
     m_scoreGlobal = new MScore(); //! TODO May be static?
 
     m_interaction = new NotationInteraction(this);
+    m_accessibility = new NotationAccessibility(this, m_interaction->selectionChanged());
 
     m_interaction->noteAdded().onNotify(this, [this]() {
         notifyAboutNotationChanged();
@@ -625,6 +627,11 @@ INotationPlayback* Notation::playback() const
 mu::async::Notification Notation::notationChanged() const
 {
     return m_notationChanged;
+}
+
+INotationAccessibility* Notation::accessibility() const
+{
+    return m_accessibility;
 }
 
 Ms::Score* Notation::score() const

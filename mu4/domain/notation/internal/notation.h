@@ -71,6 +71,9 @@ public:
     // notify
     async::Notification notationChanged() const override;
 
+    // accessibility
+    INotationAccessibility* accessibility() const override;
+
     // internal
     Ms::Score* score() const;
     QSizeF viewSize() const;
@@ -88,6 +91,7 @@ private:
     Ms::MScore* m_scoreGlobal = nullptr;
     Ms::MasterScore* m_score = nullptr;
     NotationInteraction* m_interaction = nullptr;
+    INotationAccessibility* m_accessibility = nullptr;
     INotationUndoStack* m_undoStackController = nullptr;
     INotationStyle* m_style = nullptr;
     NotationPlayback* m_playback = nullptr;
