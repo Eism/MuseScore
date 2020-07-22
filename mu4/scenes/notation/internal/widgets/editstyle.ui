@@ -382,138 +382,6 @@
             </widget>
            </item>
            <item>
-<<<<<<< HEAD:mscore/editstyle.ui
-=======
-            <widget class="QGroupBox" name="multiMeasureRests">
-             <property name="title">
-              <string>Create multimeasure rests</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <layout class="QGridLayout" name="gridLayout_30">
-                <item row="0" column="1">
-                 <widget class="QSpinBox" name="minEmptyMeasures">
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="value">
-                   <number>2</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="minMeasureWidth">
-                  <property name="suffix">
-                   <string>sp</string>
-                  </property>
-                  <property name="minimum">
-                   <double>2.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>4.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QToolButton" name="resetMinMMRestWidth">
-                  <property name="toolTip">
-                   <string>Reset to default</string>
-                  </property>
-                  <property name="accessibleName">
-                   <string>Reset 'Minimum width of measure' value</string>
-                  </property>
-                  <property name="text">
-                   <string notr="true"/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
-                    <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_15">
-                  <property name="text">
-                   <string>Minimum number of empty measures:</string>
-                  </property>
-                  <property name="buddy">
-                   <cstring>minEmptyMeasures</cstring>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_16">
-                  <property name="text">
-                   <string>Minimum width of measure:</string>
-                  </property>
-                  <property name="buddy">
-                   <cstring>minMeasureWidth</cstring>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <spacer name="horizontalSpacer_32">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_92">
-                  <property name="text">
-                   <string>Vertical position of number:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="mmRestNumberPos">
-                  <property name="suffix">
-                   <string>sp</string>
-                  </property>
-                  <property name="minimum">
-                   <double>-99.989999999999995</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.500000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QToolButton" name="resetMMRestNumberPos">
-                  <property name="toolTip">
-                   <string>Reset to default</string>
-                  </property>
-                  <property name="accessibleName">
-                   <string>Reset 'Vertical position of number' value</string>
-                  </property>
-                  <property name="text">
-                   <string notr="true"/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
-                    <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
->>>>>>> 2a02f7c1b... Move style dialog to mu4:mu4/scenes/notation/internal/widgets/editstyle.ui
             <widget class="QGroupBox" name="hideEmptyStaves">
              <property name="title">
               <string>Hide empty staves within systems</string>
@@ -706,7 +574,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -755,7 +623,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -883,7 +751,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -900,7 +768,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -917,7 +785,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -950,7 +818,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1008,7 +876,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1041,7 +909,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1058,7 +926,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1100,7 +968,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1117,7 +985,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1458,7 +1326,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1602,7 +1470,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1619,7 +1487,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -1636,7 +1504,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -2198,7 +2066,7 @@
            <item row="0" column="6">
             <widget class="QToolButton" name="resetMeasureNumberVPlacement">
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -2206,7 +2074,7 @@
            <item row="1" column="6">
             <widget class="QToolButton" name="resetMeasureNumberHPlacement">
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -2757,31 +2625,11 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
              </item>
-<<<<<<< HEAD:mscore/editstyle.ui
-=======
-             <item row="16" column="2">
-              <widget class="QToolButton" name="resetMultiMeasureRestMargin">
-               <property name="toolTip">
-                <string>Reset to default</string>
-               </property>
-               <property name="accessibleName">
-                <string>Reset 'Multimeasure rest margin' value</string>
-               </property>
-               <property name="text">
-                <string notr="true"/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
-                 <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
-               </property>
-              </widget>
-             </item>
->>>>>>> 2a02f7c1b... Move style dialog to mu4:mu4/scenes/notation/internal/widgets/editstyle.ui
              <item row="9" column="2">
               <widget class="QToolButton" name="resetClefKeyRightMargin">
                <property name="toolTip">
@@ -2794,7 +2642,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2821,7 +2669,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2838,7 +2686,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2855,7 +2703,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2872,7 +2720,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2889,7 +2737,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2906,7 +2754,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2933,7 +2781,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2950,7 +2798,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -2987,7 +2835,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3075,7 +2923,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3092,7 +2940,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3109,7 +2957,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3142,7 +2990,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3159,7 +3007,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3192,7 +3040,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3533,7 +3381,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3576,7 +3424,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3619,7 +3467,7 @@
                 <string notr="true"/>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -3700,7 +3548,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3717,7 +3565,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3741,7 +3589,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3811,7 +3659,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3835,7 +3683,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3876,7 +3724,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3893,7 +3741,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3910,7 +3758,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3937,7 +3785,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -3975,7 +3823,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -4844,7 +4692,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -4903,7 +4751,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -4945,7 +4793,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5100,7 +4948,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5123,7 +4971,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5146,7 +4994,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5205,7 +5053,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5273,7 +5121,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5341,7 +5189,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5402,7 +5250,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5454,7 +5302,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5506,7 +5354,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -5835,7 +5683,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -5852,7 +5700,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -5869,7 +5717,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -5886,7 +5734,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -5903,7 +5751,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -5992,7 +5840,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6015,7 +5863,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6038,7 +5886,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6091,7 +5939,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6138,7 +5986,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6168,16 +6016,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="hairpinPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="hairpinPosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="hairpinPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="hairpinPosBelow" native="true"/>
            </item>
            <item row="8" column="2">
             <widget class="QToolButton" name="resetHairpinLineWidth">
@@ -6197,7 +6045,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6286,13 +6134,13 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="mu::OffsetSelect" name="voltaPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="voltaPosAbove" native="true"/>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_42">
@@ -6388,7 +6236,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6418,7 +6266,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6441,7 +6289,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6513,7 +6361,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6570,7 +6418,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6600,7 +6448,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6673,7 +6521,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6696,13 +6544,13 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="mu::OffsetSelect" name="ottavaPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="ottavaPosBelow" native="true"/>
            </item>
            <item row="0" column="0">
             <widget class="QCheckBox" name="ottavaNumbersOnly">
@@ -6722,7 +6570,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="ottavaPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="ottavaPosAbove" native="true"/>
            </item>
            <item row="1" column="0" colspan="6">
             <widget class="Line" name="line_5">
@@ -6759,7 +6607,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6782,7 +6630,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6894,7 +6742,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6911,7 +6759,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6928,7 +6776,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6955,7 +6803,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6972,7 +6820,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -6985,10 +6833,10 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="pedalLinePosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="pedalLinePosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="pedalLinePosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="pedalLinePosBelow" native="true"/>
            </item>
            <item row="4" column="1">
             <widget class="QDoubleSpinBox" name="pedalLineWidth">
@@ -7082,7 +6930,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7123,7 +6971,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7147,16 +6995,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="trillLinePosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="trillLinePosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="trillLinePosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="trillLinePosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -7216,7 +7064,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7257,7 +7105,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7281,16 +7129,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="vibratoLinePosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="vibratoLinePosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="vibratoLinePosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="vibratoLinePosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -7330,7 +7178,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7357,7 +7205,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7488,7 +7336,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7505,7 +7353,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7535,7 +7383,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7564,10 +7412,10 @@
             </spacer>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="textLinePosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="textLinePosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="textLinePosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="textLinePosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -7622,7 +7470,7 @@
                 <string>Reset 'Notehead distance' value</string>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -7643,7 +7491,7 @@
                 <string>Reset 'Articulation distance' value</string>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -7654,7 +7502,7 @@
                 <string>Reset 'Articulation size' value</string>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -7705,7 +7553,7 @@
                 <string>Reset 'Stem distance' value</string>
                </property>
                <property name="icon">
-                <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                <iconset resource="musescore.qrc">
                  <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                </property>
               </widget>
@@ -7801,7 +7649,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="fermataPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="fermataPosBelow" native="true"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_168">
@@ -7822,13 +7670,13 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="mu::OffsetSelect" name="fermataPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="fermataPosAbove" native="true"/>
            </item>
            <item row="0" column="2">
             <widget class="QToolButton" name="resetFermataPosAbove">
@@ -7842,7 +7690,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7866,7 +7714,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7935,7 +7783,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -7991,13 +7839,13 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="staffTextPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="staffTextPosAbove" native="true"/>
            </item>
            <item row="0" column="2">
             <widget class="QToolButton" name="resetStaffTextPlacement">
@@ -8011,13 +7859,13 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="staffTextPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="staffTextPosBelow" native="true"/>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_176">
@@ -8071,7 +7919,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8148,7 +7996,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8165,7 +8013,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8195,7 +8043,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8257,16 +8105,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="tempoTextPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="tempoTextPosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="tempoTextPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="tempoTextPosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -8404,7 +8252,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8421,7 +8269,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8438,7 +8286,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8455,7 +8303,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8472,7 +8320,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8528,7 +8376,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8555,7 +8403,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8570,7 +8418,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_25">
            <item row="2" column="1">
-            <widget class="mu::AlignSelect" name="lyricsMelismaAlign" native="true"/>
+            <widget class="Ms::AlignSelect" name="lyricsMelismaAlign" native="true"/>
            </item>
            <item row="1" column="2">
             <widget class="QToolButton" name="resetLyricsMelismaPad">
@@ -8584,7 +8432,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8615,7 +8463,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8648,7 +8496,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8686,7 +8534,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_23">
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="lyricsPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="lyricsPosAbove" native="true"/>
            </item>
            <item row="4" column="1">
             <widget class="QDoubleSpinBox" name="lyricsMinTopDistance">
@@ -8722,7 +8570,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8775,7 +8623,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8810,7 +8658,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="lyricsPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="lyricsPosBelow" native="true"/>
            </item>
            <item row="8" column="2">
             <widget class="QToolButton" name="resetLyricsAlignVerseNumber">
@@ -8824,7 +8672,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8857,7 +8705,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8917,7 +8765,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8955,7 +8803,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8972,7 +8820,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -8989,7 +8837,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9090,7 +8938,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9107,7 +8955,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9148,7 +8996,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9179,16 +9027,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="dynamicsPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="dynamicsPosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="dynamicsPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="dynamicsPosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -9262,7 +9110,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9279,7 +9127,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9309,7 +9157,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -9371,16 +9219,16 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="mu::OffsetSelect" name="rehearsalMarkPosAbove" native="true"/>
+            <widget class="Ms::OffsetSelect" name="rehearsalMarkPosAbove" native="true"/>
            </item>
            <item row="2" column="1">
-            <widget class="mu::OffsetSelect" name="rehearsalMarkPosBelow" native="true"/>
+            <widget class="Ms::OffsetSelect" name="rehearsalMarkPosBelow" native="true"/>
            </item>
           </layout>
          </widget>
@@ -9685,7 +9533,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/document-open.svg</normaloff>:/data/icons/document-open.svg</iconset>
                    </property>
                   </widget>
@@ -9741,7 +9589,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -9775,7 +9623,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -9809,7 +9657,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -9843,7 +9691,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -10451,7 +10299,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10468,7 +10316,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10485,7 +10333,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10502,7 +10350,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10515,7 +10363,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="mu::AlignSelect" name="textStyleAlign" native="true"/>
+            <widget class="Ms::AlignSelect" name="textStyleAlign" native="true"/>
            </item>
            <item row="1" column="2">
             <widget class="QToolButton" name="resetTextStyleFontFace">
@@ -10529,7 +10377,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10546,7 +10394,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10570,7 +10418,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10619,7 +10467,7 @@
                  <string notr="true"/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                 <iconset resource="musescore.qrc">
                   <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                 </property>
                </widget>
@@ -10668,7 +10516,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                    </property>
                   </widget>
@@ -10685,7 +10533,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                    </property>
                   </widget>
@@ -10716,7 +10564,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                    </property>
                   </widget>
@@ -10739,7 +10587,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                    </property>
                   </widget>
@@ -10773,7 +10621,7 @@
                     <string notr="true"/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+                    <iconset resource="musescore.qrc">
                      <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
                    </property>
                   </widget>
@@ -10788,7 +10636,7 @@
             <widget class="Awl::ColorLabel" name="textStyleColor"/>
            </item>
            <item row="7" column="1">
-            <widget class="mu::OffsetSelect" name="textStyleOffset" native="true"/>
+            <widget class="Ms::OffsetSelect" name="textStyleOffset" native="true"/>
            </item>
            <item row="5" column="2">
             <widget class="QToolButton" name="resetTextStyleAlign">
@@ -10802,7 +10650,7 @@
               <string notr="true"/>
              </property>
              <property name="icon">
-              <iconset resource="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc">
+              <iconset resource="musescore.qrc">
                <normaloff>:/data/icons/edit-reset.svg</normaloff>:/data/icons/edit-reset.svg</iconset>
              </property>
             </widget>
@@ -10853,7 +10701,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="mu::FontStyleSelect" name="textStyleFontStyle" native="true"/>
+            <widget class="Ms::FontStyleSelect" name="textStyleFontStyle" native="true"/>
            </item>
            <item row="0" column="1">
             <widget class="QLineEdit" name="styleName"/>
@@ -10951,21 +10799,21 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>mu::FontStyleSelect</class>
+   <class>Ms::FontStyleSelect</class>
    <extends>QWidget</extends>
-   <header>mu4/scenes/notation/internal/widgets/fontStyleSelect.h</header>
+   <header>widgets/fontStyleSelect.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>mu::AlignSelect</class>
+   <class>Ms::AlignSelect</class>
    <extends>QWidget</extends>
-   <header>mu4/scenes/notation/internal/widgets/alignSelect.h</header>
+   <header>widgets/alignSelect.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>mu::OffsetSelect</class>
+   <class>Ms::OffsetSelect</class>
    <extends>QWidget</extends>
-   <header>mu4/scenes/notation/internal/widgets/offsetSelect.h</header>
+   <header>widgets/offsetSelect.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -11376,8 +11224,7 @@
   <tabstop>textStyleColor</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc"/>
-  <include location="../../../../../../build-MuseScore-Desktop_Qt_5_15_0_GCC_64bit-Debug/mscore/musescore_qmlcache.qrc"/>
+  <include location="musescore.qrc"/>
  </resources>
  <connections>
   <connection>

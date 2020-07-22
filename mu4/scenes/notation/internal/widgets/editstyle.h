@@ -24,7 +24,7 @@
 #include "libmscore/mscore.h"
 #include "libmscore/style.h"
 #include "modularity/ioc.h"
-#include "mu4/domain/notation/inotationstyleeditor.h"
+#include "context/iglobalcontext.h"
 
 using namespace Ms;
 
@@ -64,9 +64,8 @@ class EditStyle : public QDialog, private Ui::EditStyleBase
 {
     Q_OBJECT
 
-    INJECT(notation, mu::domain::notation::INotationStyleEditor, notationStyleEditor)
+    INJECT(notation, mu::context::IGlobalContext, globalContext)
 
-    Score * cs;
     QPushButton* buttonApplyToAllParts;
     QButtonGroup* stemGroups[VOICES];
     QVector<StyleWidget> styleWidgets;
@@ -80,7 +79,6 @@ class EditStyle : public QDialog, private Ui::EditStyleBase
     QVariant getValue(Sid idx);
     void setValues();
 
-    void applyToAllParts();
     const StyleWidget& styleWidget(Sid) const;
 
     static const std::map<ElementType, EditStylePage> PAGES;

@@ -1725,6 +1725,11 @@ void ChangeStyleVal::flip(EditData*)
     value = v;
 }
 
+void ChangeStyleVal::setScore(Score *score)
+{
+    this->score = score;
+}
+
 //---------------------------------------------------------
 //   ChangePageNumberOffset::flip
 //---------------------------------------------------------
