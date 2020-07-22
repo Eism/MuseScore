@@ -9,15 +9,17 @@
 //  as published by the Free Software Foundation and appearing in
 //  the file LICENCE.GPL
 //=============================================================================
+#include "editstyle.h"
+
+#include <QVariantList>
 
 #include "libmscore/score.h"
 #include "scoreview.h"
 #include "libmscore/style.h"
-#include "editstyle.h"
 #include "libmscore/articulation.h"
 #include "libmscore/sym.h"
 #include "icons.h"
-#include "musescore.h"
+//#include "musescore.h"
 #include "libmscore/undo.h"
 #include "icons.h"
 #include "libmscore/harmony.h"
@@ -27,25 +29,30 @@
 #include "libmscore/excerpt.h"
 #include "libmscore/tuplet.h"
 #include "libmscore/layout.h"
-#include "widgets/alignSelect.h"
-#include "widgets/offsetSelect.h"
-#include "widgets/fontStyleSelect.h"
-#include "preferences.h"
+#include "alignSelect.h"
+#include "offsetSelect.h"
+#include "fontStyleSelect.h"
+//#include "preferences.h"
 
-namespace Ms {
+#include "ui/view/iconcodes.h"
+
+using namespace mu::scene::notation;
+
 //---------------------------------------------------------
 //   EditStyle
 //---------------------------------------------------------
 
-EditStyle::EditStyle(Score* s, QWidget* parent)
-    : QDialog(parent), cs(s)
+EditStyle::EditStyle(QWidget *parent)
+    : QDialog(parent)
 {
+//    cs = context()->currentNotation()->interaction()->score();
+
     setObjectName("EditStyle");
     setupUi(this);
     setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     buttonApplyToAllParts = buttonBox->addButton(tr("Apply to all Parts"), QDialogButtonBox::ApplyRole);
     //buttonApplyToAllParts->setEnabled(!cs->isMaster()); // set in showEvent() now
-    buttonTogglePagelist->setIcon(QIcon(*icons[int(Icons::goNext_ICON)]));
+//    buttonTogglePagelist->setIcon(QIcon(IconCode::Code::ACCOUNT));
     setModal(true);
 
     // create button groups for every set of radio button widgets
@@ -482,19 +489,17 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
           + QString("<br />")
           + tr("(in File > Score Properties…):")
           + QString("</p><table>");
+
     // show all tags for current score/part, see also Score::init()
-    if (!cs->isMaster()) {
-        QMapIterator<QString, QString> j(cs->masterScore()->metaTags());
-        while (j.hasNext()) {
-            j.next();
-            toolTipHeaderFooter += QString("<tr><td>%1</td><td>-</td><td>%2</td></tr>").arg(j.key()).arg(j.value());
+    QList<QMap<QString, QString>> tags = notationStyleEditor()->metaTags().val;
+    for (const QMap<QString, QString>& tag: tags) {
+        QMapIterator<QString, QString> i(tag);
+        while (i.hasNext()) {
+            i.next();
+            toolTipHeaderFooter += QString("<tr><td>%1</td><td>-</td><td>%2</td></tr>").arg(i.key()).arg(i.value());
         }
     }
-    QMapIterator<QString, QString> i(cs->metaTags());
-    while (i.hasNext()) {
-        i.next();
-        toolTipHeaderFooter += QString("<tr><td>%1</td><td>-</td><td>%2</td></tr>").arg(i.key()).arg(i.value());
-    }
+
     toolTipHeaderFooter += QString("</table></body></html>");
     showHeader->setToolTip(toolTipHeaderFooter);
     showHeader->setToolTipDuration(5000);   // leaving the default value of -1 calculates the duration automatically and it takes too long
@@ -512,7 +517,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
     connect(chordDescriptionFile,&QLineEdit::editingFinished,       [=]() { setChordStyle(true); });
     //chordDescriptionFile->setEnabled(false);
 
-    chordDescriptionFileButton->setIcon(*icons[int(Icons::fileOpen_ICON)]);
+//    chordDescriptionFileButton->setIcon(IconCode::Code::OPEN_FILE);
 
     connect(swingOff,            SIGNAL(toggled(bool)),             SLOT(setSwingParams(bool)));
     connect(swingEighth,         SIGNAL(toggled(bool)),             SLOT(setSwingParams(bool)));
@@ -535,7 +540,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
             fillComboBoxDirection(cb);
         }
         if (sw.reset) {
-            sw.reset->setIcon(*icons[int(Icons::reset_ICON)]);
+//            sw.reset->setIcon(IconCode::Code::ACCOUNT);
             connect(sw.reset, SIGNAL(clicked()), mapper, SLOT(map()));
             mapper->setMapping(sw.reset, int(sw.idx));
         }
@@ -579,7 +584,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
         mapper2->setMapping(sw.widget, int(sw.idx));
     }
 
-    int topBottomMargin = automaticCapitalization->rect().height() - preferences.getInt(PREF_UI_THEME_FONTSIZE);
+    int topBottomMargin = automaticCapitalization->rect().height() - 5;//preferences.getInt(PREF_UI_THEME_FONTSIZE);
     topBottomMargin /= 2;
     topBottomMargin = topBottomMargin > 4 ? topBottomMargin - 4 : 0;
     automaticCapitalization->layout()->setContentsMargins(9, topBottomMargin, 9, topBottomMargin);
@@ -588,7 +593,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
     connect(mapper2, SIGNAL(mapped(int)), SLOT(valueChanged(int)));
     textStyles->clear();
     for (auto ss : allTextStyles()) {
-        QListWidgetItem* item = new QListWidgetItem(s->getTextStyleUserName(ss));
+        QListWidgetItem* item = new QListWidgetItem(notationStyleEditor()->textStyleUserName(ss).val);
         item->setData(Qt::UserRole, int(ss));
         textStyles->addItem(item);
     }
@@ -598,13 +603,13 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
     textStyleFrameType->addItem(tr("Rectangle"), int(FrameType::SQUARE));
     textStyleFrameType->addItem(tr("Circle"), int(FrameType::CIRCLE));
 
-    resetTextStyleName->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleName->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleName, &QToolButton::clicked, [=]() { resetUserStyleName(); });
     connect(styleName, &QLineEdit::textEdited, [=]() { editUserStyleName(); });
     connect(styleName, &QLineEdit::editingFinished, [=]() { endEditUserStyleName(); });
 
     // font face
-    resetTextStyleFontFace->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFontFace->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFontFace, &QToolButton::clicked,
             [=]() { resetTextStyle(Pid::FONT_FACE); }
             );
@@ -613,7 +618,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
             );
 
     // font size
-    resetTextStyleFontSize->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFontSize->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFontSize, &QToolButton::clicked,
             [=]() { resetTextStyle(Pid::FONT_SIZE); }
             );
@@ -622,7 +627,7 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
             );
 
     // font style
-    resetTextStyleFontStyle->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFontStyle->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFontStyle, &QToolButton::clicked,
             [=]() { resetTextStyle(Pid::FONT_STYLE); }
             );
@@ -631,21 +636,21 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
             );
 
     // align
-    resetTextStyleAlign->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleAlign->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleAlign, &QToolButton::clicked, [=]() { resetTextStyle(Pid::ALIGN); });
     connect(textStyleAlign, &AlignSelect::alignChanged,
             [=]() { textStyleValueChanged(Pid::ALIGN, QVariant::fromValue(textStyleAlign->align())); }
             );
 
     // offset
-    resetTextStyleOffset->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleOffset->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleOffset, &QToolButton::clicked, [=]() { resetTextStyle(Pid::OFFSET); });
     connect(textStyleOffset, &OffsetSelect::offsetChanged,
             [=]() { textStyleValueChanged(Pid::OFFSET, QVariant(textStyleOffset->offset())); }
             );
 
     // spatium dependent
-    resetTextStyleSpatiumDependent->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleSpatiumDependent->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleSpatiumDependent, &QToolButton::clicked, [=]() {
             resetTextStyle(Pid::SIZE_SPATIUM_DEPENDENT);
         });
@@ -653,43 +658,43 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
             [=]() { textStyleValueChanged(Pid::SIZE_SPATIUM_DEPENDENT, textStyleSpatiumDependent->isChecked()); }
             );
 
-    resetTextStyleFrameType->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFrameType->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFrameType, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_TYPE); });
     connect(textStyleFrameType, QOverload<int>::of(&QComboBox::currentIndexChanged),
             [=]() { textStyleValueChanged(Pid::FRAME_TYPE, textStyleFrameType->currentIndex()); }
             );
 
-    resetTextStyleFramePadding->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFramePadding->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFramePadding, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_PADDING); });
     connect(textStyleFramePadding, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
             [=]() { textStyleValueChanged(Pid::FRAME_PADDING, textStyleFramePadding->value()); }
             );
 
-    resetTextStyleFrameBorder->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFrameBorder->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFrameBorder, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_WIDTH); });
     connect(textStyleFrameBorder, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
             [=]() { textStyleValueChanged(Pid::FRAME_WIDTH, textStyleFrameBorder->value()); }
             );
 
-    resetTextStyleFrameBorderRadius->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFrameBorderRadius->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFrameBorderRadius, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_ROUND); });
     connect(textStyleFrameBorderRadius, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
             [=]() { textStyleValueChanged(Pid::FRAME_ROUND, textStyleFrameBorderRadius->value()); }
             );
 
-    resetTextStyleFrameForeground->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFrameForeground->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFrameForeground, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_FG_COLOR); });
     connect(textStyleFrameForeground, &Awl::ColorLabel::colorChanged,
             [=]() { textStyleValueChanged(Pid::FRAME_FG_COLOR, textStyleFrameForeground->color()); }
             );
 
-    resetTextStyleFrameBackground->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleFrameBackground->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleFrameBackground, &QToolButton::clicked, [=]() { resetTextStyle(Pid::FRAME_BG_COLOR); });
     connect(textStyleFrameBackground, &Awl::ColorLabel::colorChanged,
             [=]() { textStyleValueChanged(Pid::FRAME_BG_COLOR, textStyleFrameBackground->color()); }
             );
 
-    resetTextStyleColor->setIcon(*icons[int(Icons::reset_ICON)]);
+//    resetTextStyleColor->setIcon(IconCode::Code::ACCOUNT);
     connect(resetTextStyleColor, &QToolButton::clicked, [=]() { resetTextStyle(Pid::COLOR); });
     connect(textStyleColor, &Awl::ColorLabel::colorChanged,
             [=]() { textStyleValueChanged(Pid::COLOR, textStyleColor->color()); }
@@ -705,7 +710,13 @@ EditStyle::EditStyle(Score* s, QWidget* parent)
         this->setMinimumSize(scr.width() / 2, scr.height() / 2);
     }
     hasShown = false;
-    MuseScore::restoreGeometry(this);
+    //MuseScore::restoreGeometry(this); TODO
+}
+
+EditStyle::EditStyle(const EditStyle& other) :
+    QDialog(other.parentWidget())
+{
+    cs = other.cs;
 }
 
 //---------------------------------------------------------
@@ -820,8 +831,8 @@ void EditStyle::showEvent(QShowEvent* ev)
     }
     setValues();
     pageList->setFocus();
-    cs->startCmd();
-    buttonApplyToAllParts->setEnabled(!cs->isMaster());
+//    cs->startCmd(); // TODO
+    buttonApplyToAllParts->setEnabled(!notationStyleEditor()->isMaster().val);
     QWidget::showEvent(ev);
 }
 
@@ -831,7 +842,7 @@ void EditStyle::showEvent(QShowEvent* ev)
 
 void EditStyle::hideEvent(QHideEvent* ev)
 {
-    MuseScore::saveGeometry(this);
+//    MuseScore::saveGeometry(this); // TODO
     QWidget::hideEvent(ev);
 }
 
@@ -882,8 +893,7 @@ void EditStyle::on_buttonTogglePagelist_clicked()
     bool isVis = !pageList->isVisible();   // toggle it
 
     pageList->setVisible(isVis);
-    buttonTogglePagelist->setIcon(QIcon(*icons[int(isVis ? Icons::goNext_ICON
-                                                   : Icons::goPrevious_ICON)]));
+//    buttonTogglePagelist->setIcon(isVis ? IconCode::Code::ACCOUNT : IconCode::Code::AMBITUS);
 }
 
 //---------------------------------------------------------
@@ -966,7 +976,7 @@ QVariant EditStyle::getValue(Sid idx)
                sw.widget->metaObject()->className(),
                MStyle::valueName(idx));
     } else if (!strcmp("QPointF", type)) {
-        OffsetSelect* cb = qobject_cast<Ms::OffsetSelect*>(sw.widget);
+        OffsetSelect* cb = qobject_cast<OffsetSelect*>(sw.widget);
         if (cb) {
             return cb->offset();
         } else {
@@ -980,7 +990,7 @@ QVariant EditStyle::getValue(Sid idx)
             qFatal("unhandled Direction");
         }
     } else if (!strcmp("Ms::Align", type)) {
-        AlignSelect* as = qobject_cast<Ms::AlignSelect*>(sw.widget);
+        AlignSelect* as = qobject_cast<AlignSelect*>(sw.widget);
         return QVariant::fromValue(as->align());
     } else {
         qFatal("EditStyle::getValue: unhandled type <%s>", type);
@@ -1069,10 +1079,10 @@ void EditStyle::setValues()
                 unhandledType(&sw);
             }
         } else if (!strcmp("Ms::Align", type)) {
-            AlignSelect* as = qobject_cast<Ms::AlignSelect*>(sw.widget);
+            AlignSelect* as = qobject_cast<AlignSelect*>(sw.widget);
             as->setAlign(val.value<Align>());
         } else if (!strcmp("QPointF", type)) {
-            OffsetSelect* as = qobject_cast<Ms::OffsetSelect*>(sw.widget);
+            OffsetSelect* as = qobject_cast<OffsetSelect*>(sw.widget);
             if (as) {
                 as->setOffset(val.value<QPointF>());
             }
@@ -1164,7 +1174,7 @@ void EditStyle::setValues()
 
 void EditStyle::selectChordDescriptionFile()
 {
-    QString fn = mscore->getChordStyleFilename(true);
+    QString fn;// = mscore->getChordStyleFilename(true);// TODO
     if (fn.isEmpty()) {
         return;
     }
@@ -1610,7 +1620,7 @@ void EditStyle::endEditUserStyleName()
         textStyles->item(row)->setText(name);
         resetTextStyleName->setEnabled(false);
     }
-    MuseScoreCore::mscoreCore->updateInspector();
+//    MuseScoreCore::mscoreCore->updateInspector(); TODO
 }
 
 //---------------------------------------------------------
@@ -1622,4 +1632,3 @@ void EditStyle::resetUserStyleName()
     styleName->clear();
     endEditUserStyleName();
 }
-} //namespace Ms

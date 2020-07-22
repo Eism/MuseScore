@@ -16,17 +16,25 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-
-#ifndef __EDITSTYLE_H__
-#define __EDITSTYLE_H__
+#ifndef MU_NOTATIONSCENE_EDITSTYLE_H
+#define MU_NOTATIONSCENE_EDITSTYLE_H
 
 #include "ui_editstyle.h"
 #include "globals.h"
 #include "libmscore/mscore.h"
 #include "libmscore/style.h"
+#include "modularity/ioc.h"
+#include "mu4/domain/notation/inotationstyleeditor.h"
+
+using namespace Ms;
 
 namespace Ms {
 class Score;
+}
+
+namespace mu {
+namespace scene {
+namespace notation {
 class EditStyle;
 
 //---------------------------------------------------------
@@ -55,6 +63,8 @@ typedef QWidget* EditStyle::* EditStylePage;
 class EditStyle : public QDialog, private Ui::EditStyleBase
 {
     Q_OBJECT
+
+    INJECT(notation, mu::domain::notation::INotationStyleEditor, notationStyleEditor)
 
     Score * cs;
     QPushButton* buttonApplyToAllParts;
@@ -99,7 +109,8 @@ private slots:
     void resetUserStyleName();
 
 public:
-    EditStyle(Score*, QWidget*);
+    EditStyle(QWidget* = nullptr);
+    EditStyle(const EditStyle& other);
     void setPage(int no);
     void setScore(Score* s) { cs = s; }
 
@@ -107,5 +118,10 @@ public:
     void gotoHeaderFooterPage();
     static bool elementHasPage(Element* e);
 };
-} // namespace Ms
-#endif
+}
+}
+}
+
+Q_DECLARE_METATYPE(mu::scene::notation::EditStyle)
+
+#endif // MU_NOTATIONSCENE_EDITSTYLE_H
