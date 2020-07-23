@@ -27,6 +27,7 @@
 #include "framework/shortcuts/shortcutsmodule.h"
 #include "framework/workspace/workspacemodule.h"
 #include "framework/system/systemmodule.h"
+#include "framework/network/networkmodule.h"
 #include "framework/audio/engine/audioenginemodule.h"
 #include "framework/audio/midi/midimodule.h"
 #include "mu4/appshell/appshellmodule.h"
@@ -85,6 +86,7 @@ ModulesSetup::ModulesSetup()
         << new mu::framework::UiModule()
         << new mu::framework::UiComponentsModule()
         << new mu::framework::SystemModule()
+        << new mu::framework::NetworkModule()
         << new mu::domain::importexport::ImportExportModule()
         << new mu::scene::inspector::InspectorModule()
         << new mu::scene::palette::PaletteModule()
