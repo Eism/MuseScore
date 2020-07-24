@@ -19,9 +19,7 @@
 
 set(MODULE notation_scene)
 
-set(MODULE_QRC
-    ${CMAKE_CURRENT_LIST_DIR}/notation_view.qrc
-    )
+set(MODULE_QRC notationscene.qrc)
 
 set(MODULE_QML_IMPORT ${CMAKE_CURRENT_LIST_DIR}/qml)
 
@@ -29,9 +27,15 @@ set(MODULE_SRC
     ${NOTATIONVIEW_SRC}
     ${CMAKE_CURRENT_LIST_DIR}/notationscenemodule.cpp
     ${CMAKE_CURRENT_LIST_DIR}/notationscenemodule.h
+    ${CMAKE_CURRENT_LIST_DIR}/iscenenotationconfiguration.h
     ${CMAKE_CURRENT_LIST_DIR}/view/notationstatusbarmodel.h
     ${CMAKE_CURRENT_LIST_DIR}/view/notationstatusbarmodel.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/iscenenotationconfiguration.h
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationtoolbarmodel.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationtoolbarmodel.h
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationpaintview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationpaintview.h
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationviewinputcontroller.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/view/notationviewinputcontroller.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/scenenotationconfiguration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/scenenotationconfiguration.h
     ${CMAKE_CURRENT_LIST_DIR}/view/notationpaintview.cpp
