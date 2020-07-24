@@ -4,8 +4,16 @@ import MuseScore.Scores 1.0
 
 FocusScope {
 
-    ScoresModel {
-        id: scoresModel
+    RecentScoresModel {
+        id: recentScoresModel
+    }
+
+    FilterProxyModel {
+        id: recentScoresFilterModel
+
+        sourceModel: recentScoresModel
+        searchString: searchLine.text
+        searchRoles: [ "title" ]
     }
 
     Rectangle {
@@ -25,6 +33,8 @@ FocusScope {
     }
 
     SearchLine {
+        id: searchLine
+
         anchors.bottom: scoresRect.top
         anchors.bottomMargin: 25
         anchors.horizontalCenter: parent.horizontalCenter
@@ -50,7 +60,7 @@ FocusScope {
             anchors.fill: parent
             anchors.margins: 50
 
-            model: scoresModel.recentList
+            model: recentScoresFilterModel
 
             clip: true
 
@@ -64,8 +74,6 @@ FocusScope {
                 width: view.cellWidth
 
                 ScoreItem {
-                    property var score: modelData
-
                     anchors.centerIn: parent
 
                     height: 150
@@ -76,7 +84,7 @@ FocusScope {
                     isAdd: index === 0
 
                     onClicked: {
-                        scoresModel.openRecentScore(index)
+                        recentScoresModel.openRecentScore(index)
                     }
                 }
             }
@@ -95,14 +103,14 @@ FocusScope {
             anchors.verticalCenter: parent ? parent.verticalCenter : undefined
             width: 100
             text: qsTrc("scores", "Open a score")
-            onClicked: scoresModel.openScore()
+            onClicked: recentScoresModel.openScore()
         }
 
         FlatButton {
             anchors.verticalCenter: parent ? parent.verticalCenter : undefined
             width: 100
             text: qsTrc("scores", "Import")
-            onClicked: scoresModel.importScore()
+            onClicked: recentScoresModel.importScore()
         }
     }
 }

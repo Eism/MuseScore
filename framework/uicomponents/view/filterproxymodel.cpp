@@ -117,8 +117,11 @@ bool FilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& source
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
-    bool ok = allowedByFilters(index)
-              && allowedBySearch(index);
+    bool ok = allowedByFilters(index);
+
+    if (ok) {
+        ok = allowedBySearch(index);
+    }
 
     return ok;
 }

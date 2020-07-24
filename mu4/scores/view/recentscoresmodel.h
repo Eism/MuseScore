@@ -19,7 +19,7 @@
 #ifndef MU_SCORES_SCORESMODEL_H
 #define MU_SCORES_SCORESMODEL_H
 
-#include <QObject>
+#include <QAbstractListModel>
 
 #include "modularity/ioc.h"
 #include "async/asyncable.h"
@@ -29,7 +29,7 @@
 
 namespace mu {
 namespace scores {
-class ScoresModel : public QObject, public async::Asyncable
+class RecentScoresModel : public QAbstractListModel, public async::Asyncable
 {
     Q_OBJECT
 
@@ -37,26 +37,28 @@ class ScoresModel : public QObject, public async::Asyncable
     INJECT(scores, IScoresConfiguration, scoresConfiguration)
     INJECT(scores, domain::notation::IMsczMetaReader, msczMetaReader)
 
-    Q_PROPERTY(QVariantList recentList READ recentList NOTIFY recentListChanged)
-
 public:
-    ScoresModel(QObject* parent = nullptr);
+    RecentScoresModel(QObject* parent = nullptr);
+
+    QVariant data(const QModelIndex& index, int role) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void openScore();
     Q_INVOKABLE void importScore();
-
     Q_INVOKABLE void openRecentScore(int index);
 
-    QVariantList recentList();
-    void setRecentList(const QVariantList& recentList);
-
-signals:
-    void recentListChanged(QVariantList recentList);
-
 private:
-    void updateRecentList(const QStringList& recentList);
+    enum Roles {
+        RoleTitle = Qt::UserRole + 1,
+        RoleScore
+    };
 
-    QVariantList m_recentList;
+    void updateRecentScores(const QStringList& recentScoresPathList);
+    void setRecentScores(const QVariantList& recentScores);
+
+    QVariantList m_recentScores;
+    QHash<int, QByteArray> m_roles;
 };
 }
 }
