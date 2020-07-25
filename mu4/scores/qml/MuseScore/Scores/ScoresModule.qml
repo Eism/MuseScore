@@ -1,8 +1,18 @@
 import QtQuick 2.7
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 import MuseScore.UiComponents 1.0
 import MuseScore.Scores 1.0
 
 FocusScope {
+    id: root
+
+    QtObject {
+        id: privateProperties
+
+        readonly property int sideMargin: 134
+        readonly property int buttonWidth: 134
+    }
 
     RecentScoresModel {
         id: recentScoresModel
@@ -22,95 +32,175 @@ FocusScope {
         color: ui.theme.backgroundColor
     }
 
-    StyledTextLabel {
-        anchors.bottom: scoresRect.top
-        anchors.bottomMargin: 25
-        anchors.left: scoresRect.left
+    RowLayout {
+        id: topLayout
+        anchors.top: parent.top
+        anchors.topMargin: 66
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-        font.pixelSize: 30
+        spacing: 12
 
-        text: qsTrc("scores", "Scores")
+        StyledTextLabel {
+            id: pageTitle
+
+            Layout.leftMargin: privateProperties.sideMargin
+            Layout.alignment: Qt.AlignLeft
+
+            text: qsTrc("scores", "Scores")
+
+            font.pixelSize: 32
+            font.bold: true
+        }
+
+        SearchLine {
+            id: searchLine
+
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Item {
+            width: pageTitle.width
+            Layout.rightMargin: privateProperties.sideMargin
+            Layout.alignment: Qt.AlignLeft
+        }
     }
 
-    SearchLine {
-        id: searchLine
+    Column {
+        anchors.top: topLayout.bottom
+        anchors.topMargin: 74
+        anchors.left: parent.left
+        anchors.leftMargin: privateProperties.sideMargin
+        anchors.right: parent.right
+        anchors.rightMargin: privateProperties.sideMargin
 
-        anchors.bottom: scoresRect.top
-        anchors.bottomMargin: 25
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
+        spacing: 24
 
-    Rectangle {
-        id: scoresRect
+        StyledTextLabel {
+            text: qsTrc("scores", "New & recent")
 
-        anchors.fill: parent
-        anchors.topMargin: 100
-        anchors.leftMargin: 50
-        anchors.rightMargin: 50
-        anchors.bottomMargin: 75
+            font.pixelSize: 18
+            font.bold: true
+        }
 
-        color: ui.theme.popupBackgroundColor
-        border.color: ui.theme.strokeColor
-        border.width: 1
-        radius: 15
+        Item {
+            anchors.left: parent.left
+            anchors.leftMargin: -32.8
+            anchors.right: parent.right
+            anchors.rightMargin: -32.8
+            height: recentScoresView.contentHeight
 
-        GridView {
-            id: view
+            Rectangle {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 8
+                z: 1
 
-            anchors.fill: parent
-            anchors.margins: 50
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: ui.theme.backgroundColor
+                    }
 
-            model: recentScoresFilterModel
+                    GradientStop {
+                        position: 1.0
+                        color: "transparent"
+                    }
+                }
+            }
 
-            clip: true
+            GridView {
+                id: recentScoresView
 
-            cellHeight: 200
-            cellWidth: 160
+                model: recentScoresFilterModel
 
-            boundsBehavior: Flickable.StopAtBounds
+                width: parent.width
+                height: 658
 
-            delegate: Item {
-                height: view.cellHeight
-                width: view.cellWidth
+                clip: true
 
-                ScoreItem {
-                    anchors.centerIn: parent
+                cellHeight: 334
+                cellWidth: 237.6
 
-                    height: 150
-                    width: 100
+                delegate: Item {
+                    height: recentScoresView.cellHeight
+                    width: recentScoresView.cellWidth
 
-                    title: score.title
-                    thumbnail: score.thumbnail
-                    isAdd: index === 0
+                    ScoreItem {
+                        anchors.centerIn: parent
 
-                    onClicked: {
-                        recentScoresModel.openRecentScore(index)
+                        height: 272
+                        width: 172
+
+                        title: score.title
+                        thumbnail: score.thumbnail
+                        isAdd: index === 0
+
+                        onClicked: {
+                            recentScoresModel.openRecentScore(index)
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 8
+                z: 1
+
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: ui.theme.backgroundColor
+                    }
+
+                    GradientStop {
+                        position: 1.0
+                        color: "transparent"
                     }
                 }
             }
         }
     }
 
-    Row {
-        anchors.left: parent.left
-        anchors.leftMargin: 50
+    Rectangle {
+        id: buttons
+
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 16
 
-        spacing: 20
+        height: 114
+        width: parent.width
+        opacity: 0.75
 
-        FlatButton {
-            anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-            width: 100
-            text: qsTrc("scores", "Open a score")
-            onClicked: recentScoresModel.openScore()
-        }
+        color: ui.theme.popupBackgroundColor
 
-        FlatButton {
-            anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-            width: 100
-            text: qsTrc("scores", "Import")
-            onClicked: recentScoresModel.importScore()
+        Row {
+            anchors.right : parent.right
+            anchors.rightMargin: privateProperties.sideMargin
+            anchors.verticalCenter: parent.verticalCenter
+
+            spacing: 22
+
+            FlatButton {
+                width: privateProperties.buttonWidth
+                text: qsTrc("scores", "New")
+
+                onClicked: {
+                    recentScoresModel.newScore()
+                }
+            }
+
+            FlatButton {
+                width: privateProperties.buttonWidth
+                text: qsTrc("scores", "Open other...")
+
+                onClicked: {
+                    recentScoresModel.openScore()
+                }
+            }
         }
     }
 }

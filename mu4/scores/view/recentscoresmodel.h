@@ -16,15 +16,15 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_SCORES_SCORESMODEL_H
-#define MU_SCORES_SCORESMODEL_H
+#ifndef MU_SCORES_RECENTSCORESMODEL_H
+#define MU_SCORES_RECENTSCORESMODEL_H
 
 #include <QAbstractListModel>
 
 #include "modularity/ioc.h"
 #include "async/asyncable.h"
 #include "actions/iactionsdispatcher.h"
-#include "../iscoresconfiguration.h"
+#include "iscoresconfiguration.h"
 #include "domain/notation/imsczmetareader.h"
 
 namespace mu {
@@ -44,8 +44,8 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    Q_INVOKABLE void newScore();
     Q_INVOKABLE void openScore();
-    Q_INVOKABLE void importScore();
     Q_INVOKABLE void openRecentScore(int index);
 
 private:
@@ -63,4 +63,4 @@ private:
 }
 }
 
-#endif // MU_SCORES_SCORESMODEL_H
+#endif // MU_SCORES_RECENTSCORESMODEL_H

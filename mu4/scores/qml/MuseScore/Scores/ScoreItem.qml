@@ -6,7 +6,8 @@ import MuseScore.Scores 1.0
 Item {
     id: root
 
-    property var title: ""
+    property string title: ""
+    property int daysAgoCount: 0
     property alias thumbnail: loader.thumbnail
     property bool isAdd: false
 
@@ -15,15 +16,15 @@ Item {
     Column {
         anchors.fill: parent
 
-        spacing: 10
+        spacing: 16
 
         Loader {
             id: loader
 
-            property var thumbnail: undefined
+            height: 224
+            width: 172
 
-            height: 125
-            width: parent.width
+            property var thumbnail: undefined
 
             sourceComponent: isAdd ? addComp : thumbnailComp
 
@@ -34,12 +35,25 @@ Item {
             }
         }
 
-        StyledTextLabel {
-            id: scoreTitle
-
+        Column {
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: title
+            spacing: 4
+
+            StyledTextLabel {
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                text: root.title
+            }
+
+            StyledTextLabel {
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                text: root.daysAgoCount + qsTrc("scores", " DAYS AGO")
+                font.pixelSize: 12
+
+                visible: !isAdd
+            }
         }
     }
 
@@ -48,6 +62,8 @@ Item {
 
         ScoreThumbnail {
             anchors.fill: parent
+
+            radius: 3
         }
     }
 
@@ -59,12 +75,14 @@ Item {
 
             color: "#FFFFFF"
 
+            radius: 3
+
             StyledIconLabel {
                 anchors.centerIn: parent
-                height: 50
-                width: height
 
                 iconCode: IconCode.PLUS
+
+                font.pixelSize: 50
             }
         }
 

@@ -29,6 +29,7 @@ using namespace mu::domain::notation;
 namespace {
 const QString SCORE_TITLE_KEY("title");
 const QString SCORE_THUMBNAIL_KEY("thumbnail");
+const QString SCORE_DAYS_AGO_COUNT("daysAgoCount");
 }
 
 RecentScoresModel::RecentScoresModel(QObject* parent)
@@ -71,14 +72,14 @@ QHash<int, QByteArray> RecentScoresModel::roleNames() const
     return m_roles;
 }
 
+void RecentScoresModel::newScore()
+{
+    openRecentScore(0);
+}
+
 void RecentScoresModel::openScore()
 {
     dispatcher()->dispatch("file-open");
-}
-
-void RecentScoresModel::importScore()
-{
-    dispatcher()->dispatch("file-import");
 }
 
 void RecentScoresModel::openRecentScore(int index)
@@ -122,15 +123,17 @@ void RecentScoresModel::updateRecentScores(const QStringList& recentScoresPathLi
         }
 
         QVariantMap obj;
+        int daysAgoCount = QDateTime::currentDateTime().daysTo(meta.val.birthDateTime);
 
         obj[SCORE_TITLE_KEY] = meta.val.title;
         obj[SCORE_THUMBNAIL_KEY] = meta.val.thumbnail;
+        obj[SCORE_DAYS_AGO_COUNT] = daysAgoCount;
 
         recentScores << obj;
     }
 
     QVariantMap obj;
-    obj["title"] = qtrc("scores", "New Score");
+    obj[SCORE_TITLE_KEY] = qtrc("scores", "New Score");
 
     recentScores.prepend(QVariant::fromValue(obj));
 

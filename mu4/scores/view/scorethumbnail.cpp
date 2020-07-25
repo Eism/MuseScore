@@ -9,6 +9,21 @@ ScoreThumbnail::ScoreThumbnail(QQuickItem* parent)
 {
 }
 
+int ScoreThumbnail::radius() const
+{
+    return m_radius;
+}
+
+void ScoreThumbnail::setRadius(int radius)
+{
+    if (m_radius == radius) {
+        return;
+    }
+
+    m_radius = radius;
+    radiusChanged(radius);
+}
+
 void ScoreThumbnail::setThumbnail(QVariant pixmap)
 {
     if (pixmap.isNull()) {
@@ -21,5 +36,9 @@ void ScoreThumbnail::setThumbnail(QVariant pixmap)
 
 void ScoreThumbnail::paint(QPainter* painter)
 {
-    painter->drawPixmap(0, 0, width(), height(), m_thumbnail);
+    QBrush brush = QBrush(m_thumbnail);
+
+    painter->setBrush(brush);
+    painter->setPen(Qt::NoPen);
+    painter->drawRoundedRect(0, 0, width(), height(), m_radius, m_radius);
 }
