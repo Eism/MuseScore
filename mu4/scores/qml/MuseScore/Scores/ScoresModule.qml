@@ -66,17 +66,20 @@ FocusScope {
         }
     }
 
-    Column {
+    Item {
         anchors.top: topLayout.bottom
         anchors.topMargin: 74
         anchors.left: parent.left
         anchors.leftMargin: privateProperties.sideMargin
         anchors.right: parent.right
         anchors.rightMargin: privateProperties.sideMargin
-
-        spacing: 24
+        anchors.bottom: buttonsPanel.top
 
         StyledTextLabel {
+            id: newAndRecent
+
+            anchors.top: parent.top
+
             text: qsTrc("scores", "New & recent")
 
             font.pixelSize: 18
@@ -84,16 +87,18 @@ FocusScope {
         }
 
         Item {
+            anchors.top: newAndRecent.bottom
+            anchors.topMargin: 8
             anchors.left: parent.left
-            anchors.leftMargin: -32.8
+            anchors.leftMargin: -24
             anchors.right: parent.right
-            anchors.rightMargin: -32.8
-            height: recentScoresView.contentHeight
+            anchors.rightMargin: -24
+            anchors.bottom: parent.bottom
 
             Rectangle {
                 anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
+
+                width: parent.width
                 height: 8
                 z: 1
 
@@ -115,13 +120,12 @@ FocusScope {
 
                 model: recentScoresFilterModel
 
-                width: parent.width
-                height: 658
+                anchors.fill: parent
 
                 clip: true
 
                 cellHeight: 334
-                cellWidth: 237.6
+                cellWidth: 220
 
                 delegate: Item {
                     height: recentScoresView.cellHeight
@@ -146,20 +150,20 @@ FocusScope {
 
             Rectangle {
                 anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
+
+                width: parent.width
                 height: 8
                 z: 1
 
                 gradient: Gradient {
                     GradientStop {
                         position: 0.0
-                        color: ui.theme.backgroundColor
+                        color: "transparent"
                     }
 
                     GradientStop {
                         position: 1.0
-                        color: "transparent"
+                        color: ui.theme.backgroundColor
                     }
                 }
             }
@@ -167,7 +171,7 @@ FocusScope {
     }
 
     Rectangle {
-        id: buttons
+        id: buttonsPanel
 
         anchors.bottom: parent.bottom
 
