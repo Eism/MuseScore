@@ -26,3 +26,4 @@ RoundedRectangle 1.0 RoundedRectangle.qml
 SearchLine 1.0 SearchLine.qml
 StyledTabButton 1.0 StyledTabButton.qml
 PopupPanel 1.0 PopupPanel.qml
+ProgressButton 1.0 ProgressButton.qml
