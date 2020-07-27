@@ -36,6 +36,8 @@ void LanguagesController::init()
 {
     QString code = configuration()->currentLanguageCode();
     loadLanguage(code);
+
+    refreshLanguages();
 }
 
 Ret LanguagesController::refreshLanguages()

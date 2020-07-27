@@ -34,7 +34,8 @@ public:
     enum class Status {
         Undefined = 0,
         Installed,
-        NoInstalled
+        NoInstalled,
+        NeedUpdate
     };
     Q_ENUM(Status)
 };

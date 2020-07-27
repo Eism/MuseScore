@@ -3,8 +3,14 @@ import QtQuick 2.7
 import MuseScore.UiComponents 1.0
 import MuseScore.Languages 1.0
 
-Rectangle {
-    color: ui.theme.backgroundColor
+Item {
+    id: root
+
+    property alias search: filterModel.searchString
+
+    onSearchChanged: {
+        languagePanel.hide()
+    }
 
     Component.onCompleted: {
         languageListModel.load()
@@ -14,88 +20,166 @@ Rectangle {
         id: languageListModel
     }
 
-    // TODO
-    FlatButton {
-        text: qsTrc("languages", "Update")
+    FilterProxyModel {
+        id: filterModel
 
-        onClicked: {
-            languageListModel.updateList()
+        sourceModel: languageListModel
+        searchRoles: ["name"]
+    }
+
+    Row {
+        id: header
+
+        property real itemWidth: parent.width / 2
+
+        anchors.top: parent.top
+        anchors.topMargin: 16
+        anchors.left: parent.left
+        anchors.leftMargin: 133
+        anchors.right: parent.right
+        anchors.rightMargin: 133
+
+        height: 48
+
+        StyledTextLabel {
+            width: header.itemWidth
+
+            text: qsTrc("languages", "LANGUAGES")
+            horizontalAlignment: Text.AlignLeft
+            opacity: 0.5
+        }
+        StyledTextLabel {
+            width: header.itemWidth
+
+            text: qsTrc("languages", "STATUS")
+            horizontalAlignment: Text.AlignLeft
+            opacity: 0.5
         }
     }
 
-    GridView {
+    Rectangle {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: view.top
+
+        height: 8
+        z: 1
+
+        gradient: Gradient {
+            GradientStop {
+                position: 0.0
+                color: ui.theme.backgroundColor
+            }
+            GradientStop {
+                position: 1.0
+                color: "transparent"
+            }
+        }
+    }
+
+    ListView {
         id: view
 
-        anchors.fill: parent
-        anchors.topMargin: 50
+        anchors.top: header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: languagePanel.visible ? languagePanel.top : parent.bottom
 
-        model: languageListModel
+        model: filterModel
 
         clip: true
 
-        cellHeight: 150
-        cellWidth: 200
-
         boundsBehavior: Flickable.StopAtBounds
 
-        delegate: Item {
-            height: view.cellHeight
-            width: view.cellWidth
+        delegate: LanguageItem {
+            width: view.width
 
-            Rectangle {
+            title: model.name
+            statusTitle: model.statusTitle
 
-                anchors.centerIn: parent
+            color: (index % 2 == 0) ? ui.theme.popupBackgroundColor
+                                    : ui.theme.backgroundColor
 
-                height: 130
-                width: 180
-                color: ui.theme.popupBackgroundColor
+            headerWidth: header.itemWidth
+            sideMargin: 133
 
-                Column {
-                    anchors.fill: parent
-                    spacing: 10
+            onClicked: {
+                languagePanel.show(model)
+            }
+        }
+    }
 
-                    StyledTextLabel {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        text: name
-                    }
+    Rectangle {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: view.bottom
 
-                    Column {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
+        height: 8
+        z:1
 
-                        spacing: 4
+        gradient: Gradient {
+            GradientStop {
+                position: 0.0
+                color: "transparent"
+            }
+            GradientStop {
+                position: 1.0
+                color: ui.theme.backgroundColor
+            }
+        }
+    }
 
-                        FlatButton {
-                            text: qsTrc("languages", "Install")
+    PopupPanel {
+        id: languagePanel
 
-                            visible: status === LanguageStatus.NoInstalled
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 
-                            onClicked: {
-                                languageListModel.install(index)
-                            }
-                        }
-                        FlatButton {
-                            text: qsTrc("languages", "Set as language")
+        visible: false
 
-                            visible: status === LanguageStatus.Installed && !isCurrent
+        content: LanguageInfo {
+            id: languageInfo
 
-                            onClicked: {
-                                languageListModel.setLanguage(index)
-                            }
-                        }
-                        FlatButton {
-                            text: qsTrc("languages", "Uninstall")
+            onInstall: {
+                languageListModel.install(code)
+            }
 
-                            visible: status === LanguageStatus.Installed || status === LanguageStatus.NeedUpdate
+            onUpdate: {
+                languageListModel.update(code)
+            }
 
-                            onClicked: {
-                                languageListModel.uninstall(index)
-                            }
-                        }
-                    }
+            onUninstall: {
+                languageListModel.uninstall(code)
+            }
+
+            onOpenPreferences: {
+                languageListModel.openPreferences()
+            }
+
+            Connections {
+                target: languageListModel
+                function onProgress(status, indeterminate, current, total) {
+                    languageInfo.setProgress(status, indeterminate, current, total)
+                }
+                function onFinish() {
+                    languageInfo.resetProgress()
                 }
             }
+        }
+
+        onClose: {
+            visible = false
+        }
+
+        function show(language) {
+            setContentData(language)
+
+            visible = true
+        }
+
+        function hide() {
+            visible = false
         }
     }
 }
