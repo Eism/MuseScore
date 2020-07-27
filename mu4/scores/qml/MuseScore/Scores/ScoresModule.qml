@@ -1,6 +1,5 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
 import MuseScore.UiComponents 1.0
 import MuseScore.Scores 1.0
 
@@ -76,12 +75,9 @@ FocusScope {
         anchors.bottom: buttonsPanel.top
 
         Item {
-            anchors.top: parent.top
-            anchors.left: parent.left
+            anchors.fill: parent
             anchors.leftMargin: -24
-            anchors.right: parent.right
             anchors.rightMargin: -24
-            anchors.bottom: parent.bottom
 
             Rectangle {
                 anchors.top: parent.top
@@ -106,10 +102,7 @@ FocusScope {
             GridView {
                 id: recentScoresView
 
-                model: recentScoresFilterModel
-
                 anchors.fill: parent
-                anchors.topMargin: 8
 
                 clip: true
 
@@ -124,6 +117,8 @@ FocusScope {
                     StyledTextLabel {
                         id: headerTitle
 
+                        anchors.top: parent.top
+                        anchors.topMargin: 8
                         anchors.left: parent.left
                         anchors.leftMargin: 24
 
@@ -133,6 +128,8 @@ FocusScope {
                         font.bold: true
                     }
                 }
+
+                model: recentScoresFilterModel
 
                 delegate: Item {
                     height: recentScoresView.cellHeight
@@ -184,7 +181,6 @@ FocusScope {
 
         height: 114
         width: parent.width
-        opacity: 0.75
 
         color: ui.theme.popupBackgroundColor
 
