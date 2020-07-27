@@ -82,6 +82,7 @@ Item {
                 title: score.title
                 thumbnail: score.thumbnail
                 isAdd: score.isAddNew
+                timeScineCreation: score.timeScineCreation
 
                 onClicked: {
                     if (isAdd) {
