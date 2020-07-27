@@ -89,7 +89,7 @@ if (BUILD_UI_MU4)
         workspace
         audio_engine
         audio_midi
-        scores
+        userscores
         extensions
         importexport
         notation

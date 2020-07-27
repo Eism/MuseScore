@@ -16,7 +16,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#include "scoresmodule.h"
+#include "userscoresmodule.h"
 
 #include <QQmlEngine>
 
@@ -25,43 +25,43 @@
 #include "view/newscoremodel.h"
 #include "view/scorethumbnail.h"
 #include "internal/openscorecontroller.h"
-#include "internal/scoresconfiguration.h"
+#include "internal/userscoresconfiguration.h"
 
-using namespace mu::scores;
+using namespace mu::userscores;
 
 static OpenScoreController* m_openController = new OpenScoreController();
-static ScoresConfiguration* m_scoresConfiguration = new ScoresConfiguration();
+static UserScoresConfiguration* m_userScoresConfiguration = new UserScoresConfiguration();
 
-static void scores_init_qrc()
+static void userscores_init_qrc()
 {
-    Q_INIT_RESOURCE(scores);
+    Q_INIT_RESOURCE(userscores);
 }
 
-std::string ScoresModule::moduleName() const
+std::string UserScoresModule::moduleName() const
 {
-    return "scores";
+    return "userscores";
 }
 
-void ScoresModule::registerExports()
+void UserScoresModule::registerExports()
 {
     framework::ioc()->registerExport<IOpenScoreController>(moduleName(), m_openController);
-    framework::ioc()->registerExport<IScoresConfiguration>(moduleName(), m_scoresConfiguration);
+    framework::ioc()->registerExport<IUserScoresConfiguration>(moduleName(), m_userScoresConfiguration);
 }
 
-void ScoresModule::registerResources()
+void UserScoresModule::registerResources()
 {
-    scores_init_qrc();
+    userscores_init_qrc();
 }
 
-void ScoresModule::registerUiTypes()
+void UserScoresModule::registerUiTypes()
 {
-    qmlRegisterType<RecentScoresModel>("MuseScore.Scores", 1, 0, "RecentScoresModel");
-    qmlRegisterType<NewScoreModel>("MuseScore.Scores", 1, 0, "NewScoreModel");
-    qmlRegisterType<ScoreThumbnail>("MuseScore.Scores", 1, 0, "ScoreThumbnail");
+    qmlRegisterType<RecentScoresModel>("MuseScore.UserScores", 1, 0, "RecentScoresModel");
+    qmlRegisterType<NewScoreModel>("MuseScore.UserScores", 1, 0, "NewScoreModel");
+    qmlRegisterType<ScoreThumbnail>("MuseScore.UserScores", 1, 0, "ScoreThumbnail");
 }
 
-void ScoresModule::onInit()
+void UserScoresModule::onInit()
 {
-    m_scoresConfiguration->init();
+    m_userScoresConfiguration->init();
     m_openController->init();
 }

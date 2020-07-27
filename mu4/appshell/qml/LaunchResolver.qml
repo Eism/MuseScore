@@ -20,7 +20,7 @@ QtObject {
 
         // Scores
         r["musescore://scores/newscore"] = function(d) { return {
-                path: "MuseScore/Scores/NewScoreDialog.qml"
+                path: "MuseScore/UserScores/NewScoreDialog.qml"
             }};
 
         // DevTools

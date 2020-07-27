@@ -16,29 +16,27 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_SCORES_IOPENSCORECONTROLLER_H
-#define MU_SCORES_IOPENSCORECONTROLLER_H
+#ifndef MU_USERSCORES_IUSERSCORESCONFIGURATION_H
+#define MU_USERSCORES_IUSERSCORESCONFIGURATION_H
 
-#include <QVariantMap>
+#include <QStringList>
 
 #include "modularity/imoduleexport.h"
-#include "io/path.h"
-#include "actions/actiontypes.h"
+#include "retval.h"
 
 namespace mu {
-namespace scores {
-class IOpenScoreController : MODULE_EXPORT_INTERFACE
+namespace userscores {
+class IUserScoresConfiguration : MODULE_EXPORT_INTERFACE
 {
-    INTERFACE_ID(IOpenScoreController)
+    INTERFACE_ID(IUserScoresConfiguration)
 
 public:
-    virtual ~IOpenScoreController() = default;
+    virtual ~IUserScoresConfiguration() = default;
 
-    virtual void openScore(const actions::ActionData& args = actions::ActionData()) = 0;
-    virtual void importScore() = 0;
-    virtual void newScore() = 0;
+    virtual ValCh<QStringList> recentScoreList() const = 0;
+    virtual void setRecentScoreList(const QStringList& recentScoreList) = 0;
 };
 }
 }
 
-#endif // MU_SCORES_IOPENSCORECONTROLLER_H
+#endif // MU_USERSCORES_IUSERSCORESCONFIGURATION_H

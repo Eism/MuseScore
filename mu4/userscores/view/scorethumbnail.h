@@ -16,27 +16,30 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_SCORES_SCORECONFIGURATION_H
-#define MU_SCORES_SCORECONFIGURATION_H
+#ifndef MU_USERSCORES_SCORETHUMBNAIL_H
+#define MU_USERSCORES_SCORETHUMBNAIL_H
 
-#include "iscoresconfiguration.h"
+#include <QQuickPaintedItem>
+#include <QPainter>
 
 namespace mu {
-namespace scores {
-class ScoresConfiguration : public IScoresConfiguration
+namespace userscores {
+class ScoreThumbnail : public QQuickPaintedItem
 {
-public:
-    void init();
+    Q_OBJECT
 
-    ValCh<QStringList> recentScoreList() override;
-    void setRecentScoreList(const QStringList& recentScoreList) override;
+public:
+    ScoreThumbnail(QQuickItem* parent = nullptr);
+
+    Q_INVOKABLE void setThumbnail(QVariant pixmap);
+
+protected:
+    virtual void paint(QPainter* painter) override;
 
 private:
-    QStringList parseRecentList(const std::string& recents) const;
-
-    async::Channel<QStringList> m_recentListChanged;
+    QPixmap m_thumbnail;
 };
 }
 }
 
-#endif // MU_SCORES_SCORECONFIGURATION_H
+#endif // MU_USERSCORES_SCORETHUMBNAIL_H

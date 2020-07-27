@@ -16,17 +16,16 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_SCORES_SCORESMODULE_H
-#define MU_SCORES_SCORESMODULE_H
+#ifndef MU_USERSCORES_USERSCORESMODULE_H
+#define MU_USERSCORES_USERSCORESMODULE_H
 
 #include "modularity/imodulesetup.h"
 
 namespace mu {
-namespace scores {
-class ScoresModule : public framework::IModuleSetup
+namespace userscores {
+class UserScoresModule : public framework::IModuleSetup
 {
 public:
-
     std::string moduleName() const override;
     void registerExports() override;
     void registerResources() override;
@@ -36,4 +35,4 @@ public:
 }
 }
 
-#endif // MU_SCORES_SCORESMODULE_H
+#endif // MU_USERSCORES_USERSCORESMODULE_H
