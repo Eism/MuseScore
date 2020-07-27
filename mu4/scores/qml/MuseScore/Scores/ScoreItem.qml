@@ -18,19 +18,26 @@ Item {
 
         spacing: 16
 
-        Loader {
-            id: loader
-
+        Rectangle {
             height: 224
             width: 172
 
-            property var thumbnail: undefined
+            radius: 3
 
-            sourceComponent: isAdd ? addComp : thumbnailComp
+            Loader {
+                id: loader
 
-            onLoaded: {
-                if (!isAdd) {
-                    item.setThumbnail(thumbnail)
+                anchors.fill: parent
+                anchors.margins: parent.radius
+
+                property var thumbnail: undefined
+
+                sourceComponent: isAdd ? addComp : thumbnailComp
+
+                onLoaded: {
+                    if (!isAdd) {
+                        item.setThumbnail(thumbnail)
+                    }
                 }
             }
         }
@@ -62,8 +69,6 @@ Item {
 
         ScoreThumbnail {
             anchors.fill: parent
-
-            radius: 3
         }
     }
 
@@ -74,8 +79,6 @@ Item {
             anchors.fill: parent
 
             color: "#FFFFFF"
-
-            radius: 3
 
             StyledIconLabel {
                 anchors.centerIn: parent

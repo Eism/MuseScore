@@ -75,20 +75,8 @@ FocusScope {
         anchors.rightMargin: privateProperties.sideMargin
         anchors.bottom: buttonsPanel.top
 
-        StyledTextLabel {
-            id: newAndRecent
-
-            anchors.top: parent.top
-
-            text: qsTrc("scores", "New & recent")
-
-            font.pixelSize: 18
-            font.bold: true
-        }
-
         Item {
-            anchors.top: newAndRecent.bottom
-            anchors.topMargin: 8
+            anchors.top: parent.top
             anchors.left: parent.left
             anchors.leftMargin: -24
             anchors.right: parent.right
@@ -121,11 +109,30 @@ FocusScope {
                 model: recentScoresFilterModel
 
                 anchors.fill: parent
+                anchors.topMargin: 8
 
                 clip: true
 
                 cellHeight: 334
                 cellWidth: 220
+
+                header: Item {
+                    height: headerTitle.height
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    StyledTextLabel {
+                        id: headerTitle
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: 24
+
+                        text: qsTrc("scores", "New & recent")
+
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
 
                 delegate: Item {
                     height: recentScoresView.cellHeight

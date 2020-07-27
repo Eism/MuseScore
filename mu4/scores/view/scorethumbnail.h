@@ -28,27 +28,16 @@ class ScoreThumbnail : public QQuickPaintedItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(int radius READ radius WRITE setRadius NOTIFY radiusChanged)
-
 public:
     ScoreThumbnail(QQuickItem* parent = nullptr);
 
-    int radius() const;
-
     Q_INVOKABLE void setThumbnail(QVariant pixmap);
-
-public slots:
-    void setRadius(int radius);
-
-signals:
-    void radiusChanged(int radius);
 
 protected:
     virtual void paint(QPainter* painter) override;
 
 private:
     QPixmap m_thumbnail;
-    int m_radius = 0;
 };
 }
 }
