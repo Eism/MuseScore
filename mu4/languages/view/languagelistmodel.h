@@ -54,6 +54,10 @@ public:
     Q_INVOKABLE void uninstall(int index);
     Q_INVOKABLE void setLanguage(int index);
 
+signals:
+    void progress(const QString& status, bool indeterminate, qint64 current, qint64 total);
+    void finish();
+
 private:
     QHash<int, QByteArray> m_roles;
     QList<Language> m_list;

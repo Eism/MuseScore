@@ -36,7 +36,7 @@ public:
     virtual Ret refreshLanguages() = 0;
 
     virtual ValCh<LanguagesHash> languages() = 0;
-    virtual Ret install(const QString& languageCode) = 0;
+    virtual RetCh<LanguageProgress>  install(const QString& languageCode) = 0;
     virtual Ret uninstall(const QString& languageCode) = 0;
 
     virtual Ret setLanguage(const QString& languageCode) = 0;

@@ -104,11 +104,20 @@ void LanguageListModel::install(int index)
         return;
     }
 
-    Ret ret = languagesController()->install(m_list.at(index).code);
-    if (!ret) {
-        LOGE() << "Error" << ret.code() << ret.text();
+    RetCh<LanguageProgress> installRet = languagesController()->install(m_list.at(index).code);
+    if (!installRet.ret) {
+        LOGE() << "Error" << installRet.ret.code() << installRet.ret.text();
         return;
     }
+
+    installRet.ch.onReceive(this, [this](const LanguageProgress& progress) {
+        emit this->progress(progress.status, progress.indeterminate, progress.current, progress.total);
+    });
+
+    installRet.ch.onClose(this, [this]() {
+        emit finish();
+    });
+
 }
 
 void LanguageListModel::uninstall(int index)

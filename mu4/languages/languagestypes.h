@@ -39,6 +39,21 @@ public:
     Q_ENUM(Status)
 };
 
+struct LanguageProgress
+{
+    QString status;
+    bool indeterminate = true;
+
+    qint64 current = 0;
+    quint64 total = 0;
+
+    LanguageProgress() = default;
+    LanguageProgress(const QString& status, bool indeterminate)
+        : status(status), indeterminate(indeterminate) {}
+    LanguageProgress(const QString& status, qint64 current, qint64 total)
+        : status(status), indeterminate(false), current(current), total(total) {}
+};
+
 struct Language
 {
     QString code;
