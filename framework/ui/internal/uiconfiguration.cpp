@@ -14,7 +14,7 @@ static const Settings::Key FONT_SIZE_KEY(module_name, "ui/theme/fontSize");
 
 UiConfiguration::UiConfiguration()
 {
-    settings()->addItem(THEME_TYPE_KEY, Val(static_cast<int>(ThemeType::LIGHT_THEME)));
+    settings()->addItem(THEME_TYPE_KEY, Val(static_cast<int>(ThemeType::DARK_THEME)));
     settings()->addItem(FONT_FAMILY_KEY, Val("FreeSans"));
     settings()->addItem(FONT_SIZE_KEY, Val(12));
 

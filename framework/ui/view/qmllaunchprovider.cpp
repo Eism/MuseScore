@@ -162,7 +162,7 @@ void QmlLaunchProvider::onPopupClose(const QString& objectID, const QVariant& js
 {
     m_retvals[objectID] = toRetVal(jsrv);
 
-    IF_ASSERT_FAILED(m_stack.size() > 1) {
+    if (!(m_stack.size() > 1)) {
         return;
     }
 

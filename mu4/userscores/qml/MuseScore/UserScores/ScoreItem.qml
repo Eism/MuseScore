@@ -88,6 +88,8 @@ Item {
                 iconCode: IconCode.PLUS
 
                 font.pixelSize: 50
+
+                color: ui.theme.buttonColor
             }
         }
 

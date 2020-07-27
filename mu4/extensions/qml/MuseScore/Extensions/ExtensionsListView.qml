@@ -14,7 +14,7 @@ Item {
     property alias searchRoles: filterModel.searchRoles
 
     property alias filterRoles: filterModel.filterRoles
-    property alias filtersValues: filterModel.filtersValues
+    property alias filterValues: filterModel.filterValues
 
     property int selectedIndex: -1
 

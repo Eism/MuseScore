@@ -10,8 +10,8 @@ Item {
     signal openScoreRequested(var scorePath)
     signal addNewScoreRequested()
 
-    anchors.leftMargin: -24
-    anchors.rightMargin: -24
+    anchors.leftMargin: -34
+    anchors.rightMargin: -34
 
     QtObject {
         id: privateProperties
@@ -47,7 +47,7 @@ Item {
         clip: true
 
         cellHeight: 334
-        cellWidth: 220
+        cellWidth: 240
 
         header: Item {
             height: headerTitle.height
@@ -60,7 +60,7 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: privateProperties.shadowHeight
                 anchors.left: parent.left
-                anchors.leftMargin: 24
+                anchors.leftMargin: 34
 
                 text: qsTrc("userscores", "New & recent")
 

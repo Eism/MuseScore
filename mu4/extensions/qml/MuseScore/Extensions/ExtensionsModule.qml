@@ -100,7 +100,7 @@ Item {
                     searchRoles: ["name"]
 
                     filterRoles: ["status"]
-                    filtersValues: [ExtensionStatus.Installed]
+                    filterValues: [ExtensionStatus.Installed]
 
                     onClicked: {
                         selectedExtensionViewType = "installed"
@@ -147,7 +147,7 @@ Item {
                     searchRoles: ["name"]
 
                     filterRoles: ["status"]
-                    filtersValues: [ExtensionStatus.NoInstalled]
+                    filterValues: [ExtensionStatus.NoInstalled]
 
                     onClicked: {
                         selectedExtensionViewType = "notinstalled"

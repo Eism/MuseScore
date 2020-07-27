@@ -9,7 +9,7 @@ Rectangle {
 
     signal selected(string name)
 
-    color: ui.theme.backgroundColor
+    color: ui.theme.popupBackgroundColor
     height: childrenRect.height
 
     RadioButtonGroup {
@@ -31,6 +31,8 @@ Rectangle {
 
         delegate: FlatRadioButton {
             id: radioButtonDelegate
+
+            backgroundColor: ui.theme.popupBackgroundColor
 
             ButtonGroup.group: radioButtonList.radioButtonGroup
 

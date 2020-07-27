@@ -13,35 +13,45 @@ Rectangle {
 
     color: ui.theme.backgroundColor
 
-    StyledTextLabel {
-        id: addonsLabel
-
+    RowLayout {
+        id: topLayout
         anchors.top: parent.top
         anchors.topMargin: 66
         anchors.left: parent.left
-        anchors.leftMargin: 133
+        anchors.right: parent.right
 
-        font.pixelSize: 32
-        font.bold: true
+        spacing: 12
 
-        text: qsTrc("appshell", "Add-ons")
-    }
+        StyledTextLabel {
+            id: addonsLabel
 
-    TextInputField {
-        id: search
+            Layout.leftMargin: 133
+            Layout.alignment: Qt.AlignLeft
 
-        anchors.right: parent.horizontalCenter
-        anchors.rightMargin: 2
-        anchors.verticalCenter: addonsLabel.verticalCenter
+            font.pixelSize: 32
+            font.bold: true
 
-        width: 184
-        height: 30
+            text: qsTrc("appshell", "Add-ons")
+        }
+
+
+        SearchLine {
+            id: searchLine
+
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Item {
+            width: addonsLabel.width
+            Layout.rightMargin: 133
+            Layout.alignment: Qt.AlignLeft
+        }
     }
 
     TabBar {
         id: bar
 
-        anchors.top: addonsLabel.bottom
+        anchors.top: topLayout.bottom
         anchors.topMargin: 54
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -85,25 +95,13 @@ Rectangle {
         ExtensionsModule {
             id: extensionsComp
 
-            Connections {
-                target: search
-
-                function onCurrentTextEdited(newTextValue) {
-                    extensionsComp.search = newTextValue
-                }
-            }
+            search: searchLine.text
         }
         
         LanguagesModule {
             id: languagesComp
 
-            Connections {
-                target: search
-
-                function onCurrentTextEdited(newTextValue) {
-                    languagesComp.search = newTextValue
-                }
-            }
+            search: searchLine.text
         }
     }
 }

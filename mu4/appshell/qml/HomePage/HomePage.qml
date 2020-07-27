@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Layouts 1.12
 import MuseScore.Ui 1.0
 import MuseScore.Dock 1.0
 
@@ -26,15 +27,16 @@ DockPage {
             objectName: "resourcesPanel"
 
             width: 200
-            color: ui.theme.backgroundColor
+            color: ui.theme.popupBackgroundColor
 
-            Column {
+            ColumnLayout {
                 anchors.fill: parent
+                spacing: 0
 
                 Rectangle {
                     height: 60
-                    width: parent.width
-                    color: ui.theme.backgroundColor
+                    Layout.fillWidth: true
+                    color: ui.theme.popupBackgroundColor
 
                     AccountInfoButton {
                         width: parent.width
@@ -50,11 +52,17 @@ DockPage {
                 }
 
                 HomeMenu {
-                    width: parent.width
+                    Layout.fillWidth: true
 
                     onSelected: {
                         homeCentral.load(name)
                     }
+                }
+
+                Rectangle {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    color: ui.theme.popupBackgroundColor
                 }
             }
         }

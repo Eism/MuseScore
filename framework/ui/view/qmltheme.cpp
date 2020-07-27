@@ -27,7 +27,7 @@ static const QHash<int, QVariant> DARK_THEME {
     { QmlTheme::BACKGROUND_COLOR, "#262626" },
     { QmlTheme::POPUP_BACKGROUND_COLOR, "#2C2C2C" },
     { QmlTheme::TEXT_FIELD_COLOR, "#1A1A1A" },
-    { QmlTheme::ACCENT_COLOR, "#0062C2" },
+    { QmlTheme::ACCENT_COLOR, "#FF4848" },
     { QmlTheme::STROKE_COLOR, "#747474" },
     { QmlTheme::BUTTON_COLOR, "#595959" },
     { QmlTheme::FONT_COLOR, "#EBEBEB" },
