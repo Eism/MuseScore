@@ -20,9 +20,6 @@
 #define MU_NOTATIONSCENE_EDITSTYLE_H
 
 #include "ui_editstyle.h"
-#include "globals.h"
-#include "libmscore/mscore.h"
-#include "libmscore/style.h"
 #include "modularity/ioc.h"
 #include "context/iglobalcontext.h"
 #include "scenes/notation/iscenenotationconfiguration.h"
@@ -63,13 +60,12 @@ class EditStyle : public QDialog, private Ui::EditStyleBase
     INJECT(notation, mu::context::IGlobalContext, globalContext)
     INJECT(notation, mu::scene::notation::ISceneNotationConfiguration, configuration)
 
-    QPushButton* buttonApplyToAllParts;
-    QButtonGroup* stemGroups[VOICES];
+    QPushButton* buttonApplyToAllParts = nullptr;
     QVector<StyleWidget> styleWidgets;
-    QButtonGroup* keySigNatGroup;
-    QButtonGroup* clefTypeGroup;
-    bool isTooBig;
-    bool hasShown;
+    QButtonGroup* keySigNatGroup = nullptr;
+    QButtonGroup* clefTypeGroup = nullptr;
+    bool isTooBig = false;
+    bool hasShown = false;
 
     virtual void showEvent(QShowEvent*);
     virtual void hideEvent(QHideEvent*);
@@ -110,7 +106,9 @@ public:
     void setPage(int no);
     void gotoElement(Element* e);
     void gotoHeaderFooterPage();
+
     static bool elementHasPage(Element* e);
+    static int metaTypeId();
 };
 }
 

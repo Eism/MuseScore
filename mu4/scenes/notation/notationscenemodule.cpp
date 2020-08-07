@@ -55,7 +55,7 @@ void NotationSceneModule::resolveImports()
     auto ir = framework::ioc()->resolve<framework::IInteractiveUriRegister>(moduleName());
     if (ir) {
         ir->registerUri(Uri("musescore://notation/style"),
-                        ContainerMeta(ContainerType::QWidgetDialog, "EditStyle"));
+                        ContainerMeta(ContainerType::QWidgetDialog, EditStyle::metaTypeId()));
     }
 }
 

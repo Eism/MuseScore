@@ -11,10 +11,12 @@
 //=============================================================================
 
 #include "alignSelect.h"
+
 #include "libmscore/types.h"
-#include "icons.h"
+#include "ui/view/iconcodes.h"
 
 using namespace Ms;
+using namespace mu::framework;
 
 //---------------------------------------------------------
 //   AlignSelect
@@ -36,19 +38,23 @@ AlignSelect::AlignSelect(QWidget* parent)
     g2->addButton(alignBaseline);
     g2->addButton(alignBottom);
 
-    alignLeft->setIcon(*icons[int(Icons::textLeft_ICON)]);
-    alignRight->setIcon(*icons[int(Icons::textRight_ICON)]);
-    alignHCenter->setIcon(*icons[int(Icons::textCenter_ICON)]);
-    alignVCenter->setIcon(*icons[int(Icons::textVCenter_ICON)]);
-    alignTop->setIcon(*icons[int(Icons::textTop_ICON)]);
-    alignBaseline->setIcon(*icons[int(Icons::textBaseline_ICON)]);
-    alignBottom->setIcon(*icons[int(Icons::textBottom_ICON)]);
+    auto iconCodeToChar = [](IconCode::Code code) -> QChar {
+        return QChar(static_cast<char16_t>(code));
+    };
+
+    alignLeft->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_LEFT));
+    alignRight->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_RIGHT));
+    alignHCenter->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_CENTER));
+    alignVCenter->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_MIDDLE));
+    alignTop->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_ABOVE));
+    alignBaseline->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_BASELINE));
+    alignBottom->setText(iconCodeToChar(IconCode::Code::TEXT_ALIGN_UNDER));
 
     connect(g1, SIGNAL(buttonToggled(int,bool)), SLOT(_alignChanged()));
     connect(g2, SIGNAL(buttonToggled(int,bool)), SLOT(_alignChanged()));
 }
 
-//---------------------------------------------------------
+///---------------------------------------------------------
 //   _alignChanged
 //---------------------------------------------------------
 

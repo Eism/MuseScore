@@ -11,11 +11,13 @@
 //=============================================================================
 
 #include "fontStyleSelect.h"
-#include "icons.h"
+
+#include "ui/view/iconcodes.h"
 
 #include "libmscore/types.h"
 
 using namespace Ms;
+using namespace mu::framework;
 
 //---------------------------------------------------------
 //    FontStyleSelect
@@ -26,9 +28,13 @@ FontStyleSelect::FontStyleSelect(QWidget* parent)
 {
     setupUi(this);
 
-    bold->setIcon(*icons[static_cast<int>(Icons::textBold_ICON)]);
-    italic->setIcon(*icons[static_cast<int>(Icons::textItalic_ICON)]);
-    underline->setIcon(*icons[static_cast<int>(Icons::textUnderline_ICON)]);
+    auto iconCodeToChar = [](IconCode::Code code) -> QChar {
+        return QChar(static_cast<char16_t>(code));
+    };
+
+    bold->setText(iconCodeToChar(IconCode::Code::TEXT_BOLD));
+    italic->setText(iconCodeToChar(IconCode::Code::TEXT_ITALIC));
+    underline->setText(iconCodeToChar(IconCode::Code::TEXT_UNDERLINE));
 
     connect(bold, SIGNAL(toggled(bool)), SLOT(_fontStyleChanged()));
     connect(italic, SIGNAL(toggled(bool)), SLOT(_fontStyleChanged()));

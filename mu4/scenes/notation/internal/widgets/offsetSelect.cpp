@@ -11,8 +11,8 @@
 //=============================================================================
 
 #include "offsetSelect.h"
+
 #include "libmscore/types.h"
-#include "icons.h"
 #include "musescore.h"
 
 using namespace Ms;

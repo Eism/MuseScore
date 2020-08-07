@@ -124,5 +124,11 @@ Rectangle {
             text: "Widget dialog sync"
             onClicked: testModel.openWidgetDialogSync()
         }
+
+        FlatButton {
+            width: 200
+            text: "Edit style"
+            onClicked: api.launcher.open("musescore://notation/style")
+        }
     }
 }
