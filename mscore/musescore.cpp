@@ -47,7 +47,7 @@
 #include "pagesettings.h"
 #include "debugger/debugger.h"
 #include "scoretreewidget.h"
-#include "editstyle.h"
+#include "mu4/scenes/notation/internal/widgets/editstyle.h"
 #include "playpanel.h"
 #include "libmscore/page.h"
 #include "mixer/mixer.h"
@@ -6776,9 +6776,7 @@ void MuseScore::cmd(QAction* a, const QString& cmd)
         }
     } else if (cmd == "edit-style") {
         if (!_styleDlg) {
-            _styleDlg = new EditStyle { cs, this };
-        } else {
-            _styleDlg->setScore(cs);
+            _styleDlg = new EditStyle(this);
         }
         _styleDlg->exec();
     } else if (cmd == "edit-info") {

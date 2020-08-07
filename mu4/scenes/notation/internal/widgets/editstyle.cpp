@@ -13,15 +13,17 @@
 
 #include <QVariantList>
 
+#include "alignSelect.h"
+#include "offsetSelect.h"
+#include "fontStyleSelect.h"
+
+#include "icons.h" // mscore
+
 #include "libmscore/score.h"
-#include "scoreview.h"
 #include "libmscore/style.h"
 #include "libmscore/articulation.h"
 #include "libmscore/sym.h"
-#include "icons.h"
-//#include "musescore.h"
 #include "libmscore/undo.h"
-#include "icons.h"
 #include "libmscore/harmony.h"
 #include "libmscore/chordlist.h"
 #include "libmscore/figuredbass.h"
@@ -29,14 +31,9 @@
 #include "libmscore/excerpt.h"
 #include "libmscore/tuplet.h"
 #include "libmscore/layout.h"
-#include "alignSelect.h"
-#include "offsetSelect.h"
-#include "fontStyleSelect.h"
-//#include "preferences.h"
 
 #include "ui/view/iconcodes.h"
 
-using namespace mu::scene::notation;
 using namespace mu::domain::notation;
 
 //---------------------------------------------------------
@@ -583,7 +580,7 @@ EditStyle::EditStyle(QWidget* parent)
         mapper2->setMapping(sw.widget, int(sw.idx));
     }
 
-    int topBottomMargin = automaticCapitalization->rect().height() - 5;//preferences.getInt(PREF_UI_THEME_FONTSIZE);
+    int topBottomMargin = automaticCapitalization->rect().height() - configuration()->fontSize();
     topBottomMargin /= 2;
     topBottomMargin = topBottomMargin > 4 ? topBottomMargin - 4 : 0;
     automaticCapitalization->layout()->setContentsMargins(9, topBottomMargin, 9, topBottomMargin);
@@ -716,7 +713,6 @@ EditStyle::EditStyle(QWidget* parent)
 EditStyle::EditStyle(const EditStyle& other)
     : QDialog(other.parentWidget())
 {
-    cs = other.cs;
 }
 
 //---------------------------------------------------------
@@ -1405,15 +1401,15 @@ void EditStyle::valueChanged(int i)
 
             // adjust mmrest, which is not in engravingDefaults
             // TODO: create generalized method for setting style vals based on font
-            if (scoreFont->name() == "Bravura") {
-                cs->undo(new ChangeStyleVal(cs, Sid::mmRestHBarThickness, 1.0));
-                cs->undo(new ChangeStyleVal(cs, Sid::multiMeasureRestMargin, 3.0));
-            } else {
-                cs->undo(new ChangeStyleVal(cs, Sid::mmRestHBarThickness,
-                                            MScore::defaultStyle().value(Sid::mmRestHBarThickness)));
-                cs->undo(new ChangeStyleVal(cs, Sid::multiMeasureRestMargin,
-                                            MScore::defaultStyle().value(Sid::multiMeasureRestMargin)));
-            }
+//            if (scoreFont->name() == "Bravura") {
+//                cs->undo(new ChangeStyleVal(cs, Sid::mmRestHBarThickness, 1.0));
+//                cs->undo(new ChangeStyleVal(cs, Sid::multiMeasureRestMargin, 3.0));
+//            } else {
+//                cs->undo(new ChangeStyleVal(cs, Sid::mmRestHBarThickness,
+//                                            MScore::defaultStyle().value(Sid::mmRestHBarThickness)));
+//                cs->undo(new ChangeStyleVal(cs, Sid::multiMeasureRestMargin,
+//                                            MScore::defaultStyle().value(Sid::multiMeasureRestMargin)));
+//            }
 //                  if (scoreFont->textEnclosureThickness()) {
 //                        TextStyle ts = cs->textStyle(TextStyleType::REHEARSAL_MARK);
 //                        ts.setFrameWidth(Spatium(scoreFont->textEnclosureThickness()));

@@ -32,6 +32,7 @@ namespace notation {
 class ISceneNotationConfiguration : MODULE_EXPORT_INTERFACE
 {
     INTERFACE_ID(ISceneNotationConfigure)
+
 public:
     virtual ~ISceneNotationConfiguration() = default;
 
@@ -48,6 +49,8 @@ public:
 
     virtual ValCh<int> currentZoom() const = 0;
     virtual void setCurrentZoom(int zoomPercentage) = 0;
+
+    virtual int fontSize() const = 0;
 };
 }
 }

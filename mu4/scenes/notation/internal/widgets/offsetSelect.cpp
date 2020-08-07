@@ -15,7 +15,6 @@
 #include "icons.h"
 #include "musescore.h"
 
-using namespace mu::scene::notation;
 using namespace Ms;
 
 //---------------------------------------------------------

@@ -32,13 +32,13 @@ NotationStyleEditor::NotationStyleEditor(Notation* notation)
 
 Style NotationStyleEditor::style() const
 {
-    return m_notation->score()->style();
+    return m_notation->masterScore()->style();
 }
 
 void NotationStyleEditor::changeStyle(ChangeStyleVal* newStyleValue)
 {
-    newStyleValue->setScore(m_notation->score());
-    m_notation->score()->undo(newStyleValue);
+    newStyleValue->setScore(m_notation->masterScore());
+    m_notation->masterScore()->undo(newStyleValue);
 }
 
 void NotationStyleEditor::update()
@@ -48,44 +48,40 @@ void NotationStyleEditor::update()
 
 bool NotationStyleEditor::isMaster() const
 {
-    return m_notation->score()->isMaster();
+    return m_notation->masterScore()->isMaster();
 }
 
 QList<QMap<QString, QString> > NotationStyleEditor::metaTags() const
 {
     QList<QMap<QString, QString> > tags;
+    tags << m_notation->masterScore()->metaTags();
 
-    if (isMaster()) {
-        tags << m_notation->score()->masterScore()->metaTags();
-    }
-
-    tags << m_notation->score()->metaTags();
     return tags;
 }
 
 QString NotationStyleEditor::textStyleUserName(Tid tid)
 {
-    return m_notation->score()->getTextStyleUserName(tid);
+    return m_notation->masterScore()->getTextStyleUserName(tid);
 }
 
 void NotationStyleEditor::setConcertPitch(bool status)
 {
-    m_notation->score()->cmdConcertPitchChanged(status, true);
+    m_notation->masterScore()->cmdConcertPitchChanged(status, true);
 }
 
 void NotationStyleEditor::startEdit()
 {
-    m_notation->score()->startCmd();
+    m_notation->masterScore()->startCmd();
 }
 
 void NotationStyleEditor::apply()
 {
-    m_notation->score()->endCmd();
+    m_notation->masterScore()->endCmd();
 }
 
 void NotationStyleEditor::applyAllParts()
 {
-    for (Ms::Excerpt* e : m_notation->score()->masterScore()->excerpts()) {
+    for (Ms::Excerpt* e : m_notation->masterScore()->excerpts()) {
         e->partScore()->undo(new ChangeStyle(e->partScore(), style()));
         e->partScore()->update();
     }
@@ -93,7 +89,7 @@ void NotationStyleEditor::applyAllParts()
 
 void NotationStyleEditor::cancel()
 {
-    m_notation->score()->endCmd(true);
+    m_notation->masterScore()->endCmd(true);
 }
 
 async::Notification NotationStyleEditor::styleChanged() const

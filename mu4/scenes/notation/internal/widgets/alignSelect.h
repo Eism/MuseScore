@@ -16,11 +16,6 @@
 
 namespace Ms {
 enum class Align : char;
-}
-
-namespace mu {
-namespace scene {
-namespace notation {
 
 //---------------------------------------------------------
 //   AlignSelect
@@ -46,8 +41,6 @@ public:
     Align align() const;
     void setAlign(Align);
 };
-}
-}
 }
 
 #endif // MU_NOTATIONSCENE_ALIGNSELECT_H

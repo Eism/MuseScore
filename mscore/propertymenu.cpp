@@ -24,7 +24,7 @@
 #include "stafftextproperties.h"
 #include "selinstrument.h"
 #include "pianoroll/pianoroll.h"
-#include "editstyle.h"
+#include "mu4/scenes/notation/internal/widgets/editstyle.h"
 #include "editstaff.h"
 #include "measureproperties.h"
 
@@ -401,17 +401,13 @@ void ScoreView::elementPropertyAction(const QString& cmd, Element* e)
         mscore->editInPianoroll(note->staff());
     } else if (cmd == "style") {
         if (!mscore->styleDlg()) {
-            mscore->setStyleDlg(new EditStyle { _score, mscore });
-        } else {
-            mscore->styleDlg()->setScore(mscore->currentScore());
+            mscore->setStyleDlg(new EditStyle(mscore));
         }
         mscore->styleDlg()->gotoElement(e);
         mscore->styleDlg()->exec();
     } else if (cmd == "style-header-footer") { // used to go to the header/footer dialog by double-clicking on a header/footer
         if (!mscore->styleDlg()) {
-            mscore->setStyleDlg(new EditStyle { _score, mscore });
-        } else {
-            mscore->styleDlg()->setScore(mscore->currentScore());
+            mscore->setStyleDlg(new EditStyle(mscore));
         }
         mscore->styleDlg()->gotoHeaderFooterPage();
         mscore->styleDlg()->exec();

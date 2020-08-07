@@ -119,3 +119,8 @@ void SceneNotationConfiguration::setCurrentZoom(int zoomPercentage)
 {
     settings()->setValue(CURRENT_ZOOM, Val(zoomPercentage));
 }
+
+int SceneNotationConfiguration::fontSize() const
+{
+    return uiConfiguration()->fontSize();
+}

@@ -15,7 +15,6 @@
 
 #include "libmscore/types.h"
 
-using namespace mu::scene::notation;
 using namespace Ms;
 
 //---------------------------------------------------------
