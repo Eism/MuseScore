@@ -8,7 +8,7 @@ import MuseScore.Instruments 1.0
 Rectangle {
     id: root
 
-    color: ui.theme.backgroundPrimaryColor
+    property bool canSelectMultipleInstruments: true
 
     function selectedInstruments() {
         var instruments = instrumentsModel.selectedInstruments
@@ -21,12 +21,14 @@ Rectangle {
         return result
     }
 
+    color: ui.theme.backgroundPrimaryColor
+
     InstrumentListModel {
         id: instrumentsModel
     }
 
     Component.onCompleted: {
-        instrumentsModel.load()
+        instrumentsModel.load(canSelectMultipleInstruments)
         Qt.callLater(familyView.selectFirstGroup)
     }
 
@@ -38,7 +40,8 @@ Rectangle {
         FamilyView {
             id: familyView
 
-            Layout.preferredWidth: root.width / 4
+            Layout.preferredWidth: root.canSelectMultipleInstruments ? root.width / 4 : undefined
+            Layout.fillWidth: !root.canSelectMultipleInstruments
             Layout.fillHeight: true
 
             families: instrumentsModel.families
@@ -68,7 +71,8 @@ Rectangle {
         InstrumentsView {
             id: instrumentsView
 
-            Layout.preferredWidth: root.width / 4
+            Layout.preferredWidth: root.canSelectMultipleInstruments ? root.width / 4 : undefined
+            Layout.fillWidth: !root.canSelectMultipleInstruments
             Layout.fillHeight: true
 
             instruments: instrumentsModel.instruments
@@ -77,11 +81,21 @@ Rectangle {
                 instrumentsModel.setSearchText(search)
                 Qt.callLater(familyView.selectFirstGroup)
             }
+
+            onInstrumentClicked: {
+                if (root.canSelectMultipleInstruments) {
+                    return
+                }
+
+                instrumentsModel.selectInstrument(instrument.id)
+            }
         }
 
         SeparatorLine { orientation: Qt.Vertical }
 
         FlatButton {
+            visible: root.canSelectMultipleInstruments
+
             Layout.preferredWidth: 30
 
             enabled: instrumentsView.isInstrumentSelected
@@ -98,6 +112,8 @@ Rectangle {
 
         SelectedInstrumentsView {
             id: selectedInstrumentsView
+
+            visible: root.canSelectMultipleInstruments
 
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -117,6 +133,8 @@ Rectangle {
         SeparatorLine { orientation: Qt.Vertical }
 
         Column {
+            visible: root.canSelectMultipleInstruments
+
             Layout.preferredWidth: 30
             anchors.verticalCenter: parent.verticalCenter
 
