@@ -36,7 +36,6 @@
 #include "instruments/instrumentstypes.h"
 #include "libmscore/instrument.h"
 #include "libmscore/staff.h"
-#include "libmscore/excerpt.h"
 
 namespace mu {
 namespace notation {

@@ -50,7 +50,7 @@ Notation::Notation(Score* score)
     m_style = new NotationStyle(this);
     m_playback = new NotationPlayback(this);
     m_elements = new NotationElements(this);
-    m_instruments = new NotationInstruments(this);
+    m_parts = new NotationParts(this);
 
     m_interaction->noteAdded().onNotify(this, [this]() { notifyAboutNotationChanged(); });
     m_interaction->dragChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
