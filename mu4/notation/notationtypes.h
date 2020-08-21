@@ -121,7 +121,6 @@ struct ScoreCreateOptions {
     io::path templatePath;
     instruments::InstrumentList instruments;
 };
-
 }
 }
 
