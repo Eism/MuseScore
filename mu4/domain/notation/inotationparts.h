@@ -20,6 +20,7 @@
 #define MU_DOMAIN_NOTATION_INOTATIONPARTS_H
 
 #include "notationtypes.h"
+#include "scenes/instruments/instrumentstypes.h"
 #include "async/notification.h"
 #include "async/channel.h"
 
@@ -35,6 +36,7 @@ public:
     virtual InstrumentList instrumentList(const QString& partId) const = 0;
     virtual StaffList staffList(const QString& partId, const QString& instrumentId) const = 0;
 
+    virtual void setInstruments(const std::vector<QString>& instrumentTemplateIds) = 0;
     virtual void setPartVisible(const QString& partId, bool visible) = 0;
     virtual void setInstrumentVisible(const QString& partId, const QString& instrumentId, bool visible) = 0;
 
