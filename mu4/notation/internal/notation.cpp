@@ -55,7 +55,6 @@ Notation::Notation(Score* score)
     m_interaction->dragChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
     m_interaction->textEditingChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
     m_interaction->dropChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
-
     m_midiInput->noteChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
     m_style->styleChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
     m_parts->partsChanged().onNotify(this, [this]() { notifyAboutNotationChanged(); });
