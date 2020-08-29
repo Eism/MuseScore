@@ -22,6 +22,8 @@ FocusableItem {
 
     signal clicked
 
+    implicitWidth: contentWrapper.width + 16
+
     height: contentWrapper.implicitHeight + 16
     width: (Boolean(text) ? Math.max(contentWrapper.implicitWidth + 32, 132) : contentWrapper.implicitWidth + 16)
 
