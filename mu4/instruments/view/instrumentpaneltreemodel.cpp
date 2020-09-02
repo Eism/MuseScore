@@ -428,7 +428,6 @@ void InstrumentPanelTreeModel::updateRemovingAvailability()
     setIsRemovingAvailable(m_selectionModel->hasSelection());
 }
 
-
 void InstrumentPanelTreeModel::updateInstrumentItem(InstrumentTreeItem* item, const Instrument& instrument, const QString& partId,
                                                     const QString& partName)
 {
@@ -438,6 +437,7 @@ void InstrumentPanelTreeModel::updateInstrumentItem(InstrumentTreeItem* item, co
     item->setIsVisible(instrument.visible);
     item->setPartId(partId);
     item->setPartName(partName);
+    item->setCanChangeVisibility(m_notationParts->canChangeInstrumentVisibility(partId, instrument.id));
 }
 
 void InstrumentPanelTreeModel::updateStaffItem(StaffTreeItem* item, const Staff* staff, const QString& partId, const QString& instrumentId)
@@ -462,15 +462,20 @@ void InstrumentPanelTreeModel::updateStaffItem(StaffTreeItem* item, const Staff*
 AbstractInstrumentPanelTreeItem* InstrumentPanelTreeModel::buildPartItem(const Part* part)
 {
     auto result = new PartTreeItem(m_notationParts, this);
-    result->setTitle(part->partName());
-    result->setId(part->id());
-    result->setIsVisible(part->show());
+    updatePartItem(result, part);
 
     connect(result, &AbstractInstrumentPanelTreeItem::isVisibleChanged, this, [this, part](const bool isVisible) {
         m_notationParts->setPartVisible(part->id(), isVisible);
     });
 
     return result;
+}
+
+void InstrumentPanelTreeModel::updatePartItem(PartTreeItem* item, const Part* part)
+{
+    item->setTitle(part->partName());
+    item->setId(part->id());
+    item->setIsVisible(part->show());
 }
 
 AbstractInstrumentPanelTreeItem* InstrumentPanelTreeModel::buildInstrumentItem(const QString& partId, const QString& partName,
@@ -521,10 +526,15 @@ AbstractInstrumentPanelTreeItem* InstrumentPanelTreeModel::buildAddDoubleInstrum
 void InstrumentPanelTreeModel::registerReceivers()
 {
     m_notationParts->partChanged().onReceive(this, [this](const INotationParts::PartChangeData& newPart) {
-        auto newPartItem = buildPartItem(newPart.part);
+        auto partItem = dynamic_cast<PartTreeItem*>(m_rootItem->childAtId(newPart.part->id()));
+        if (!partItem) {
+            return;
+        }
+
+        updatePartItem(partItem, newPart.part);
 
         int row = m_rootItem->childAtId(newPart.part->id())->row();
-        m_rootItem->replaceChild(newPartItem, row);
+        m_rootItem->replaceChild(partItem, row);
 
         QModelIndex partIndex = this->index(row, 0, QModelIndex());
         emit dataChanged(partIndex, partIndex, { ItemRole });
@@ -561,6 +571,20 @@ void InstrumentPanelTreeModel::registerReceivers()
         }
 
         updateStaffItem(staffItem, newStaffData.staff, newStaffData.partId, newStaffData.instrumentId);
+    });
+
+    m_notationParts->instrumentAppended().onReceive(this, [this](const INotationParts::InstrumentChangeData& newInstrumentData) {
+        auto partItem = m_rootItem->childAtId(newInstrumentData.partId);
+        if (!partItem) {
+            return;
+        }
+
+        auto instrumentItem = buildInstrumentItem(newInstrumentData.partId, partItem->title(), newInstrumentData.instrument);
+        QModelIndex partIndex = this->index(partItem->row(), 0, QModelIndex());
+
+        beginInsertRows(partIndex, partItem->childCount() - 1, partItem->childCount() - 1);
+        partItem->insertChild(instrumentItem, partItem->childCount() - 1);
+        endInsertRows();
     });
 
     m_notationParts->staffAppended().onReceive(this, [this](const INotationParts::StaffChangeData& newStaffData) {

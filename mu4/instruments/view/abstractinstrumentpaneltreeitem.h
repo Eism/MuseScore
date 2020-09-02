@@ -34,6 +34,7 @@ class AbstractInstrumentPanelTreeItem : public QObject
 
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(int type READ type NOTIFY typeChanged)
+    Q_PROPERTY(bool canChangeVisibility READ canChangeVisibility NOTIFY canChangeVisibilityChanged)
     Q_PROPERTY(bool isVisible READ isVisible WRITE setIsVisible NOTIFY isVisibleChanged)
     Q_PROPERTY(bool isSelectable READ isSelectable NOTIFY isSelectableChanged)
 
@@ -51,6 +52,9 @@ public:
     int type() const;
     bool isVisible() const;
     bool isSelectable() const;
+
+    bool canChangeVisibility() const;
+    void setCanChangeVisibility(bool value);
 
     AbstractInstrumentPanelTreeItem* parentItem() const;
     void setParentItem(AbstractInstrumentPanelTreeItem* parent);
@@ -77,6 +81,7 @@ public slots:
 signals:
     void typeChanged(InstrumentTreeItemType::ItemType type);
     void titleChanged(QString title);
+    void canChangeVisibilityChanged(bool canChange);
     void isVisibleChanged(bool isVisible);
     void isSelectableChanged(bool isSelectable);
 
@@ -87,10 +92,11 @@ private:
     QList<AbstractInstrumentPanelTreeItem*> m_children;
     AbstractInstrumentPanelTreeItem* m_parent = nullptr;
 
-    QString m_id = "";
-    QString m_title = "";
+    QString m_id;
+    QString m_title;
     InstrumentTreeItemType::ItemType m_type = InstrumentTreeItemType::ItemType::UNDEFINED;
     bool m_isVisible = true;
+    bool m_canChangeVisibility = false;
 
     notation::INotationParts* m_notationParts = nullptr;
 };

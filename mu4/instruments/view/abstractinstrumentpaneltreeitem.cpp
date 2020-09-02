@@ -28,6 +28,8 @@ AbstractInstrumentPanelTreeItem::AbstractInstrumentPanelTreeItem(const Instrumen
     : QObject(parent), m_notationParts(notationParts)
 {
     setType(type);
+
+    m_canChangeVisibility = isSelectable();
 }
 
 AbstractInstrumentPanelTreeItem::~AbstractInstrumentPanelTreeItem()
@@ -49,6 +51,11 @@ void AbstractInstrumentPanelTreeItem::appendNewItem()
 QString AbstractInstrumentPanelTreeItem::id() const
 {
     return m_id;
+}
+
+bool AbstractInstrumentPanelTreeItem::canChangeVisibility() const
+{
+    return m_canChangeVisibility;
 }
 
 QString AbstractInstrumentPanelTreeItem::title() const
@@ -232,6 +239,16 @@ void AbstractInstrumentPanelTreeItem::setIsVisible(bool isVisible)
 void AbstractInstrumentPanelTreeItem::setId(const QString& id)
 {
     m_id = id;
+}
+
+void AbstractInstrumentPanelTreeItem::setCanChangeVisibility(bool value)
+{
+    if (m_canChangeVisibility == value) {
+        return;
+    }
+
+    m_canChangeVisibility = value;
+    emit canChangeVisibilityChanged(value);
 }
 
 INotationParts* AbstractInstrumentPanelTreeItem::notationParts() const

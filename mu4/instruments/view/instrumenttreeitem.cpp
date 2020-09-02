@@ -24,6 +24,19 @@ using namespace mu::notation;
 InstrumentTreeItem::InstrumentTreeItem(INotationParts* notationParts, QObject* parent)
     : AbstractInstrumentPanelTreeItem(InstrumentTreeItemType::ItemType::INSTRUMENT, notationParts, parent)
 {
+    notationParts->canChangeInstrumentsVisibilityChanged().onNotify(this, [this]() {
+        updateCanChangeVisibility();
+    });
+}
+
+void InstrumentTreeItem::updateCanChangeVisibility()
+{
+    if (partId().isEmpty() || id().isEmpty()) {
+        return;
+    }
+
+    bool canChangeVisibility = notationParts()->canChangeInstrumentVisibility(partId(), id());
+    setCanChangeVisibility(canChangeVisibility);
 }
 
 QString InstrumentTreeItem::partId() const
