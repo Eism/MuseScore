@@ -61,19 +61,17 @@ Item {
         }
 
         FlatButton {
-            Layout.alignment: Layout.Right
-            width: 100
+            Layout.preferredWidth: implicitWidth
 
             enabled: isInstrumentSelected
             text: qsTrc("instruments", "Make soloist")
         }
 
         FlatButton {
-            Layout.alignment: Layout.Right
-            width: 30
+            Layout.preferredWidth: implicitWidth
 
             enabled: isInstrumentSelected
-            icon: IconCode.TRASH
+            icon: IconCode.DELETE_TANK
 
             onClicked: {
                 unselectInstrumentRequested(instruments[currentInstrumentIndex].id)

@@ -533,11 +533,16 @@ void InstrumentPanelTreeModel::registerReceivers()
 
         updatePartItem(partItem, newPart.part);
 
-        int row = m_rootItem->childAtId(newPart.part->id())->row();
-        m_rootItem->replaceChild(partItem, row);
+        for (int i = 0; i < partItem->childCount(); i++) {
+            auto item = partItem->childAtRow(i);
+            auto itemType = static_cast<InstrumentTreeItemType::ItemType>(item->type());
+            if (itemType != InstrumentTreeItemType::ItemType::INSTRUMENT) {
+                continue;
+            }
 
-        QModelIndex partIndex = this->index(row, 0, QModelIndex());
-        emit dataChanged(partIndex, partIndex, { ItemRole });
+            auto instrumentItem = dynamic_cast<InstrumentTreeItem*>(partItem->childAtRow(i));
+            instrumentItem->setPartName(partItem->title());
+        }
     });
 
     m_notationParts->instrumentChanged().onReceive(this, [this](const INotationParts::InstrumentChangeData& newInstrumentData) {

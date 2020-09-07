@@ -51,7 +51,7 @@ QString InstrumentTreeItem::partName() const
 
 QString InstrumentTreeItem::abbreviature() const
 {
-    return m_partName;
+    return m_abbreviature;
 }
 
 void InstrumentTreeItem::setPartId(const QString& partId)
