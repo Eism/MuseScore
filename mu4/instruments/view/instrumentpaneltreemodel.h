@@ -99,6 +99,8 @@ private slots:
     void updateRemovingAvailability();
 
 private:
+    AbstractInstrumentPanelTreeItem* modelIndexToItem(const QModelIndex& index) const;
+
     void updatePartItem(PartTreeItem* item, const notation::Part* part);
     void updateInstrumentItem(InstrumentTreeItem* item, const mu::instruments::Instrument& instrument, const QString& partId,
                               const QString& partName);

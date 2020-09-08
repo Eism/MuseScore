@@ -46,6 +46,7 @@ public:
     void removeChildren(const int row, const int count, const bool deleteChild) override;
 
 private:
+    int staffIndex(int row) const;
     void updateCanChangeVisibility();
 
     QString m_partId;

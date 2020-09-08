@@ -95,7 +95,7 @@ QList<AbstractInstrumentPanelTreeItem*> AbstractInstrumentPanelTreeItem::childre
     return m_children;
 }
 
-AbstractInstrumentPanelTreeItem* AbstractInstrumentPanelTreeItem::childAtId(const QString& id)
+AbstractInstrumentPanelTreeItem* AbstractInstrumentPanelTreeItem::childAtId(const QString& id) const
 {
     for (AbstractInstrumentPanelTreeItem* item: m_children) {
         if (item->id() == id) {
@@ -106,13 +106,13 @@ AbstractInstrumentPanelTreeItem* AbstractInstrumentPanelTreeItem::childAtId(cons
     return nullptr;
 }
 
-AbstractInstrumentPanelTreeItem* AbstractInstrumentPanelTreeItem::childAtRow(const int row)
+AbstractInstrumentPanelTreeItem* AbstractInstrumentPanelTreeItem::childAtRow(const int row) const
 {
     if (row < 0 || row >= childCount()) {
         return nullptr;
     }
 
-    return static_cast<AbstractInstrumentPanelTreeItem*>(m_children.at(row));
+    return m_children.at(row);
 }
 
 void AbstractInstrumentPanelTreeItem::appendChild(AbstractInstrumentPanelTreeItem* child)
@@ -129,20 +129,20 @@ void AbstractInstrumentPanelTreeItem::appendChild(AbstractInstrumentPanelTreeIte
 void AbstractInstrumentPanelTreeItem::moveChildren(const int sourceRow, const int count, AbstractInstrumentPanelTreeItem* destinationParent,
                                                    const int destinationRow)
 {
+    QList<AbstractInstrumentPanelTreeItem*> chilrenToMove;
     for (int i = sourceRow; i < sourceRow + count; ++i) {
-        AbstractInstrumentPanelTreeItem* sourceRowItem = this->childAtRow(i);
+        chilrenToMove << childAtRow(i);
+    }
 
-        if (!sourceRowItem) {
-            continue;
-        }
+    int destinationRow_ = destinationRow;
+    for (AbstractInstrumentPanelTreeItem* child: chilrenToMove) {
+        destinationParent->insertChild(child, destinationRow_);
+        destinationRow_++;
+    }
 
-        if (sourceRow + count - 1 < destinationRow) {
-            destinationParent->insertChild(sourceRowItem, destinationRow);
-            this->removeChildren(sourceRow);
-        } else {
-            this->removeChildren(sourceRow);
-            destinationParent->insertChild(sourceRowItem, destinationRow);
-        }
+    int childToRemoveIndex = sourceRow > destinationRow ? sourceRow + count : 0;
+    for (int i = 0; i < count; ++i) {
+        removeChildren(childToRemoveIndex);
     }
 }
 
