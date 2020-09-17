@@ -1,7 +1,9 @@
 import QtQuick 2.7
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.2
+
 import MuseScore.Ui 1.0
 import MuseScore.Dock 1.0
-
 import MuseScore.UiComponents 1.0
 import MuseScore.UserScores 1.0
 import MuseScore.Extensions 1.0
@@ -25,35 +27,44 @@ DockPage {
             id: resourcesPanel
             objectName: "resourcesPanel"
 
-            width: 200
+            width: 292
             color: ui.theme.backgroundPrimaryColor
 
-            Column {
+            Rectangle {
                 anchors.fill: parent
+                color: ui.theme.backgroundPrimaryColor
 
-                Rectangle {
-                    height: 60
-                    width: parent.width
-                    color: ui.theme.backgroundPrimaryColor
+                ColumnLayout {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    spacing: 0
 
                     AccountInfoButton {
-                        width: parent.width
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.preferredHeight: 60
+                        Layout.fillWidth: true
+
+                        ButtonGroup.group: homeMenuButtons.radioButtonGroup
 
                         userName: accountModel.accountInfo.userName
                         avatarUrl: accountModel.accountInfo.avatarUrl
 
-                        onClicked: {
+                        checked: homeCentral.currentCompName == "account"
+
+                        onToggled: {
                             homeCentral.load("account")
                         }
                     }
-                }
 
-                HomeMenu {
-                    width: parent.width
+                    HomeMenu {
+                        id: homeMenuButtons
+                        Layout.topMargin: 20
+                        Layout.fillWidth: true
 
-                    onSelected: {
-                        homeCentral.load(name)
+                        onSelected: {
+                            homeCentral.load(name)
+                        }
                     }
                 }
             }
@@ -65,9 +76,11 @@ DockPage {
         objectName: "homeCentral"
 
         property var currentComp: scoresComp
+        property var currentCompName: "scores"
 
         function load(name) {
             console.info("loadCentral: " + name)
+            currentCompName = name
             switch (name) {
             case "scores":      currentComp = scoresComp; break
             case "add-ons":     currentComp = addonsComp; break

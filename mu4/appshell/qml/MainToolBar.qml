@@ -50,25 +50,16 @@ Rectangle {
 
         model: root.items
 
-        delegate: FlatRadioButton {
+        delegate: GradientTabButton {
             id: radioButtonDelegate
 
             ButtonGroup.group: radioButtonList.radioButtonGroup
 
             checked: modelData["uri"] === root.currentUri
+            title: modelData["title"]
             onToggled: {
                 root.currentUri = modelData["uri"]
                 root.selected(modelData["uri"])
-            }
-
-            StyledTextLabel {
-                id: label
-
-                text: modelData["title"]
-
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
             }
         }
     }
