@@ -241,7 +241,7 @@ Item {
                 } else if (root.type == InstrumentTreeItemType.STAFF) {
                     privateProperties.currentSettingsPopup = staffSettings
 
-                    item["staffIndex"] = model.itemRole.staffIndex()
+                    item["staffId"] = model.itemRole.id()
                     item["isSmall"] = model.itemRole.isSmall()
                     item["cutawayEnabled"] = model.itemRole.cutawayEnabled()
                     item["type"] = model.itemRole.staffType()
