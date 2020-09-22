@@ -35,13 +35,19 @@ void RootTreeItem::moveChildren(const int sourceRow, const int count, AbstractIn
         partIdVector.push_back(childAtRow(i)->id());
     }
 
-    const AbstractInstrumentPanelTreeItem* destinationPartItem = destinationParent->childAtRow(destinationRow);
+    int destinationRow_ = destinationRow;
+    INotationParts::InsertMode moveMode = INotationParts::Before;
+
+    if (destinationRow_ == destinationParent->childCount()) {
+        destinationRow_--;
+        moveMode = INotationParts::After;
+    }
+
+    const AbstractInstrumentPanelTreeItem* destinationPartItem = destinationParent->childAtRow(destinationRow_);
     if (!destinationPartItem) {
         return;
     }
 
-    INotationParts::InsertMode moveMode = destinationRow
-                                          != destinationParent->childCount() ? INotationParts::Before : INotationParts::After;
     notationParts()->moveParts(partIdVector, destinationPartItem->id(), moveMode);
 
     AbstractInstrumentPanelTreeItem::moveChildren(sourceRow, count, destinationParent, destinationRow);

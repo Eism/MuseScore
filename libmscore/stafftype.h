@@ -178,8 +178,8 @@ class StaffType
 {
     friend class TabDurationSymbol;
 
-    StaffGroup _group = StaffGroup::STANDARD;
     StaffTypes _type = StaffTypes::STANDARD;
+    StaffGroup _group = StaffGroup::STANDARD;
 
     QString _xmlName;                     // the name used to reference this preset in instruments.xml
     QString _name;                        // user visible name

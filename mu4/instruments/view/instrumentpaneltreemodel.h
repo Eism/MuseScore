@@ -55,7 +55,7 @@ public:
     };
 
     explicit InstrumentPanelTreeModel(QObject* parent = nullptr);
-    ~InstrumentPanelTreeModel();
+    ~InstrumentPanelTreeModel() override;
 
     Q_INVOKABLE void load();
     Q_INVOKABLE void selectRow(const QModelIndex& rowIndex, const bool isMultipleSelectionModeOn);
