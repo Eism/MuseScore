@@ -678,6 +678,10 @@ void NotationParts::moveParts(const IDList& sourcePartsIds, const ID& destinatio
 
     apply();
 
+    for (const Staff* staff: score()->staves()) {
+        notifyAboutStaffChanged(staff->idx());
+    }
+
     m_partsChanged.notify();
 }
 
