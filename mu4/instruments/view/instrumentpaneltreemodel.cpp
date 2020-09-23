@@ -564,7 +564,7 @@ void InstrumentPanelTreeModel::updateInstrumentItem(InstrumentTreeItem* item, co
     item->setIsVisible(instrument.visible);
     item->setPartId(partId);
     item->setPartName(partName);
-    item->setCanChangeVisibility(m_notationParts->canChangeInstrumentVisibility(partId, instrument.id));
+    item->updateCanChangeVisibility();
 }
 
 void InstrumentPanelTreeModel::updateStaffItem(StaffTreeItem* item, const Staff* staff, const QString& partId, const QString& instrumentId)
