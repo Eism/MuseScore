@@ -25,13 +25,8 @@ StaffTreeItem::StaffTreeItem(INotationParts* notationParts, QObject* parent)
     : AbstractInstrumentPanelTreeItem(InstrumentTreeItemType::ItemType::STAFF, notationParts, parent)
 {
     connect(this, &AbstractInstrumentPanelTreeItem::isVisibleChanged, [this, notationParts](const bool isVisible) {
-        notationParts->setStaffVisible(staffIndex(), isVisible);
+        notationParts->setStaffVisible(id(), isVisible);
     });
-}
-
-int StaffTreeItem::staffIndex() const
-{
-    return m_staffIndex;
 }
 
 bool StaffTreeItem::isSmall() const
@@ -64,11 +59,6 @@ void StaffTreeItem::setCutawayEnabled(bool value)
     m_cutawayEnabled = value;
 }
 
-void StaffTreeItem::setStaffIndex(int index)
-{
-    m_staffIndex = index;
-}
-
 void StaffTreeItem::setStaffType(int type)
 {
     m_staffType = type;
@@ -77,14 +67,4 @@ void StaffTreeItem::setStaffType(int type)
 void StaffTreeItem::setVoicesVisibility(const QVariantList &visibility)
 {
     m_voicesVisibility = visibility;
-}
-
-void StaffTreeItem::setPartId(const QString& id)
-{
-    m_partId = id;
-}
-
-void StaffTreeItem::setInstrumentId(const QString& id)
-{
-    m_instrumentId = id;
 }

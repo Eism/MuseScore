@@ -48,7 +48,7 @@ public:
     void updateCanChangeVisibility();
 
 private:
-    int staffIndex(int row) const;
+    notation::ID staffId(int row) const;
 
     QString m_partId;
     QString m_partName;

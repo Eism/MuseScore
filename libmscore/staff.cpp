@@ -1385,6 +1385,10 @@ int Staff::rstaff() const
 
 bool Staff::isTop() const
 {
+    if (_part->staves()->isEmpty()) {
+        return false;
+    }
+
     return _part->staves()->front() == this;
 }
 

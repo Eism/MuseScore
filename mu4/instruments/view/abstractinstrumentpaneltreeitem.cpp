@@ -129,13 +129,13 @@ void AbstractInstrumentPanelTreeItem::appendChild(AbstractInstrumentPanelTreeIte
 void AbstractInstrumentPanelTreeItem::moveChildren(const int sourceRow, const int count, AbstractInstrumentPanelTreeItem* destinationParent,
                                                    const int destinationRow)
 {
-    QList<AbstractInstrumentPanelTreeItem*> chilrenToMove;
+    QList<AbstractInstrumentPanelTreeItem*> childrenToMove;
     for (int i = sourceRow; i < sourceRow + count; ++i) {
-        chilrenToMove << childAtRow(i);
+        childrenToMove << childAtRow(i);
     }
 
     int destinationRow_ = destinationRow;
-    for (AbstractInstrumentPanelTreeItem* child: chilrenToMove) {
+    for (AbstractInstrumentPanelTreeItem* child: childrenToMove) {
         destinationParent->insertChild(child, destinationRow_);
         destinationRow_++;
     }

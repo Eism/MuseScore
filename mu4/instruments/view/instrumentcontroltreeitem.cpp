@@ -56,7 +56,7 @@ void InstrumentControlTreeItem::appendNewItem()
 
     newInstrument.visible = false;
 
-    notationParts()->appendDoublingInstrument(m_partId, newInstrument);
+    notationParts()->appendDoublingInstrument(newInstrument, m_partId);
 }
 
 QString InstrumentControlTreeItem::partId() const
