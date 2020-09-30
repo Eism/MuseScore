@@ -126,6 +126,7 @@ public:
     void removeInstrument(const Fraction&);
     void removeInstrument(const QString&);
     const InstrumentList* instruments() const;
+    QMap<Fraction, Instrument*> instrumentsMap() const;
 
     void insertTime(const Fraction& tick, const Fraction& len);
 
