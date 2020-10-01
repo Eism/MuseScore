@@ -67,7 +67,8 @@ StyledPopup {
             text: qsTrc("instruments", "Replace instrument")
 
             onClicked: {
-                settingsModel.replaceInstrument()
+                root.close()
+                Qt.callLater(settingsModel.replaceInstrument)
             }
         }
     }

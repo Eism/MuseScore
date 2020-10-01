@@ -111,7 +111,10 @@ Rectangle {
             }
         }
 
-        SeparatorLine { orientation: Qt.Vertical }
+        SeparatorLine {
+            visible: root.canSelectMultipleInstruments
+            orientation: Qt.Vertical
+        }
 
         FlatButton {
             visible: root.canSelectMultipleInstruments
@@ -128,7 +131,10 @@ Rectangle {
             }
         }
 
-        SeparatorLine { orientation: Qt.Vertical }
+        SeparatorLine {
+            visible: root.canSelectMultipleInstruments
+            orientation: Qt.Vertical
+        }
 
         SelectedInstrumentsView {
             id: selectedInstrumentsView
@@ -150,7 +156,10 @@ Rectangle {
             }
         }
 
-        SeparatorLine { orientation: Qt.Vertical }
+        SeparatorLine {
+            visible: root.canSelectMultipleInstruments
+            orientation: Qt.Vertical
+        }
 
         Column {
             visible: root.canSelectMultipleInstruments

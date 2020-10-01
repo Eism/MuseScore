@@ -179,7 +179,7 @@ Item {
                 pressedStateColor: ui.theme.accentColor
                 icon: styleData.isExpanded ? IconCode.SMALL_ARROW_DOWN : IconCode.SMALL_ARROW_RIGHT
 
-                visible: styleData.hasChildren
+                visible: styleData.hasChildren && (delegateType === InstrumentTreeItemType.INSTRUMENT ? styleData.index.row === 0 : true)
 
                 onClicked: {
                     if (!styleData.isExpanded) {

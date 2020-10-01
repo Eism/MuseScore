@@ -155,7 +155,7 @@ private:
     async::ChangedNotifier<const Staff*>* instrumentNotifier(const ID& instrumentId, const ID& fromPartId) const;
 
     QString formatPartName(const Part* part) const;
-    QMap<Ms::Fraction, Ms::InstrumentChange*> instrumentChangeElements(const QString& partId);
+    QMap<Ms::Fraction, Ms::InstrumentChange*> instrumentChangeElements(const QString& partId) const;
     Ms::ChordRest* chordRest(const Ms::Fraction& fraction, const Part* fromPart) const;
 
     QMap<Ms::Fraction, Ms::Instrument*> instruments(const Part* fromPart, const IDList& filterInstrumentsIds = IDList()) const;

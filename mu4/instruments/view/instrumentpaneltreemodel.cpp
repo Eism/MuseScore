@@ -485,8 +485,8 @@ AbstractInstrumentPanelTreeItem* InstrumentPanelTreeModel::loadPart(const Part* 
             return;
         }
 
-        auto instrumentItem = buildInstrumentItem(partId, partItem->title(), instrument);
-        QModelIndex partIndex = index(partItem->row(), 0, QModelIndex());
+        auto instrumentItem = loadInstrument(instrument, partId, partItem->title());
+        QModelIndex partIndex = this->index(partItem->row(), 0, QModelIndex());
 
         beginInsertRows(partIndex, partItem->childCount() - 1, partItem->childCount() - 1);
         partItem->insertChild(instrumentItem, partItem->childCount() - 1);
