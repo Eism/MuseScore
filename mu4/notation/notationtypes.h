@@ -134,7 +134,6 @@ inline QList<StaffType> allStaffTypes()
 
     return result;
 }
-
 }
 }
 

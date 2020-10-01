@@ -64,7 +64,7 @@ void StaffTreeItem::setStaffType(int type)
     m_staffType = type;
 }
 
-void StaffTreeItem::setVoicesVisibility(const QVariantList &visibility)
+void StaffTreeItem::setVoicesVisibility(const QVariantList& visibility)
 {
     m_voicesVisibility = visibility;
 }

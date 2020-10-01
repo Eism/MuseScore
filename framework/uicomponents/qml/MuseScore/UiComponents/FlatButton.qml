@@ -22,8 +22,6 @@ FocusableItem {
 
     signal clicked
 
-    implicitWidth: contentWrapper.width + 16
-
     height: contentWrapper.implicitHeight + 16
     width: (Boolean(text) ? Math.max(contentWrapper.implicitWidth + 32, 132) : contentWrapper.implicitWidth + 16)
 
@@ -34,7 +32,7 @@ FocusableItem {
 
         anchors.fill: parent
 
-        color: root.accentButton ? ui.theme.accentColor : ui.theme.buttonColor
+        color: root.accentButton ? ui.theme.accentColor : normalStateColor
         opacity: ui.theme.buttonOpacityNormal
         border.width: 0
         radius: 3

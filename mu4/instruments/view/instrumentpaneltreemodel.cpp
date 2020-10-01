@@ -485,8 +485,8 @@ AbstractInstrumentPanelTreeItem* InstrumentPanelTreeModel::loadPart(const Part* 
             return;
         }
 
-        auto instrumentItem = buildInstrumentItem(partId, partItem->title(), instrument);
-        QModelIndex partIndex = index(partItem->row(), 0, QModelIndex());
+        auto instrumentItem = loadInstrument(instrument, partId, partItem->title());
+        QModelIndex partIndex = this->index(partItem->row(), 0, QModelIndex());
 
         beginInsertRows(partIndex, partItem->childCount() - 1, partItem->childCount() - 1);
         partItem->insertChild(instrumentItem, partItem->childCount() - 1);
@@ -569,8 +569,11 @@ void InstrumentPanelTreeModel::updateInstrumentItem(InstrumentTreeItem* item, co
 
 void InstrumentPanelTreeModel::updateStaffItem(StaffTreeItem* item, const Staff* staff)
 {
+    QString staffName = staff->staffName();
+    QString title = staff->isLinked() ? qtrc("instruments", "[LINK] %1").arg(staffName) : staffName;
+
     item->setId(staff->id());
-    item->setTitle(staff->staffName());
+    item->setTitle(title);
     item->setIsVisible(staff->show());
     item->setCutawayEnabled(staff->cutaway());
     item->setIsSmall(staff->staffType()->small());

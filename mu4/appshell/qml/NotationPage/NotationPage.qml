@@ -32,7 +32,7 @@ DockPage {
             objectName: "palettePanel"
 
             title: "Palette"
-            width: 250
+            width: 294
             color: notationPage.color
 
             PalettesWidget {}
@@ -43,7 +43,7 @@ DockPage {
             objectName: "instrumentsPanel"
 
             title: "Instruments"
-            width: 250
+            width: 294
             color: notationPage.color
 
             tabifyObjectName: "palettePanel"
@@ -58,7 +58,7 @@ DockPage {
             objectName: "inspectorPanel"
 
             title: "Inspector"
-            width: 250
+            width: 294
             color: notationPage.color
 
             tabifyObjectName: "instrumentsPanel"

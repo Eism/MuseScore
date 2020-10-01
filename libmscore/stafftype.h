@@ -178,8 +178,8 @@ class StaffType
 {
     friend class TabDurationSymbol;
 
-    StaffTypes _type = StaffTypes::STANDARD;
     StaffGroup _group = StaffGroup::STANDARD;
+    StaffTypes _type = StaffTypes::STANDARD;
 
     QString _xmlName;                     // the name used to reference this preset in instruments.xml
     QString _name;                        // user visible name
@@ -263,14 +263,14 @@ class StaffType
 public:
     StaffType();
 
-    StaffType(StaffTypes type, StaffGroup sg, const QString& xml, const QString& name, int lines, int stpOff, qreal lineDist,bool genClef, bool showBarLines,
-              bool stemless, bool genTimeSig,bool genKeySig, bool showLedgerLines);
+    StaffType(StaffTypes type, StaffGroup sg, const QString& xml, const QString& name, int lines, int stpOff, qreal lineDist,bool genClef,
+              bool showBarLines,bool stemless, bool genTimeSig,bool genKeySig, bool showLedgerLines);
 
-    StaffType(StaffTypes type, StaffGroup sg, const QString& xml, const QString& name, int lines, int stpOff, qreal lineDist,bool genClef, bool showBarLines,
-              bool stemless, bool genTimesig,const QString& durFontName,qreal durFontSize, qreal durFontUserY, qreal genDur,
-              const QString& fretFontName, qreal fretFontSize,qreal fretFontUserY, TablatureSymbolRepeat symRepeat,bool linesThrough,
-              TablatureMinimStyle minimStyle,bool onLines, bool showRests,bool stemsDown, bool stemThrough, bool upsideDown,
-              bool showTabFingering,bool useNumbers, bool showBackTied);
+    StaffType(StaffTypes type, StaffGroup sg, const QString& xml, const QString& name, int lines, int stpOff, qreal lineDist,bool genClef,
+              bool showBarLines,bool stemless, bool genTimesig,const QString& durFontName,qreal durFontSize, qreal durFontUserY,
+              qreal genDur,const QString& fretFontName, qreal fretFontSize,qreal fretFontUserY, TablatureSymbolRepeat symRepeat,
+              bool linesThrough,TablatureMinimStyle minimStyle,bool onLines, bool showRests,bool stemsDown, bool stemThrough,
+              bool upsideDown,bool showTabFingering,bool useNumbers, bool showBackTied);
 
     virtual ~StaffType() {}
     bool operator==(const StaffType&) const;
