@@ -28,7 +28,6 @@
 
 namespace mu {
 namespace notation {
-
 using ID = QString;
 using IDList = QList<ID>;
 
