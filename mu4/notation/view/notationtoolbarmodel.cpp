@@ -26,6 +26,7 @@ using namespace mu::actions;
 using namespace mu::workspace;
 using namespace mu::framework;
 
+static const std::string TOOLBAR_TAG("Toolbar");
 static const std::string NOTE_INPUT_TOOLBAR_NAME("noteInput");
 
 static const std::string ADD_ACTION_NAME("add");
@@ -44,9 +45,7 @@ QVariant NotationToolBarModel::data(const QModelIndex& index, int role) const
     switch (role) {
     case IconRole: return static_cast<int>(item.action.iconCode);
     case SectionRole: return item.section;
-    case TitleRole: return QString::fromStdString(item.action.title);
     case NameRole: return QString::fromStdString(item.action.name);
-    case EnabledRole: return item.enabled;
     case CheckedRole: return item.checked;
     }
     return QVariant();
@@ -63,8 +62,6 @@ QHash<int,QByteArray> NotationToolBarModel::roleNames() const
         { IconRole, "iconRole" },
         { SectionRole, "sectionRole" },
         { NameRole, "nameRole" },
-        { TitleRole, "titleRole" },
-        { EnabledRole, "enabledRole" },
         { CheckedRole, "checkedRole" }
     };
     return roles;
@@ -82,7 +79,8 @@ void NotationToolBarModel::load()
 
     m_items.clear();
 
-    std::vector<std::string> noteInputActions = workspace.val->toolbarActions(NOTE_INPUT_TOOLBAR_NAME);
+    AbstractDataPtr toolbarData = workspace.val->data(TOOLBAR_TAG, NOTE_INPUT_TOOLBAR_NAME);
+    std::vector<std::string> noteInputActions = std::dynamic_pointer_cast<ToolbarData>(toolbarData)->actions;
 
     auto areg = aregister();
 
@@ -104,6 +102,12 @@ void NotationToolBarModel::load()
 
     workspace.ch.onReceive(this, [this](std::shared_ptr<IWorkspace>) {
         load();
+    });
+
+    workspace.val->dataChanged().onReceive(this, [this](const AbstractDataPtr data) {
+        if (data->name == NOTE_INPUT_TOOLBAR_NAME) {
+            load();
+        }
     });
 
     onNotationChanged();

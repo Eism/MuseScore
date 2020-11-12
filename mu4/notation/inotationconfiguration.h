@@ -25,6 +25,7 @@
 #include "async/channel.h"
 #include "retval.h"
 #include "io/path.h"
+#include "actions/actiontypes.h"
 
 namespace mu {
 namespace notation {
@@ -64,6 +65,9 @@ public:
 
     virtual float guiScaling() const = 0;
     virtual float notationScaling() const = 0;
+
+    virtual std::vector<std::string> toolbarActions(const std::string& toolbarName) const = 0;
+    virtual void setToolbarActions(const std::string& toolbarName, const std::vector<std::string>& actions) const = 0;
 };
 }
 }

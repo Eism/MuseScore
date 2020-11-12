@@ -63,8 +63,6 @@ private:
         NameRole = Qt::UserRole + 1,
         IconRole,
         SectionRole,
-        TitleRole,
-        EnabledRole,
         CheckedRole
     };
 

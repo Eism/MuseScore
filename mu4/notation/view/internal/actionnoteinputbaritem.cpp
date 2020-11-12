@@ -16,25 +16,43 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
-#ifndef MU_NOTATION_NOTATIONACTIONS_H
-#define MU_NOTATION_NOTATIONACTIONS_H
+#include "actionnoteinputbaritem.h"
 
-#include <vector>
-#include "actions/imoduleactions.h"
+#include "log.h"
 
-namespace mu::notation {
-class NotationActions : public actions::IModuleActions
+using namespace mu::notation;
+
+ActionNoteInputBarItem::ActionNoteInputBarItem(const ItemType& type, QObject* parent)
+    : AbstractNoteInputBarItem(type, parent)
 {
-public:
-
-    const actions::Action& action(const actions::ActionName& name) const override;
-
-    static std::vector<actions::Action> defaultNoteInputActions();
-
-private:
-    static const std::vector<actions::Action> m_actions;
-    static const std::vector<actions::Action> m_noteInputActions;
-};
 }
 
-#endif // MU_NOTATION_NOTATIONACTIONS_H
+int ActionNoteInputBarItem::icon() const
+{
+    return m_icon;
+}
+
+bool ActionNoteInputBarItem::checked() const
+{
+    return m_checked;
+}
+
+void ActionNoteInputBarItem::setIcon(int icon)
+{
+    if (m_icon == icon) {
+        return;
+    }
+
+    m_icon = icon;
+    emit iconChanged(m_icon);
+}
+
+void ActionNoteInputBarItem::setChecked(bool checked)
+{
+    if (m_checked == checked) {
+        return;
+    }
+
+    m_checked = checked;
+    emit checkedChanged(m_checked);
+}
