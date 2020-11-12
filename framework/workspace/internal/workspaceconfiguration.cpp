@@ -24,7 +24,7 @@ using namespace mu;
 using namespace mu::workspace;
 using namespace mu::framework;
 
-static const Settings::Key CURRENT_WORKSPACE("workspace", "application/workspacer");
+static const Settings::Key CURRENT_WORKSPACE("workspace", "application/workspace");
 
 std::vector<io::path> WorkspaceConfiguration::workspacePaths() const
 {
