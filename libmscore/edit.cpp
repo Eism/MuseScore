@@ -380,7 +380,8 @@ Rest* Score::setRest(const Fraction& _tick, int track, const Fraction& _l, bool 
 //   addNote from NoteVal
 //---------------------------------------------------------
 
-Note* Score::addNote(Chord* chord, const NoteVal& noteVal, bool forceAccidental, InputState* externalInputState)
+Note* Score::addNote(Chord* chord, const NoteVal& noteVal, bool forceAccidental, const std::set<SymId>& articulationIds,
+                     InputState* externalInputState)
 {
     InputState& is = externalInputState ? (*externalInputState) : _is;
 
@@ -399,6 +400,15 @@ Note* Score::addNote(Chord* chord, const NoteVal& noteVal, bool forceAccidental,
         a->setParent(note);
         undoAddElement(a);
     }
+
+    if (!articulationIds.empty()) {
+        for (const SymId& articulation: articulationIds) {
+            Articulation* na = new Articulation(note->score());
+            na->setSymId(articulation);
+            addArticulation(note, na);
+        }
+    }
+
     setPlayNote(true);
     setPlayChord(true);
 
@@ -1113,7 +1123,7 @@ void Score::regroupNotesAndRests(const Fraction& startTick, const Fraction& endT
                     lastRest = cr;
                 }
                 Fraction restTicks = lastRest->tick() + lastRest->ticks() - curr->tick();
-                seg = setNoteRest(seg, curr->track(), NoteVal(), restTicks, Direction::AUTO, false, true);
+                seg = setNoteRest(seg, curr->track(), NoteVal(), restTicks, Direction::AUTO, false, {}, true);
             } else if (curr->isChord()) {
                 // combine tied chords
                 Chord* chord = toChord(curr);
@@ -2994,7 +3004,7 @@ void Score::enterRest(const TDuration& d, InputState* externalInputState)
     const int track = is.track();
     NoteVal nval;
     setNoteRest(is.segment(), track, nval,
-                d.fraction(), Direction::AUTO, /* forceAccidental */ false, /* rhythmic */ false, externalInputState);
+                d.fraction(), Direction::AUTO, /* forceAccidental */ false, /*articulation*/ {}, /* rhythmic */ false, externalInputState);
     is.moveToNextInputPos();
     if (!is.noteEntryMode() || is.usingNoteEntryMethod(NoteEntryMethod::STEPTIME)) {
         is.setRest(false);  // continue with normal note entry

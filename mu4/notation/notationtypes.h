@@ -33,6 +33,7 @@
 #include "libmscore/staff.h"
 #include "libmscore/stafftype.h"
 #include "libmscore/score.h"
+#include "libmscore/input.h"
 
 #include "instruments/instrumentstypes.h"
 
@@ -47,6 +48,7 @@ using Pad = Ms::Pad;
 using ViewMode = Ms::LayoutMode;  // Accomodate inconsistent convention from v3
 using PitchMode = Ms::UpDownMode;
 using StyleId = Ms::Sid;
+using SymbolId = Ms::SymId;
 using Key = Ms::Key;
 using KeyMode = Ms::KeyMode;
 using TimeSigType = Ms::TimeSigType;
@@ -58,6 +60,7 @@ using SharpFlat = Ms::PreferSharpFlat;
 using TransposeMode = Ms::TransposeMode;
 using TransposeDirection = Ms::TransposeDirection;
 using Fraction = Ms::Fraction;
+using NoteEntryMethod = Ms::NoteEntryMethod;
 
 using StaffList = QList<const Staff*>;
 using PartList = QList<const Part*>;

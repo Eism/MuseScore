@@ -28,23 +28,27 @@ namespace Ms {
 class Score;
 }
 
-namespace mu {
-namespace notation {
+namespace mu::notation {
 class NotationInputState : public INotationInputState
 {
 public:
     NotationInputState(IGetScore* getScore);
 
     bool isNoteEnterMode() const override;
-    DurationType duration() const override;
+    bool isPadActive(Pad pad) const override;
 
 private:
 
     Ms::Score* score() const;
 
+    bool isDurationActive(DurationType durationType) const;
+    DurationType duration() const;
+
+    bool isArticulationActive(SymbolId articulationSymbolId) const;
+    std::set<SymbolId> articulations() const;
+
     IGetScore* m_getScore = nullptr;
 };
-}
 }
 
 #endif // MU_NOTATION_NOTATIONINPUTSTATE_H

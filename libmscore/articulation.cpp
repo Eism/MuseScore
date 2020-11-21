@@ -468,6 +468,10 @@ const char* Articulation::symId2ArticulationName(SymId symId)
     case SymId::articTenutoStaccatoBelow:
         return "portato";
 
+    case SymId::articTenutoAccentAbove:
+    case SymId::articTenutoAccentBelow:
+        return "sforzatoTenuto";
+
     case SymId::articMarcatoTenutoAbove:
     case SymId::articMarcatoTenutoBelow:
         return "marcatoTenuto";
@@ -499,6 +503,109 @@ const char* Articulation::symId2ArticulationName(SymId symId)
     default:
         return "---";
     }
+}
+
+struct ArticulationGroup
+{
+    SymId first;
+    SymId second;
+
+    bool operator ==(const ArticulationGroup& other)
+    {
+        return (first == other.first && second == other.second)
+               || (first == other.second && second == other.first);
+    }
+
+    bool operator <(const ArticulationGroup& other) const
+    {
+        if ((first == other.first && second == other.second)
+            || (first == other.second && second == other.first)) {
+            return false;
+        }
+
+        if (first != other.first) {
+            return first < other.first;
+        }
+
+        return second < other.second;
+    }
+};
+
+static std::map<SymId, ArticulationGroup> articulationAboveSplitGroups = {
+    { SymId::articAccentStaccatoAbove, { SymId::articStaccatoAbove, SymId::articAccentAbove } },
+    { SymId::articTenutoAccentAbove, { SymId::articTenutoAbove, SymId::articAccentAbove } },
+    { SymId::articTenutoStaccatoAbove, { SymId::articTenutoAbove, SymId::articStaccatoAbove } },
+    { SymId::articMarcatoStaccatoAbove, { SymId::articStaccatoAbove, SymId::articMarcatoAbove } },
+    { SymId::articMarcatoTenutoAbove, { SymId::articTenutoAbove, SymId::articMarcatoAbove } },
+};
+
+static std::map<ArticulationGroup, SymId> articulationAboveJoinGroups = {
+    { { SymId::articStaccatoAbove, SymId::articAccentAbove }, SymId::articAccentStaccatoAbove },
+    { { SymId::articTenutoAbove, SymId::articAccentAbove }, SymId::articTenutoAccentAbove },
+    { { SymId::articTenutoAbove, SymId::articStaccatoAbove }, SymId::articTenutoStaccatoAbove },
+    { { SymId::articStaccatoAbove, SymId::articMarcatoAbove }, SymId::articMarcatoStaccatoAbove },
+    { { SymId::articTenutoAbove, SymId::articMarcatoAbove }, SymId::articMarcatoTenutoAbove },
+};
+
+std::set<SymId> Articulation::splitArticulation(SymId articulationSymbolId)
+{
+    auto articulation = articulationAboveSplitGroups.find(articulationSymbolId);
+    if (articulation != articulationAboveSplitGroups.end()) {
+        ArticulationGroup group = articulationAboveSplitGroups[articulationSymbolId];
+        return { group.first, group.second };
+    }
+
+    return { articulationSymbolId };
+}
+
+std::set<SymId> Articulation::joinArticulations(const std::set<SymId>& articulationSymbolIds)
+{
+    std::vector<SymId> result;
+
+    std::vector<SymId> vsymbolIds(articulationSymbolIds.begin(), articulationSymbolIds.end());
+
+    std::sort(vsymbolIds.begin(), vsymbolIds.end(), [](SymId l, SymId r) {
+            return l > r;
+        });
+
+    std::set<SymId> splittedSymbols;
+
+    auto symbolSelected = [&splittedSymbols](const SymId& symbolId) -> bool {
+                              return splittedSymbols.find(symbolId) != splittedSymbols.end();
+                          };
+
+    for (int i = 0; i < vsymbolIds.size(); i++) {
+        if (symbolSelected(vsymbolIds[i])) {
+            continue;
+        }
+
+        bool found = false;
+        for (int j = i + 1; j < vsymbolIds.size(); j++) {
+            if (symbolSelected(vsymbolIds[i]) || symbolSelected(vsymbolIds[j])) {
+                continue;
+            }
+
+            ArticulationGroup group = { vsymbolIds[i], vsymbolIds[j] };
+            auto joinArticulation = articulationAboveJoinGroups.find(group);
+            if (joinArticulation != articulationAboveJoinGroups.end()) {
+                result.push_back(articulationAboveJoinGroups.at(group));
+                splittedSymbols.insert(vsymbolIds[i]);
+                splittedSymbols.insert(vsymbolIds[j]);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            result.push_back(vsymbolIds[i]);
+            splittedSymbols.insert(vsymbolIds[i]);
+        }
+    }
+
+    std::sort(result.begin(), result.end(), [](SymId l, SymId r) {
+            return l < r;
+        });
+
+    return std::set<SymId>(result.begin(), result.end());
 }
 
 //---------------------------------------------------------

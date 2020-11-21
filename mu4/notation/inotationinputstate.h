@@ -22,19 +22,17 @@
 #include "async/notification.h"
 #include "notationtypes.h"
 
-namespace mu {
-namespace notation {
+namespace mu::notation {
 class INotationInputState
 {
 public:
     virtual ~INotationInputState() = default;
 
     virtual bool isNoteEnterMode() const = 0;
-    virtual DurationType duration() const = 0;
+    virtual bool isPadActive(Pad pad) const = 0;
 };
 
 using INotationInputStatePtr = std::shared_ptr<INotationInputState>;
-}
 }
 
 #endif // MU_NOTATION_INOTATIONINPUTSTATE_H

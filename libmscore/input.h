@@ -13,9 +13,12 @@
 #ifndef __INPUT_H__
 #define __INPUT_H__
 
+#include <set>
+
 #include "mscore.h"
 #include "durationtype.h"
 #include "beam.h"
+#include "sym.h"
 
 namespace Ms {
 class Element;
@@ -55,6 +58,8 @@ class InputState
     AccidentalType _accidentalType { AccidentalType::NONE };
     Slur* _slur              { 0 };
     bool _insertMode         { false };
+
+    std::set<SymId> _articulationIds;
 
     Segment* nextInputPos() const;
 
@@ -113,6 +118,9 @@ public:
 
     bool insertMode() const { return _insertMode; }
     void setInsertMode(bool val) { _insertMode = val; }
+
+    std::set<SymId> articulationIds() const { return _articulationIds; }
+    void setArticulationIds(const std::set<SymId>& ids) { _articulationIds = ids; }
 
     void update(Selection& selection);
     void moveInputPos(Element* e);

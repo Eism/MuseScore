@@ -56,7 +56,7 @@ public:
     void paint(QPainter* p);
 
     // Put notes
-    void startNoteEntry() override;
+    void startNoteEntry(const NoteEntryMethod& method = NoteEntryMethod::STEPTIME) override;
     void endNoteEntry() override;
     void padNote(const Pad& pad) override;
     void putNote(const QPointF& pos, bool replace, bool insert) override;

@@ -34,6 +34,10 @@ class ShadowNote final : public Element
     int _voice;
     bool _rest;
 
+    QRectF _chordRect;
+    double _topBound = 0;
+    double _bottomBound = 0;
+
 public:
     ShadowNote(Score*);
 
@@ -46,13 +50,15 @@ public:
 
     void draw(QPainter*) const override;
 
-    void setState(SymId noteSymbol, int voice, TDuration duration, bool rest = false);
+    void setState(SymId noteSymbol, int voice, TDuration duration, QRectF& measureRect, bool rest = false);
 
     SymId getNoteFlag() const;
     bool computeUp() const;
 
     SymId notehead() const { return _notehead; }
     bool isValid() const;
+
+    void setBound(double top, double bottom);
 };
 }     // namespace Ms
 #endif

@@ -45,7 +45,7 @@ private:
     INotationPtr currentNotation() const;
     INotationInteractionPtr currentNotationInteraction() const;
 
-    void toggleNoteInput();
+    void toggleNoteInput(const NoteEntryMethod& method);
     void padNote(const Pad& pad);
     void putNote(const actions::ActionData& data);
 

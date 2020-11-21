@@ -11,12 +11,16 @@
 //=============================================================================
 
 #include "shadownote.h"
+
+#include <QPainter>
+
 #include "score.h"
 #include "drumset.h"
 #include "sym.h"
 #include "rest.h"
 #include "mscore.h"
 #include "accidental.h"
+#include "articulation.h"
 
 namespace Ms {
 //---------------------------------------------------------
@@ -37,7 +41,13 @@ bool ShadowNote::isValid() const
     return _notehead != SymId::noSym;
 }
 
-void ShadowNote::setState(SymId noteSymbol, int voice, TDuration duration, bool rest)
+void ShadowNote::setBound(double top, double bottom)
+{
+    _topBound = top;
+    _bottomBound = bottom;
+}
+
+void ShadowNote::setState(SymId noteSymbol, int voice, TDuration duration, QRectF& measureRect, bool rest)
 {
     // clear symbols
     _notehead = SymId::noSym;
@@ -46,6 +56,8 @@ void ShadowNote::setState(SymId noteSymbol, int voice, TDuration duration, bool 
     _duration = duration;
     _voice    = voice;
     _rest     = rest;
+
+    _chordRect = measureRect;
 }
 
 SymId ShadowNote::getNoteFlag() const
@@ -194,6 +206,59 @@ void ShadowNote::draw(QPainter* painter) const
             painter->drawLine(QLineF(x1, y, x2, y));
         }
     }
+
+    qreal y1 = -ms * (_line) + _topBound;
+    qreal y2 = -ms * (_line) + _bottomBound;
+
+    QRectF boundRect = QRectF(QPointF(x1, y1), QPointF(x2, y2));
+
+    qreal topMargin = 0;
+    qreal bottomMargin = 0;
+    qreal spacing = spatium();
+
+    for (const SymId& articulation: score()->inputState().articulationIds()) {
+        bool isMarcato = QString(Articulation::symId2ArticulationName(articulation)).contains("marcato");
+        bool isSforzato = QString(Articulation::symId2ArticulationName(articulation)).contains("sforzato");
+
+        QPointF posSymbol;
+        if (isMarcato) {
+            qreal topY = boundRect.y();
+            if (0 < topY) {
+                topY = 0;
+            }
+            posSymbol.ry() = topY - symHeight(articulation) - topMargin;
+            topMargin += symHeight(articulation) + spacing;
+        } else if (isSforzato) {
+            bool up = computeUp();
+            if (!up) {
+                qreal topY = boundRect.y();
+                if (0 < topY) {
+                    topY = 0;
+                }
+                posSymbol.ry() = topY - symHeight(articulation) - topMargin;
+                topMargin += symHeight(articulation) + spacing;
+            } else {
+                qreal bottomY = boundRect.bottomLeft().y();
+                if (0 > bottomY) {
+                    bottomY = symHeight(_notehead); // todo spacing
+                }
+                posSymbol.ry() = bottomY + symHeight(articulation) + bottomMargin;
+                bottomMargin += symHeight(articulation) + spacing;
+            }
+        } else {
+            bool up = computeUp();
+            if (!up) {
+                posSymbol.ry() = -symHeight(articulation) - topMargin;
+                topMargin += symHeight(articulation) + spacing;
+            } else {
+                posSymbol.ry() = symHeight(_notehead) + symHeight(articulation) + bottomMargin;
+                bottomMargin += symHeight(articulation) + spacing;
+            }
+        }
+
+        drawSymbol(articulation, painter, posSymbol);
+    }
+
     painter->translate(-ap);
 }
 

@@ -3016,6 +3016,64 @@ void Score::padToggle(Pad p, const EditData& ed)
             _is.setDots(4);
         }
         break;
+    case Pad::ARTICULATION_MORCATO: {
+        std::set<SymId> inputStateArticulations = splittedInputStateArticulations();
+
+        if (inputStateArticulations.find(SymId::articAccentAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articAccentAbove);
+            inputStateArticulations.insert(SymId::articMarcatoAbove);
+        } else if (inputStateArticulations.find(SymId::articMarcatoAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articMarcatoAbove);
+        } else {
+            inputStateArticulations.insert(SymId::articMarcatoAbove);
+        }
+
+        std::set<SymId> joinedArticulations = Articulation::joinArticulations(inputStateArticulations);
+        _is.setArticulationIds(joinedArticulations);
+        break;
+    }
+    case Pad::ARTICULATION_ACCENT: {
+        std::set<SymId> inputStateArticulations = splittedInputStateArticulations();
+
+        if (inputStateArticulations.find(SymId::articMarcatoAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articMarcatoAbove);
+            inputStateArticulations.insert(SymId::articAccentAbove);
+        } else if (inputStateArticulations.find(SymId::articAccentAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articAccentAbove);
+        } else {
+            inputStateArticulations.insert(SymId::articAccentAbove);
+        }
+
+        std::set<SymId> joinedArticulations = Articulation::joinArticulations(inputStateArticulations);
+        _is.setArticulationIds(joinedArticulations);
+        break;
+    }
+    case Pad::ARTICULATION_TENUTO: {
+        std::set<SymId> inputStateArticulations = splittedInputStateArticulations();
+
+        if (inputStateArticulations.find(SymId::articTenutoAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articTenutoAbove);
+        } else {
+            inputStateArticulations.insert(SymId::articTenutoAbove);
+        }
+
+        std::set<SymId> joinedArticulations = Articulation::joinArticulations(inputStateArticulations);
+        _is.setArticulationIds(joinedArticulations);
+        break;
+    }
+    case Pad::ARTICULATION_STACCATO: {
+        std::set<SymId> inputStateArticulations = splittedInputStateArticulations();
+
+        if (inputStateArticulations.find(SymId::articStaccatoAbove) != inputStateArticulations.end()) {
+            inputStateArticulations.erase(SymId::articStaccatoAbove);
+        } else {
+            inputStateArticulations.insert(SymId::articStaccatoAbove);
+        }
+
+        std::set<SymId> joinedArticulations = Articulation::joinArticulations(inputStateArticulations);
+        _is.setArticulationIds(joinedArticulations);
+        break;
+    }
     }
     if (p >= Pad::NOTE00 && p <= Pad::NOTE1024) {
         _is.setDots(0);
@@ -3164,8 +3222,27 @@ void Score::padToggle(Pad p, const EditData& ed)
             undoChangeChordRestLen(cr, _is.duration());
         } else {
             changeCRlen(cr, _is.duration());
+
+            for (const SymId& articulation: _is.articulationIds()) {
+                Articulation* na = new Articulation(cr->score());
+                na->setSymId(articulation);
+                addArticulation(cr, na);
+            }
         }
     }
+}
+
+std::set<SymId> Score::splittedInputStateArticulations()
+{
+    std::set<SymId> result;
+    for (const SymId& articulationId: score()->inputState().articulationIds()) {
+        std::set<SymId> articulations = Ms::Articulation::splitArticulation(articulationId);
+        for (const SymId& art: articulations) {
+            result.insert(art);
+        }
+    }
+
+    return result;
 }
 
 //---------------------------------------------------------

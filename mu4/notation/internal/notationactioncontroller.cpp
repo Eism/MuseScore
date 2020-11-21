@@ -27,7 +27,11 @@ using namespace mu::actions;
 
 void NotationActionController::init()
 {
-    dispatcher()->reg(this, "note-input", this, &NotationActionController::toggleNoteInput);
+    dispatcher()->reg(this, "note-input", [this]() { toggleNoteInput(NoteEntryMethod::STEPTIME); });
+    dispatcher()->reg(this, "note-input-rhythm", [this]() { toggleNoteInput(NoteEntryMethod::RHYTHM); });
+    dispatcher()->reg(this, "note-input-repitch", [this]() { toggleNoteInput(NoteEntryMethod::REPITCH); });
+    dispatcher()->reg(this, "note-input-realtime-auto", [this]() { toggleNoteInput(NoteEntryMethod::REALTIME_AUTO); });
+    dispatcher()->reg(this, "note-input-realtime-manual", [this]() { toggleNoteInput(NoteEntryMethod::REALTIME_MANUAL); });
 
     dispatcher()->reg(this, "note-longa", [this]() { padNote(Pad::NOTE00); });
     dispatcher()->reg(this, "note-breve", [this]() { padNote(Pad::NOTE0); });
@@ -47,6 +51,11 @@ void NotationActionController::init()
     dispatcher()->reg(this, "pad-dot3", [this]() { padNote(Pad::DOT3); });
     dispatcher()->reg(this, "pad-dot4", [this]() { padNote(Pad::DOT4); });
     dispatcher()->reg(this, "pad-rest", [this]() { padNote(Pad::REST); });
+
+    dispatcher()->reg(this, "add-marcato", [this]() { padNote(Pad::ARTICULATION_MORCATO); });
+    dispatcher()->reg(this, "add-sforzato", [this]() { padNote(Pad::ARTICULATION_ACCENT); });
+    dispatcher()->reg(this, "add-tenuto", [this]() { padNote(Pad::ARTICULATION_TENUTO); });
+    dispatcher()->reg(this, "add-staccato", [this]() { padNote(Pad::ARTICULATION_STACCATO); });
 
     dispatcher()->reg(this, "put-note", this, &NotationActionController::putNote);
 
@@ -97,7 +106,7 @@ INotationInteractionPtr NotationActionController::currentNotationInteraction() c
     return notation->interaction();
 }
 
-void NotationActionController::toggleNoteInput()
+void NotationActionController::toggleNoteInput(const NoteEntryMethod& method)
 {
     auto interaction = currentNotationInteraction();
     if (!interaction) {
@@ -107,7 +116,7 @@ void NotationActionController::toggleNoteInput()
     if (interaction->inputState()->isNoteEnterMode()) {
         interaction->endNoteEntry();
     } else {
-        interaction->startNoteEntry();
+        interaction->startNoteEntry(method);
     }
 }
 

@@ -13,6 +13,9 @@
 #ifndef __ARTICULATION_H__
 #define __ARTICULATION_H__
 
+#include <map>
+#include <set>
+
 #include "element.h"
 #include "mscore.h"
 
@@ -95,6 +98,10 @@ public:
     QString userName() const override;
     const char* articulationName() const;    // type-name of articulation; used for midi rendering
     static const char* symId2ArticulationName(SymId symId);
+
+    static std::map<char*, std::set<SymId> > articulationGroups();
+    static std::set<SymId> splitArticulation(SymId articulationSymbolId);
+    static std::set<SymId> joinArticulations(const std::set<SymId>& articulationSymbolIds);
 
     void layout() override;
     bool layoutCloseToNote() const;

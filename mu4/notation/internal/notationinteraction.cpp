@@ -87,11 +87,13 @@ void NotationInteraction::paint(QPainter* p)
     drawTextEditMode(p);
 }
 
-void NotationInteraction::startNoteEntry()
+void NotationInteraction::startNoteEntry(const NoteEntryMethod& method)
 {
     //! NOTE Coped from `void ScoreView::startNoteEntry()`
     Ms::InputState& is = score()->inputState();
     is.setSegment(0);
+
+    is.setNoteEntryMethod(method);
 
     if (score()->selection().isNone()) {
         selectFirstTopLeftOrLast();
@@ -352,12 +354,55 @@ void NotationInteraction::showShadowNote(const QPointF& p)
     SymId symNotehead;
     TDuration d(is.duration());
 
+    System* segmentSystem = pos.segment->measure()->system();
+    SysStaff* staffSystem = segmentSystem->staff(pos.staffIdx);
+
+    Ms::SkylineLine north = staffSystem->skyline().north();
+    int topOffset = INT_MAX;
+    for (Ms::SkylineSegment segment: north) {
+        bool ok = pos.segment->prev1enabled()->prev1enabled()->pagePos().x() <= segment.x
+                  && segment.x <= pos.segment->prev1enabled()->pagePos().x();
+        if (!ok) {
+            continue;
+        }
+
+        if (segment.y < topOffset) {
+            topOffset = segment.y;
+        }
+    }
+
+    if (topOffset == INT_MAX) {
+        topOffset = 0;
+    }
+
+    Ms::SkylineLine south = staffSystem->skyline().south();
+    int bottomOffset = INT_MIN;
+    for (Ms::SkylineSegment segment: south) {
+        bool ok = segment.x >= pos.segment->prev1enabled()->prev1enabled()->pagePos().x()
+                  && segment.x <= pos.segment->prev1enabled()->pagePos().x();
+        if (!ok) {
+            continue;
+        }
+
+        if (segment.y > bottomOffset) {
+            bottomOffset = segment.y;
+        }
+    }
+
+    if (bottomOffset == INT_MIN) {
+        bottomOffset = staffSystem->bbox().height();
+    }
+
+    m_shadowNote->setBound(topOffset, bottomOffset);
+
+    QRectF chordRect;
+
     if (is.rest()) {
         int yo;
         Rest rest(gscore, d.type());
         rest.setTicks(d.fraction());
         symNotehead = rest.getSymbol(is.duration().type(), 0, staff->lines(pos.segment->tick()), &yo);
-        m_shadowNote->setState(symNotehead, voice, d, true);
+        m_shadowNote->setState(symNotehead, voice, d, chordRect, true);
     } else {
         if (NoteHead::Group::HEAD_CUSTOM == noteheadGroup) {
             symNotehead = instr->drumset()->noteHeads(is.drumNote(), noteHead);
@@ -365,7 +410,7 @@ void NotationInteraction::showShadowNote(const QPointF& p)
             symNotehead = Note::noteHead(0, noteheadGroup, noteHead);
         }
 
-        m_shadowNote->setState(symNotehead, voice, d);
+        m_shadowNote->setState(symNotehead, voice, d, chordRect);
     }
 
     m_shadowNote->layout();

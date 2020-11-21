@@ -37,7 +37,7 @@ public:
     virtual ~INotationInteraction() = default;
 
     // Put notes
-    virtual void startNoteEntry() = 0;
+    virtual void startNoteEntry(const NoteEntryMethod& method = NoteEntryMethod::STEPTIME) = 0;
     virtual void endNoteEntry() = 0;
     virtual void padNote(const Pad& pad) = 0;
     virtual void putNote(const QPointF& pos, bool replace, bool insert) = 0;

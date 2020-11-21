@@ -84,6 +84,18 @@ void NotationToolBarModel::load()
 
     auto areg = aregister();
 
+    noteInputActions.insert(noteInputActions.begin(), "note-input");
+    noteInputActions.insert(noteInputActions.begin(), "note-input-rhythm");
+    noteInputActions.insert(noteInputActions.begin(), "note-input-repitch");
+    noteInputActions.insert(noteInputActions.begin(), "note-input-realtime-auto");
+    noteInputActions.insert(noteInputActions.begin(), "note-input-realtime-manual");
+    noteInputActions.insert(noteInputActions.begin(), "");
+//    noteInputActions.insert(noteInputActions.begin(), "add-marcato");
+//    noteInputActions.insert(noteInputActions.begin(), "add-sforzato");
+//    noteInputActions.insert(noteInputActions.begin(), "add-tenuto");
+//    noteInputActions.insert(noteInputActions.begin(), "add-staccato");
+//    noteInputActions.insert(noteInputActions.begin(), "");
+
     int section = 0;
     for (const std::string& actionName: noteInputActions) {
         if (actionName == "") {
@@ -185,19 +197,34 @@ void NotationToolBarModel::updateInputState()
 
     item("note-input").checked = true;
 
-    item("note-longa").checked = is->duration() == DurationType::V_LONG;
-    item("note-breve").checked = is->duration() == DurationType::V_BREVE;
-    item("pad-note-1").checked = is->duration() == DurationType::V_WHOLE;
-    item("pad-note-2").checked = is->duration() == DurationType::V_HALF;
-    item("pad-note-4").checked = is->duration() == DurationType::V_QUARTER;
-    item("pad-note-8").checked = is->duration() == DurationType::V_EIGHTH;
-    item("pad-note-16").checked = is->duration() == DurationType::V_16TH;
-    item("pad-note-32").checked = is->duration() == DurationType::V_32ND;
-    item("pad-note-64").checked = is->duration() == DurationType::V_64TH;
-    item("pad-note-128").checked = is->duration() == DurationType::V_128TH;
-    item("pad-note-256").checked = is->duration() == DurationType::V_256TH;
-    item("pad-note-512").checked = is->duration() == DurationType::V_512TH;
-    item("pad-note-1024").checked = is->duration() == DurationType::V_1024TH;
+    static QMap<actions::ActionName, Pad> noteInputActionPads = {
+        { "note-longa", Pad::NOTE00 },
+        { "note-breve", Pad::NOTE0 },
+        { "pad-note-1", Pad::NOTE1 },
+        { "pad-note-2", Pad::NOTE2 },
+        { "pad-note-4", Pad::NOTE4 },
+        { "pad-note-8", Pad::NOTE8 },
+        { "pad-note-16", Pad::NOTE16 },
+        { "pad-note-32", Pad::NOTE32 },
+        { "pad-note-64", Pad::NOTE64 },
+        { "pad-note-128", Pad::NOTE128 },
+        { "pad-note-256", Pad::NOTE256 },
+        { "pad-note-512", Pad::NOTE512 },
+        { "pad-note-1024", Pad::NOTE1024 },
+        { "pad-dot", Pad::DOT },
+        { "pad-dotdot", Pad::DOTDOT },
+        { "pad-dot3", Pad::DOT3 },
+        { "pad-dot4", Pad::DOT4 },
+        { "pad-rest", Pad::REST },
+        { "add-marcato", Pad::ARTICULATION_MORCATO },
+        { "add-sforzato", Pad::ARTICULATION_ACCENT },
+        { "add-tenuto", Pad::ARTICULATION_TENUTO },
+        { "add-staccato", Pad::ARTICULATION_STACCATO },
+    };
+
+    for (const actions::ActionName& actionName: noteInputActionPads.keys()) {
+        item(actionName).checked = is->isPadActive(noteInputActionPads[actionName]);
+    }
 }
 
 NotationToolBarModel::ActionItem NotationToolBarModel::makeItem(const Action& action, const QString& section)

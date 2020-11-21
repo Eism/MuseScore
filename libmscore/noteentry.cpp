@@ -139,7 +139,7 @@ Note* Score::addPitch(NoteVal& nval, bool addFlag, InputState* externalInputStat
             qDebug("Score::addPitch: cr %s", c ? c->name() : "zero");
             return 0;
         }
-        Note* note = addNote(toChord(c), nval, /* forceAccidental */ false, externalInputState);
+        Note* note = addNote(toChord(c), nval, /* forceAccidental */ false, /*articulation*/ {}, externalInputState);
         if (is.lastSegment() == is.segment()) {
             NoteEntryMethod entryMethod = is.noteEntryMethod();
             if (entryMethod != NoteEntryMethod::REALTIME_AUTO && entryMethod != NoteEntryMethod::REALTIME_MANUAL) {
@@ -247,7 +247,7 @@ Note* Score::addPitch(NoteVal& nval, bool addFlag, InputState* externalInputStat
         select(lastTiedNote);
     } else if (!is.usingNoteEntryMethod(NoteEntryMethod::REPITCH)) {
         Segment* seg = setNoteRest(
-            is.segment(), track, nval, duration, stemDirection, /* forceAccidental */ false, /* rhythmic */ false,
+            is.segment(), track, nval, duration, stemDirection, /* forceAccidental */ false, /*articulation*/ {},/* rhythmic */ false,
             externalInputState);
         if (seg) {
             note = toChord(seg->element(track))->upNote();
@@ -415,7 +415,7 @@ void Score::putNote(const Position& p, bool replace)
     }
     if (addToChord && cr->isChord()) {
         // if adding, add!
-        addNote(toChord(cr), nval, forceAccidental);
+        addNote(toChord(cr), nval, forceAccidental, _is.articulationIds());
         _is.setAccidentalType(AccidentalType::NONE);
         return;
     } else {
@@ -424,7 +424,7 @@ void Score::putNote(const Position& p, bool replace)
         if (_is.rest()) {
             nval.pitch = -1;
         }
-        setNoteRest(_is.segment(), _is.track(), nval, _is.duration().fraction(), stemDirection, forceAccidental);
+        setNoteRest(_is.segment(), _is.track(), nval, _is.duration().fraction(), stemDirection, forceAccidental, _is.articulationIds());
         _is.setAccidentalType(AccidentalType::NONE);
     }
     if (!st->isTabStaff(cr->tick())) {
