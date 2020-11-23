@@ -63,8 +63,6 @@ private:
         NameRole = Qt::UserRole + 1,
         IconRole,
         SectionRole,
-        TitleRole,
-        EnabledRole,
         CheckedRole
     };
 
@@ -81,8 +79,8 @@ private:
         bool checked = false;
     };
 
-    ActionItem makeItem(const actions::Action& action, const QString& section);
-    ActionItem makeAddItem();
+    ActionItem makeActionItem(const actions::Action& action, const QString& section);
+    ActionItem makeAddItem(const QString& section);
 
     ActionItem& item(const actions::ActionName& name);
     QList<ActionItem> m_items;

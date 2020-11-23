@@ -32,6 +32,7 @@ struct AbstractData
     std::string tag;
     std::string name;
 };
+using AbstractDataPtr = std::shared_ptr<AbstractData>;
 
 //! NOTE Only data associations with framework.
 //! Other data must be in the appropriate modules.
@@ -40,11 +41,13 @@ struct SettingsData : public AbstractData
 {
     std::map<std::string /*key*/, Val> vals;
 };
+using SettingsDataPtr = std::shared_ptr<SettingsData>;
 
 struct ToolbarData : public AbstractData
 {
     std::vector<std::string /*action*/> actions;
 };
+using ToolbarDataPtr = std::shared_ptr<ToolbarData>;
 }
 }
 
