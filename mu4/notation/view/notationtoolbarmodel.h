@@ -70,7 +70,7 @@ private:
 
     void onNotationChanged();
     void updateState();
-    void updateInputState();
+    void updateNoteInputState();
 
     struct ActionItem {
         actions::Action action;
@@ -86,7 +86,7 @@ private:
     QList<ActionItem> m_items;
 
     async::Notification m_notationChanged;
-    async::Notification m_inputStateChanged;
+    async::Notification m_noteInputStateChanged;
 };
 }
 }
