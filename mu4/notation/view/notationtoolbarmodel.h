@@ -55,6 +55,8 @@ public:
 
     Q_INVOKABLE QVariantMap get(int index);
 
+    Q_INVOKABLE void test_setNoteEntryMethod(QString method);
+
 signals:
     void countChanged(int count);
 

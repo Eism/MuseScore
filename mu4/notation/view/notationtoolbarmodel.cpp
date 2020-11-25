@@ -346,6 +346,11 @@ QVariantMap NotationToolBarModel::get(int index)
     return result;
 }
 
+void NotationToolBarModel::test_setNoteEntryMethod(QString method)
+{
+    dispatcher()->dispatch(actions::namefromQString(method));
+}
+
 INotationPtr NotationToolBarModel::notation() const
 {
     return globalContext()->currentNotation();

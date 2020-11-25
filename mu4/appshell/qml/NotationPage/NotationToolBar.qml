@@ -16,9 +16,53 @@ Rectangle {
         property bool isHorizontal: orientation === Qt.Horizontal
     }
 
+    Rectangle {
+        id: testSpace
+
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        width: 300
+
+        Row {
+            id: row
+            anchors.fill: parent
+
+            Repeater {
+
+                model: [
+                    { action: "note-input", icon: IconCode.EDIT },
+                    { action: "note-input-rhythm", icon: IconCode.RHYTHM_ONLY },
+                    { action: "note-input-repitch", icon: IconCode.RE_PITH },
+                    { action: "note-input-realtime-auto", icon: IconCode.METRONOME },
+                    { action: "note-input-realtime-manual", icon: IconCode.FOOT_PEDAL },
+//                    { action: "note-input-timewise", icon: IconCode.NOTE_TO_RIGHT },
+//                    { action: "note-input-repitch", icon: IconCode.NOTE_PLUS }
+                ]
+
+                FlatButton {
+                    width: 36
+                    height: width
+
+                    normalStateColor: "transparent"
+
+                    icon: modelData["icon"]
+
+                    onClicked: {
+                        toolModel.test_setNoteEntryMethod(modelData["action"])
+                    }
+                }
+            }
+        }
+    }
+
     GridViewSectional {
         id: gridView
-        anchors.fill: parent
+
+        anchors.top: parent.top
+        anchors.left: testSpace.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 
         sectionRole: "sectionRole"
 
