@@ -69,10 +69,18 @@ private:
     INotationPtr notation() const;
 
     void onNotationChanged();
+
+    void toggleNoteInput();
+
     void updateState();
     void updateNoteInputState();
+    void updateNoteInputModeState();
+    void updateNoteDotState();
     void updateNoteDurationState();
     void updateNoteAccidentalState();
+
+    bool isNoteInputModeAction(const actions::ActionName& actionName) const;
+    actions::Action currentNoteInputModeAction() const;
 
     struct ActionItem {
         actions::Action action;
@@ -84,7 +92,9 @@ private:
     ActionItem makeActionItem(const actions::Action& action, const QString& section);
     ActionItem makeAddItem(const QString& section);
 
-    ActionItem& item(const actions::ActionName& name);
+    ActionItem& item(const actions::ActionName& actionName);
+    int findNoteInputModeItemIndex() const;
+
     QList<ActionItem> m_items;
 
     async::Notification m_notationChanged;
