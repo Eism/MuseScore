@@ -184,6 +184,58 @@ MeasureRepeat* Score::addMeasureRepeat(const Fraction& tick, int track, int numM
     return mr;
 }
 
+Tuplet* Score::addTuplet(ChordRest* chordRest, Fraction ratio, TupletNumberType numberType, TupletBracketType bracketType)
+{
+    Measure* measure = chordRest->measure();
+    if (measure && measure->isMMRest()) {
+        return nullptr;
+    }
+
+    Fraction f(chordRest->ticks());
+    Tuplet* ot  = chordRest->tuplet();
+
+    f.reduce();         //measure duration might not be reduced
+
+    Fraction _ratio;
+    _ratio.setNumerator(ratio.numerator() != -1 ? ratio.numerator() : f.numerator());
+    _ratio.setDenominator(ratio.denominator() != -1 ? ratio.denominator() : f.numerator());
+
+    Tuplet* tuplet = new Tuplet(this);
+    tuplet->setRatio(_ratio);
+
+    tuplet->setNumberType(numberType);
+    if (tuplet->numberType() == TupletNumberType(tuplet->score()->styleI(Sid::tupletNumberType))) {
+        tuplet->setPropertyFlags(Pid::NUMBER_TYPE, PropertyFlags::STYLED);
+    } else {
+        tuplet->setPropertyFlags(Pid::NUMBER_TYPE, PropertyFlags::UNSTYLED);
+    }
+
+    tuplet->setBracketType(bracketType);
+    if (tuplet->bracketType() == TupletBracketType(tuplet->score()->styleI(Sid::tupletBracketType))) {
+        tuplet->setPropertyFlags(Pid::BRACKET_TYPE, PropertyFlags::STYLED);
+    } else {
+        tuplet->setPropertyFlags(Pid::BRACKET_TYPE, PropertyFlags::UNSTYLED);
+    }
+
+    tuplet->setTicks(f);
+
+    Fraction _f = f * Fraction(1, tuplet->ratio().denominator());
+    _f.reduce();
+    tuplet->setBaseLen(_f);
+
+    tuplet->setTrack(chordRest->track());
+    tuplet->setTick(chordRest->tick());
+    tuplet->setParent(measure);
+
+    if (ot) {
+        tuplet->setTuplet(ot);
+    }
+
+    cmdCreateTuplet(chordRest, tuplet);
+
+    return tuplet;
+}
+
 //---------------------------------------------------------
 //   addRest
 //    create one Rest at tick with duration d

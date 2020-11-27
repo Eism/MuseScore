@@ -40,6 +40,7 @@ public:
     virtual void padNote(const Pad& pad)  = 0;
     virtual void putNote(const QPointF& pos, bool replace, bool insert) = 0;
     virtual void toogleAccidental(AccidentalType accidentalType) = 0;
+    virtual void putTuplet(const TupletOptions& options) = 0;
 
     virtual void addSlur(Ms::Slur* slur) = 0;
     virtual void resetSlur() = 0;

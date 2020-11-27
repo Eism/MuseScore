@@ -48,6 +48,7 @@ public:
     void padNote(const Pad& pad) override;
     void putNote(const QPointF& pos, bool replace, bool insert) override;
     void toogleAccidental(AccidentalType accidentalType) override;
+    void putTuplet(const TupletOptions& options) override;
 
     void addSlur(Ms::Slur* slur) override;
     void resetSlur() override;

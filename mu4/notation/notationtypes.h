@@ -62,6 +62,8 @@ using TransposeDirection = Ms::TransposeDirection;
 using Fraction = Ms::Fraction;
 using NoteInputMethod = Ms::NoteEntryMethod;
 using AccidentalType = Ms::AccidentalType;
+using TupletNumberType = Ms::TupletNumberType;
+using TupletBracketType = Ms::TupletBracketType;
 
 using StaffList = QList<const Staff*>;
 using PartList = QList<const Part*>;
@@ -227,6 +229,13 @@ struct TransposeOptions
     bool needTransposeKeys = false;
     bool needTransposeChordNames = false;
     bool needTransposeDoubleSharpsFlats = false;
+};
+
+struct TupletOptions
+{
+    Fraction ratio = { -1, -1 };
+    TupletNumberType numberType = TupletNumberType::SHOW_NUMBER;
+    TupletBracketType bracketType = TupletBracketType::AUTO_BRACKET;
 };
 
 inline QString staffTypeToString(StaffType type)

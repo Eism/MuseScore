@@ -1812,6 +1812,19 @@ void NotationInteraction::addSlurToSelection()
     m_selectionChanged.notify();
 }
 
+void NotationInteraction::splitSelectedNotesByTuplet(const TupletOptions& options)
+{
+    m_undoStack->prepareChanges();
+    for (ChordRest* chordRest : score()->getSelectedChordRests()) {
+        if (!chordRest->isGrace()) {
+            score()->addTuplet(chordRest, options.ratio, options.numberType, options.bracketType);
+        }
+    }
+    m_undoStack->commitChanges();
+
+    m_selectionChanged.notify();
+}
+
 void NotationInteraction::setBreaksSpawnInterval(BreaksSpawnIntervalType intervalType, int interval)
 {
     interval = intervalType == BreaksSpawnIntervalType::MeasuresInterval ? interval : 0;

@@ -105,6 +105,7 @@ public:
     void flipSelection() override;
     void addTieToSelection() override;
     void addSlurToSelection() override;
+    void splitSelectedNotesByTuplet(const TupletOptions& options) override;
 
     void setBreaksSpawnInterval(BreaksSpawnIntervalType intervalType, int interval = 0) override;
     void transpose(const TransposeOptions& options) override;

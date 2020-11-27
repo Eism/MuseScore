@@ -405,7 +405,20 @@ std::vector<std::string> NoteInputBarModel::currentWorkspaceActions() const
         return {};
     }
 
-    return toolbarData->actions;
+    static std::vector<std::string> actions = {
+        "note-input",
+        "duplet",
+        "triplet",
+        "quadruplet",
+        "quintuplet",
+        "sextuplet",
+        "septuplet",
+        "octuplet",
+        "nonuplet",
+        "tuplet-dialog"
+    };
+
+    return actions;
 }
 
 void NoteInputBarModel::handleAction(const QString& action)
