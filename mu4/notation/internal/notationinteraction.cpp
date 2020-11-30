@@ -1253,6 +1253,17 @@ void NotationInteraction::doAddSlur(const Ms::Slur* slurTemplate)
     m_undoStack->commitChanges();
 }
 
+bool NotationInteraction::scoreHasMeasure() const
+{
+    Page* page = score()->pages().isEmpty() ? nullptr : score()->pages().front();
+    const QList<System*>* systems = page ? &page->systems() : nullptr;
+    if (systems == nullptr || systems->empty() || systems->front()->measures().empty()) {
+        return false;
+    }
+
+    return true;
+}
+
 //! NOTE Copied from ScoreView::dragLeaveEvent
 void NotationInteraction::endDrop()
 {
@@ -1969,6 +1980,29 @@ void NotationInteraction::changeSelectedNotesVoice(int voiceIndex)
     m_undoStack->commitChanges();
 
     m_notation->notifyAboutNotationChanged();
+    m_selectionChanged.notify();
+}
+
+void NotationInteraction::addText(TextType type)
+{
+    if (!scoreHasMeasure()) {
+        LOGE() << "Need to create measure";
+        return;
+    }
+
+    if (m_noteInput->isNoteInputMode()) {
+        m_noteInput->endNoteInput();
+    }
+
+    m_undoStack->prepareChanges();
+    TextBase* textBox = score()->addText(type);
+    m_undoStack->commitChanges();
+
+    if (textBox) {
+        select({ textBox }, SelectType::SINGLE);
+        startEditText(textBox, QPointF());
+    }
+
     m_selectionChanged.notify();
 }
 

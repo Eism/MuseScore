@@ -119,6 +119,8 @@ public:
 
     void changeSelectedNotesVoice(int voiceIndex) override;
 
+    void addText(TextType type) override;
+
 private:
     Ms::Score* score() const;
 
@@ -144,6 +146,8 @@ private:
     void applyDropPaletteElement(Ms::Score* score, Ms::Element* target, Ms::Element* e, Qt::KeyboardModifiers modifiers,
                                  QPointF pt = QPointF(), bool pasteMode = false);
     void doAddSlur(const Ms::Slur* slurTemplate = nullptr);
+
+    bool scoreHasMeasure() const;
 
     bool needEndTextEditing(const std::vector<Element*>& newSelectedElements) const;
 

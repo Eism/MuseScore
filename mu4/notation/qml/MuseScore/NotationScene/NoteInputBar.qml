@@ -27,8 +27,8 @@ Rectangle {
 
         model: noteInputModel
 
-        sectionDelegate: Rectangle {
-            color: ui.theme.strokeColor
+        sectionDelegate: SeparatorLine {
+            orientation: gridView.orientation == Qt.Vertical ? Qt.Horizontal : Qt.Vertical
         }
 
         itemDelegate: FlatButton {

@@ -504,6 +504,7 @@ enum class Tid {
     FOOTER,
     INSTRUMENT_CHANGE,
     STICKING,
+    FIGURED_BASS,
     USER1,
     USER2,
     USER3,
