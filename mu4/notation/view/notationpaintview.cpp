@@ -330,6 +330,9 @@ void NotationPaintView::keyReleaseEvent(QKeyEvent* event)
     if (!isInited()) {
         return;
     }
+
+    LOGD() << "============== key release event";
+
     m_inputController->keyPressEvent(event);
 }
 

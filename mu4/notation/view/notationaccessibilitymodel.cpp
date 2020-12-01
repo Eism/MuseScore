@@ -41,6 +41,11 @@ void NotationAccessibilityModel::load()
     });
 }
 
+void NotationAccessibilityModel::handle(QString action)
+{
+    dispatcher()->dispatch(action.toStdString());
+}
+
 QString NotationAccessibilityModel::accessibilityInfo() const
 {
     return m_accessibilityInfo;

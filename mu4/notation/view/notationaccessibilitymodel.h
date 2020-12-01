@@ -24,6 +24,7 @@
 
 #include "modularity/ioc.h"
 #include "context/iglobalcontext.h"
+#include "actions/iactionsdispatcher.h"
 #include "async/asyncable.h"
 
 namespace mu {
@@ -33,6 +34,7 @@ class NotationAccessibilityModel : public QObject, public async::Asyncable
     Q_OBJECT
 
     INJECT(notation, context::IGlobalContext, globalContext)
+    INJECT(notation, actions::IActionsDispatcher, dispatcher)
 
     Q_PROPERTY(QString accessibilityInfo READ accessibilityInfo NOTIFY accessibilityInfoChanged)
 
@@ -40,6 +42,8 @@ public:
     QString accessibilityInfo() const;
 
     Q_INVOKABLE void load();
+
+    Q_INVOKABLE void handle(QString action);
 
 signals:
     void accessibilityInfoChanged(const QString& info);
