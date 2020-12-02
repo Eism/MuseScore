@@ -223,6 +223,10 @@ void NotationActionController::addNote(NoteName note, NoteAddingMode addingMode)
         return;
     }
 
+    if (!noteInput->isNoteInputMode()) {
+        noteInput->startNoteInput();
+    }
+
     noteInput->addNote(note, addingMode);
 }
 
@@ -234,6 +238,10 @@ void NotationActionController::padNote(const Pad& pad)
     }
 
     noteInput->padNote(pad);
+
+    if (!noteInput->isNoteInputMode()) {
+        noteInput->startNoteInput();
+    }
 }
 
 void NotationActionController::putNote(const actions::ActionData& data)
@@ -262,6 +270,10 @@ void NotationActionController::toggleAccidental(AccidentalType type)
     }
 
     noteInput->toogleAccidental(type);
+
+    if (noteInput->isNoteInputMode()) {
+        noteInput->startNoteInput();
+    }
 }
 
 void NotationActionController::moveAction(const actions::ActionName& action)
