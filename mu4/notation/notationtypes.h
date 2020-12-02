@@ -37,6 +37,8 @@
 #include "libmscore/articulation.h"
 #include "libmscore/slur.h"
 #include "libmscore/rest.h"
+#include "libmscore/stem.h"
+#include "libmscore/hook.h"
 #include "libmscore/measure.h"
 #include "libmscore/ottava.h"
 #include "libmscore/hairpin.h"
@@ -68,9 +70,12 @@ using TransposeDirection = Ms::TransposeDirection;
 using Fraction = Ms::Fraction;
 using ElementPattern = Ms::ElementPattern;
 using Chord = Ms::Chord;
+using ChordRest = Ms::ChordRest;
 using Articulation = Ms::Articulation;
 using SlurSegment = Ms::SlurSegment;
 using Rest = Ms::Rest;
+using Stem = Ms::Stem;
+using Hook = Ms::Hook;
 using Fraction = Ms::Fraction;
 using NoteInputMethod = Ms::NoteEntryMethod;
 using AccidentalType = Ms::AccidentalType;
@@ -144,6 +149,7 @@ struct NoteInputState
     NoteInputMethod method = NoteInputMethod::UNKNOWN;
     Duration duration;
     AccidentalType accidentalType = AccidentalType::NONE;
+    bool isRest = false;
     bool withSlur = false;
     int currentVoiceIndex = 0;
 };
