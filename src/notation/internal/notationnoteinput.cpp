@@ -52,12 +52,15 @@ bool NotationNoteInput::isNoteInputMode() const
 
 NoteInputState NotationNoteInput::state() const
 {
+    Ms::InputState& inputState = score()->inputState();
+
     NoteInputState noteInputState;
-    noteInputState.method = score()->inputState().noteEntryMethod();
-    noteInputState.duration = score()->inputState().duration();
-    noteInputState.accidentalType = score()->inputState().accidentalType();
-    noteInputState.withSlur = score()->inputState().slur() != nullptr;
-    noteInputState.currentVoiceIndex = score()->inputState().voice();
+    noteInputState.method = inputState.noteEntryMethod();
+    noteInputState.duration = inputState.duration();
+    noteInputState.accidentalType = inputState.accidentalType();
+    noteInputState.isRest = inputState.rest();
+    noteInputState.withSlur = inputState.slur() != nullptr;
+    noteInputState.currentVoiceIndex = inputState.voice();
 
     return noteInputState;
 }

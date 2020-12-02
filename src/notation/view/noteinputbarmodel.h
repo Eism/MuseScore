@@ -80,6 +80,7 @@ private:
     void updateTieState();
     void updateSlurState();
     void updateVoicesState();
+    void updateRestState();
 
     bool isNoteInputModeAction(const actions::ActionName& actionName) const;
     actions::Action currentNoteInputModeAction() const;
@@ -103,8 +104,13 @@ private:
     INotationInteractionPtr interaction() const;
     INotationSelectionPtr selection() const;
     int resolveCurrentVoiceIndex() const;
+    bool resolveCurrentRest() const;
+    DurationType resolveCurrentDurationType() const;
+
     bool isNoteInputMode() const;
     NoteInputState noteInputState() const;
+
+    ChordRest* elementToChordRest(Element* element) const;
 
     QList<ActionItem> m_items;
 
