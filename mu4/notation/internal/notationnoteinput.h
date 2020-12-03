@@ -48,6 +48,7 @@ public:
     void padNote(const Pad& pad) override;
     void putNote(const QPointF& pos, bool replace, bool insert) override;
     void toogleAccidental(AccidentalType accidentalType) override;
+    void setArticulation(SymbolId articulationSymbolId) override;
 
     void setSlur(Ms::Slur* slur) override;
     void resetSlur() override;
@@ -62,6 +63,8 @@ private:
 
     void updateInputState();
     void notifyAboutStateChanged();
+
+    std::set<SymbolId> articulationIds() const;
 
     const IGetScore* m_getScore = nullptr;
     INotationInteraction* m_interaction = nullptr;

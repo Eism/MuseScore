@@ -34,6 +34,9 @@ class ShadowNote final : public Element
     int _voice;
     bool _rest;
 
+    qreal _segmentSkylineTopY = 0;
+    qreal _segmentSkylineBottomY = 0;
+
 public:
     ShadowNote(Score*);
 
@@ -45,8 +48,10 @@ public:
     void setLine(int n) { _line = n; }
 
     void draw(QPainter*) const override;
+    void drawArticulations(QPainter* painter) const;
 
-    void setState(SymId noteSymbol, int voice, TDuration duration, bool rest = false);
+    void setState(SymId noteSymbol, int voice, TDuration duration, bool rest = false, qreal segmentSkylineTopY = 0,
+                  qreal segmentSkylineBottomY = 0);
 
     SymId getNoteFlag() const;
     bool computeUp() const;

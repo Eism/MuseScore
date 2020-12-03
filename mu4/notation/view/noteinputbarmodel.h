@@ -81,6 +81,7 @@ private:
     void updateSlurState();
     void updateVoicesState();
     void updateRestState();
+    void updateArticulationsState();
 
     bool isNoteInputModeAction(const actions::ActionName& actionName) const;
     actions::Action currentNoteInputModeAction() const;
@@ -106,6 +107,7 @@ private:
     int resolveCurrentVoiceIndex() const;
     bool resolveCurrentRest() const;
     DurationType resolveCurrentDurationType() const;
+    std::set<SymbolId> resolveCurrentArticulations() const;
 
     bool isNoteInputMode() const;
     NoteInputState noteInputState() const;

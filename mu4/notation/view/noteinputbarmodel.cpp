@@ -209,6 +209,7 @@ void NoteInputBarModel::updateNoteInputState()
     updateSlurState();
     updateVoicesState();
     updateRestState();
+    updateArticulationsState();
 }
 
 void NoteInputBarModel::updateNoteInputModeState()
@@ -323,6 +324,27 @@ void NoteInputBarModel::updateRestState()
     item("pad-rest").checked = resolveCurrentRest();
 }
 
+void NoteInputBarModel::updateArticulationsState()
+{
+    static std::vector<actions::ActionName> articulationActions {
+        "add-marcato",
+        "add-sforzato",
+        "add-tenuto",
+        "add-staccato"
+    };
+
+    std::set<SymbolId> currentArticulations = resolveCurrentArticulations();
+
+    auto isArticulationSelected = [&currentArticulations](SymbolId articulationSymbolId) {
+                                      return std::find(currentArticulations.begin(), currentArticulations.end(),
+                                                       articulationSymbolId) != currentArticulations.end();
+                                  };
+
+    for (const actions::ActionName& actionName: articulationActions) {
+        item(actionName).checked = isArticulationSelected(NotationActions::actionArticulationSymbolId(actionName));
+    }
+}
+
 int NoteInputBarModel::resolveCurrentVoiceIndex() const
 {
     constexpr int INVALID_VOICE = -1;
@@ -381,6 +403,62 @@ DurationType NoteInputBarModel::resolveCurrentDurationType() const
 
     ChordRest* chordRest = elementToChordRest(selection()->element());
     return chordRest ? chordRest->durationType().type() : INVALID_DURATION_TYPE;
+}
+
+std::set<SymbolId> NoteInputBarModel::resolveCurrentArticulations() const
+{
+    if (!noteInput() || !selection()) {
+        return {};
+    }
+
+    if (isNoteInputMode()) {
+        return noteInputState().articulationIds;
+    }
+
+    if (selection()->isNone()) {
+        return {};
+    }
+
+    std::vector<std::set<SymbolId> > selectedNotesArticulations;
+    for (const Element* element: selection()->elements()) {
+        if (element->isNote()) {
+            const Note* note = dynamic_cast<const Note*>(element);
+            std::set<SymbolId> articulationsIds;
+            for (Articulation* articulation: note->chord()->articulations()) {
+                articulationsIds.insert(articulation->symId());
+            }
+
+            selectedNotesArticulations.push_back(Ms::splitArticulations(articulationsIds));
+        }
+    }
+
+    if (selectedNotesArticulations.empty()) {
+        return {};
+    }
+
+    std::set<SymbolId> firstSelectedNoteArticulations = selectedNotesArticulations.front();
+
+    auto isContainsArticulation = [](const std::set<SymbolId>& articulations, SymbolId articulationSymbolId) {
+                                      return std::find(articulations.begin(), articulations.end(),
+                                                       articulationSymbolId) != articulations.end();
+                                  };
+
+    std::set<SymbolId> result;
+    for (const SymbolId& articulationSymbolId: firstSelectedNoteArticulations) {
+        bool existsInAllNotes = true;
+        for (size_t i = 1; i < selectedNotesArticulations.size(); i++) {
+            if (!isContainsArticulation(selectedNotesArticulations[i], articulationSymbolId)) {
+                existsInAllNotes = false;
+                break;
+            }
+        }
+
+        if (existsInAllNotes) {
+            result.insert(articulationSymbolId);
+        }
+    }
+
+    return result;
 }
 
 bool NoteInputBarModel::isNoteInputModeAction(const ActionName& actionName) const

@@ -24,6 +24,7 @@
 #include "libmscore/note.h"
 #include "libmscore/chord.h"
 #include "libmscore/slur.h"
+#include "libmscore/articulation.h"
 
 #include "scorecallbacks.h"
 
@@ -61,6 +62,7 @@ NoteInputState NotationNoteInput::state() const
     noteInputState.isRest = inputState.rest();
     noteInputState.withSlur = inputState.slur() != nullptr;
     noteInputState.currentVoiceIndex = inputState.voice();
+    noteInputState.articulationIds = articulationIds();
 
     return noteInputState;
 }
@@ -209,6 +211,16 @@ void NotationNoteInput::toogleAccidental(AccidentalType accidentalType)
     notifyAboutStateChanged();
 }
 
+void NotationNoteInput::setArticulation(SymbolId articulationSymbolId)
+{
+    Ms::InputState& inputState = score()->inputState();
+
+    std::set<SymbolId> articulations = Ms::insertArticulation(inputState.articulationIds(), articulationSymbolId);
+    inputState.setArticulationIds(articulations);
+
+    notifyAboutStateChanged();
+}
+
 void NotationNoteInput::setCurrentVoiceIndex(int voiceIndex)
 {
     if (!isVoiceIndexValid(voiceIndex)) {
@@ -283,4 +295,10 @@ void NotationNoteInput::updateInputState()
 void NotationNoteInput::notifyAboutStateChanged()
 {
     m_stateChanged.notify();
+}
+
+std::set<SymbolId> NotationNoteInput::articulationIds() const
+{
+    Ms::InputState& inputState = score()->inputState();
+    return Ms::splitArticulations(inputState.articulationIds());
 }
