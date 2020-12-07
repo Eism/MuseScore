@@ -113,6 +113,8 @@ private:
     Fraction resolvePastingScale(const INotationInteractionPtr& interaction, PastingType type) const;
 
     FilterElementsOptions elementsFilterOptions(const Element* element) const;
+
+    void startNoteInputIfNeed();
 };
 }
 

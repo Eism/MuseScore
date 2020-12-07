@@ -104,13 +104,13 @@ private:
     INotationInteractionPtr interaction() const;
     INotationSelectionPtr selection() const;
     int resolveCurrentVoiceIndex() const;
-    bool resolveCurrentRest() const;
+    bool resolveRestSelected() const;
     DurationType resolveCurrentDurationType() const;
 
     bool isNoteInputMode() const;
     NoteInputState noteInputState() const;
 
-    ChordRest* elementToChordRest(Element* element) const;
+    const ChordRest* elementToChordRest(const Element* element) const;
 
     QList<ActionItem> m_items;
 };
