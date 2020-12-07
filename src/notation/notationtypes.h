@@ -57,6 +57,7 @@ using Pad = Ms::Pad;
 using ViewMode = Ms::LayoutMode;  // Accomodate inconsistent convention from v3
 using PitchMode = Ms::UpDownMode;
 using StyleId = Ms::Sid;
+using SymbolId = Ms::SymId;
 using Key = Ms::Key;
 using KeyMode = Ms::KeyMode;
 using TimeSigType = Ms::TimeSigType;
@@ -149,6 +150,7 @@ struct NoteInputState
     NoteInputMethod method = NoteInputMethod::UNKNOWN;
     Duration duration;
     AccidentalType accidentalType = AccidentalType::NONE;
+    std::set<SymbolId> articulationIds;
     bool isRest = false;
     bool withSlur = false;
     int currentVoiceIndex = 0;

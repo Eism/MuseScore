@@ -80,6 +80,7 @@ private:
     void updateTieState();
     void updateSlurState();
     void updateVoicesState();
+    void updateArticulationsState();
     void updateRestState();
 
     bool isNoteInputModeAction(const actions::ActionName& actionName) const;
@@ -104,6 +105,7 @@ private:
     INotationInteractionPtr interaction() const;
     INotationSelectionPtr selection() const;
     int resolveCurrentVoiceIndex() const;
+    std::set<SymbolId> resolveCurrentArticulations() const;
     bool resolveRestSelected() const;
     DurationType resolveCurrentDurationType() const;
 
