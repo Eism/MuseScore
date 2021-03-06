@@ -65,6 +65,7 @@ DockWindow::DockWindow(QQuickItem* parent)
 
     m_window->setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::West);
     m_window->setTabPosition(Qt::RightDockWidgetArea, QTabWidget::East);
+    m_window->setWindowFlag(Qt::FramelessWindowHint);
     m_window->setAnimated(false);
 
     m_statusbar = new QStatusBar(m_window);
@@ -90,6 +91,25 @@ void DockWindow::componentComplete()
         DockToolBar::Widget tw = toolbar->widget();
         tw.bar->setParent(m_window);
         m_window->addToolBar(tw.bar);
+    }
+
+    DockMenuBar* menu = menuBar();
+    if (menu) {
+        DockMenuBar::Widget mw = menu->widget();
+        m_window->setMenuWidget(mw.widget);
+
+        connect(menu, &DockMenuBar::showWindowMinimizedTriggered, [this]() { m_window->showMinimized(); });
+        connect(menu, &DockMenuBar::toggleWindowMaximizedTriggered, [this]() {
+            if (m_window->windowState() == Qt::WindowMaximized) {
+                m_window->showNormal();
+            } else {
+                m_window->showMaximized();
+            }
+        });
+        connect(menu, &DockMenuBar::closeWindowTriggered, [this]() { m_window->close(); });
+        connect(menu, &DockMenuBar::startSystemMoveTriggered, [this]() {
+            m_window->windowHandle()->startSystemMove();
+        });
     }
 
     togglePage(nullptr, currentPage());
@@ -291,6 +311,8 @@ void DockWindow::onMenusChanged(const QList<QMenu*>& menus)
     for (QMenu* menu: menus) {
         m_window->menuBar()->addMenu(menu);
     }
+
+//    LOGD() << "===================== XUY";
 }
 
 DockPage* DockWindow::currentPage() const
@@ -422,4 +444,9 @@ QMainWindow* DockWindow::qMainWindow()
 void DockWindow::stackUnder(QWidget* w)
 {
     m_window->stackUnder(w);
+}
+
+void DockWindow::startSystemResize(Qt::Edges edges)
+{
+    m_window->windowHandle()->startSystemResize(edges);
 }

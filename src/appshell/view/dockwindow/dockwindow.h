@@ -72,6 +72,8 @@ public:
     QMainWindow* qMainWindow() override;
     void stackUnder(QWidget* w) override;
 
+    Q_INVOKABLE void startSystemResize(Qt::Edges edges);
+
 public slots:
     void setTitle(QString title);
     void setColor(QColor color);
