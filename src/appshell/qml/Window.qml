@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.15
 
 import MuseScore.Dock 1.0
 import MuseScore.Ui 1.0
@@ -6,6 +6,8 @@ import MuseScore.Playback 1.0
 import MuseScore.NotationScene 1.0
 import MuseScore.AppShell 1.0
 import MuseScore.Shortcuts 1.0
+
+import MuseScore.UiComponents 1.0
 
 import "./HomePage"
 import "./NotationPage"
@@ -21,7 +23,7 @@ DockWindow {
 
     Component.onCompleted: {
         shortcutsModel.load()
-        appMenuModel.load()
+//        appMenuModel.load()
         startupModel.load()
     }
 
@@ -60,16 +62,37 @@ DockWindow {
     property bool isNotationPage: currentPageUri === notationPage.uri
 
     property ShortcutsInstanceModel shortcutsModel: ShortcutsInstanceModel {}
-    property AppMenuModel appMenuModel: AppMenuModel {}
+//    property AppMenuModel appMenuModel: AppMenuModel {}
     property StartupModel startupModel: StartupModel {}
 
     menuBar: DockMenuBar {
+        id: dockMenuBar
         objectName: "mainMenuBar"
 
         items: appMenuModel.items
 
         onActionTriggered: {
-            appMenuModel.handleAction(actionCode, actionIndex)
+//            appMenuModel.handleAction(actionCode, actionIndex)
+        }
+
+        MenuBar {
+            anchors.fill: parent
+
+            onShowWindowMinimizedRequested: {
+                dockMenuBar.showWindowMinimized()
+            }
+
+            onToggleWindowMaximizedRequested: {
+                dockMenuBar.toggleWindowMaximized()
+            }
+
+            onCloseWindowRequested: {
+                dockMenuBar.closeWindow()
+            }
+
+            onStartSystemMoveRequested: {
+                dockMenuBar.startSystemMove()
+            }
         }
     }
 

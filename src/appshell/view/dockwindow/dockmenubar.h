@@ -35,6 +35,18 @@ public:
 
     QVariantList items() const;
 
+    struct Widget {
+        QWidget* widget = nullptr;
+    };
+
+    Widget widget() const;
+
+    Q_INVOKABLE void showWindowMinimized();
+    Q_INVOKABLE void toggleWindowMaximized();
+    Q_INVOKABLE void closeWindow();
+
+    Q_INVOKABLE void startSystemMove();
+
 public slots:
     void setItems(QVariantList items);
     void onActionTriggered(QAction* action);
@@ -44,13 +56,23 @@ signals:
     void changed(const QList<QMenu*>& menus);
     void actionTriggered(const QString& actionCode, int actionIndex);
 
+    void showWindowMinimizedTriggered();
+    void toggleWindowMaximizedTriggered();
+    void closeWindowTriggered();
+
+    void startSystemMoveTriggered();
+
 private:
+    void onComponentCompleted() override;
+
     void updateMenus();
 
     QMenu* makeMenu(const QVariantMap& menuItem) const;
     QAction* makeAction(const QVariantMap& menuItem, QActionGroup* group) const;
 
     QVariantList m_items;
+
+    Widget m_widget;
 };
 }
 

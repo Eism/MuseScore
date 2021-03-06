@@ -51,6 +51,7 @@ static void addMenu(QMenu* child, QMenu* parent)
 DockMenuBar::DockMenuBar(QQuickItem* parent)
     : DockView(parent)
 {
+    setHeight(40);
 }
 
 QVariantList DockMenuBar::items() const
@@ -76,6 +77,12 @@ void DockMenuBar::onActionTriggered(QAction* action)
     QVariantMap data = action->data().toMap();
     int actionIndex = actionIndexInGroup(action);
     emit actionTriggered(data.value("code").toString(), actionIndex);
+}
+
+void DockMenuBar::onComponentCompleted()
+{
+    m_widget.widget = view();
+    m_widget.widget->setFixedHeight(height());
 }
 
 void DockMenuBar::updateMenus()
@@ -144,4 +151,29 @@ QAction* DockMenuBar::makeAction(const QVariantMap& menuItem, QActionGroup* grou
     }
 
     return action;
+}
+
+DockMenuBar::Widget DockMenuBar::widget() const
+{
+    return m_widget;
+}
+
+void DockMenuBar::showWindowMinimized()
+{
+    emit showWindowMinimizedTriggered();
+}
+
+void DockMenuBar::toggleWindowMaximized()
+{
+    emit toggleWindowMaximizedTriggered();
+}
+
+void DockMenuBar::closeWindow()
+{
+    emit closeWindowTriggered();
+}
+
+void DockMenuBar::startSystemMove()
+{
+    emit startSystemMoveTriggered();
 }
