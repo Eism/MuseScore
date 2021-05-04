@@ -21,6 +21,7 @@
 #define MU_DOCK_DOCKTYPES_H
 
 #include <QObject>
+#include <QVariant>
 
 namespace mu::dock {
 enum class DockType {
@@ -41,8 +42,8 @@ inline void writePropertiesTobject(const DockProperties& properties, QObject& ob
 {
     QObject* propertiesObj = new QObject(&obj);
     propertiesObj->setObjectName("properties");
-    propertiesObj->setProperty("dockType", static_cast<int>(properties.type));
-    propertiesObj->setProperty("allowedAreas", static_cast<int>(properties.allowedAreas));
+    propertiesObj->setProperty("dockType", QVariant::fromValue(static_cast<int>(properties.type)));
+    propertiesObj->setProperty("allowedAreas", QVariant::fromValue(static_cast<int>(properties.allowedAreas)));
 }
 
 inline DockProperties readPropertiesFromObject(QObject* obj)

@@ -19,6 +19,8 @@
 
 #include "appshell.h"
 
+#include "config.h"
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>

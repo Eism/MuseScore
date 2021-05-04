@@ -20,6 +20,10 @@
 #include "dockpage.h"
 
 #include "dockwindow.h"
+#include "docktoolbar.h"
+#include "dockcentral.h"
+#include "dockpanel.h"
+#include "dockstatusbar.h"
 
 #include "log.h"
 
