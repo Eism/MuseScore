@@ -100,10 +100,10 @@ void NoteInputBarCustomiseModel::load()
         actions = defaultActions();
     }
 
+    ActionCodeList alist = currentWorkspaceActions();
     for (const ActionCode& actionCode: actions) {
         UiAction action = actionsRegister()->action(actionCode);
-        ActionCodeList alist = currentWorkspaceActions();
-        bool checked = containsAction(currentWorkspaceActions(), actionCode);
+        bool checked = containsAction(alist, actionCode);
 
         m_actions << makeItem(action, checked);
     }

@@ -177,7 +177,9 @@ StyledDialogView {
                         id: separatorLineComponent
 
                         StyledTextLabel {
-                            anchors.centerIn: parent
+                            width: implicitWidth
+                            height: parent.height
+
                             text: Boolean(itemRole) ? itemRole.title : ""
                         }
                     }
