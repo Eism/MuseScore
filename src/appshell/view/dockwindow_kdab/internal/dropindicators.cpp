@@ -67,8 +67,8 @@ using namespace mu::dock;
 
 DropIndicators::DropIndicators(KDDockWidgets::DropArea* dropArea)
     : KDDockWidgets::DropIndicatorOverlayInterface(dropArea),
-    m_rubberBand(KDDockWidgets::Config::self().frameworkWidgetFactory()->createRubberBand(dropArea)),
-    m_indicatorsWindow(createIndicatorWindow(this))
+      m_rubberBand(KDDockWidgets::Config::self().frameworkWidgetFactory()->createRubberBand(dropArea)),
+      m_indicatorsWindow(createIndicatorWindow(this))
 {
 }
 
@@ -118,22 +118,22 @@ bool DropIndicators::centralIndicatorVisible() const
 
 bool DropIndicators::innerLeftIndicatorVisible() const
 {
-    return isInnerLeftIndicatorVisible(Qt::LeftDockWidgetArea);
+    return isInnerIndicatorVisible(Qt::LeftDockWidgetArea);
 }
 
 bool DropIndicators::innerRightIndicatorVisible() const
 {
-    return isInnerLeftIndicatorVisible(Qt::RightDockWidgetArea);
+    return isInnerIndicatorVisible(Qt::RightDockWidgetArea);
 }
 
 bool DropIndicators::innerTopIndicatorVisible() const
 {
-    return isInnerLeftIndicatorVisible(Qt::TopDockWidgetArea);
+    return isInnerIndicatorVisible(Qt::TopDockWidgetArea);
 }
 
 bool DropIndicators::innerBottomIndicatorVisible() const
 {
-    return isInnerLeftIndicatorVisible(Qt::BottomDockWidgetArea);
+    return isInnerIndicatorVisible(Qt::BottomDockWidgetArea);
 }
 
 bool DropIndicators::hoveringOverDock(DockType type) const
@@ -144,7 +144,6 @@ bool DropIndicators::hoveringOverDock(DockType type) const
 
     for (auto dock : m_hoveredFrame->dockWidgets()) {
         DockProperties properties = readPropertiesFromObject(dock);
-
         if (properties.type == type) {
             return true;
         }
@@ -158,16 +157,8 @@ bool DropIndicators::isAreaAllowed(Qt::DockWidgetArea area) const
     return m_draggedDockProperties.allowedAreas.testFlag(area);
 }
 
-bool DropIndicators::isInnerLeftIndicatorVisible(Qt::DockWidgetArea area) const
+bool DropIndicators::isInnerIndicatorVisible(Qt::DockWidgetArea area) const
 {
-    if (isToolBar()) {
-        if (hoveringOverDock(DockType::ToolBar)) {
-            return true;
-        } else {
-            return isAreaAllowed(area);
-        }
-    }
-
     if (hoveringOverDock(DockType::Central)) {
         return isAreaAllowed(area);
     }
@@ -180,6 +171,21 @@ bool DropIndicators::isToolBar() const
     return m_draggedDockProperties.type == DockType::ToolBar;
 }
 
+QString DropIndicators::draggedDockName() const
+{
+    auto windowBeingDragged = KDDockWidgets::DragController::instance()->windowBeingDragged();
+    if (!windowBeingDragged || windowBeingDragged->dockWidgets().isEmpty()) {
+        return QString();
+    }
+
+    auto dock = windowBeingDragged->dockWidgets().first();
+    if (!dock) {
+        return QString();
+    }
+
+    return dock->uniqueName();
+}
+
 bool DropIndicators::onResize(QSize)
 {
     m_indicatorsWindow->resize(window()->size());
@@ -188,7 +194,7 @@ bool DropIndicators::onResize(QSize)
 
 void DropIndicators::updateVisibility()
 {
-    if (isHovered()) {
+    if (isHovered() && m_hoveredFrame) {
         m_indicatorsWindow->setVisible(true);
         updateWindowPosition();
         m_indicatorsWindow->raise();
@@ -206,6 +212,16 @@ void DropIndicators::updateVisibility()
 
     auto dock = windowBeingDragged->dockWidgets().first();
     m_draggedDockProperties = readPropertiesFromObject(dock);
+
+//    if (m_hoveredFrame) {
+//        if (isToolBar()) {
+//            if (hoveringOverDock(DockType::ToolBar)) {
+//                mainWindow()->setDockOrientation(draggedDockName(), framework::Orientation::Horizontal);
+//            } else {
+//                mainWindow()->setDockOrientation(draggedDockName(), framework::Orientation::Vertical);
+//            }
+//        }
+//    }
 
     emit indicatorsVisibilityChanged();
 }
@@ -255,6 +271,19 @@ void DropIndicators::setDropLocation(DropLocation location)
 
     QRect rect = m_dropArea->rectForDrop(windowBeingDragged, multisplitterLocation,
                                          m_dropArea->itemForFrame(relativeToFrame));
+
+    LOGD() << "========== " << KDDockWidgets::DragController::instance()->isDragging();
+
+    if (m_hoveredFrame) {
+        if (isToolBar()) {
+            if (hoveringOverDock(DockType::ToolBar)) {
+                mainWindow()->setDockOrientation(draggedDockName(), framework::Orientation::Horizontal);
+            } else {
+                mainWindow()->setDockOrientation(draggedDockName(), framework::Orientation::Vertical);
+            }
+        }
+    }
+
     m_rubberBand->setGeometry(rect);
     m_rubberBand->setVisible(true);
 }

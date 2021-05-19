@@ -92,10 +92,13 @@ protected:
     friend class DockWindow;
 
     virtual DockType type() const = 0;
+    virtual QRect dragRect() const;
 
     void componentComplete() override;
 
     KDDockWidgets::DockWidgetQuick* dockWidget() const;
+
+    void applySize(const QSize& minimumSize, const QSize& maximumSize);
 
 private slots:
     void resize();

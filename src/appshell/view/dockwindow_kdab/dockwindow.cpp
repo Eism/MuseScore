@@ -57,6 +57,31 @@ void DockWindow::componentComplete()
     configuration()->windowGeometryChanged().onNotify(this, [this]() {
         resetWindowState();
     });
+
+    mainWindow()->dockOrientationChanged().onReceive(this, [this](std::pair<QString, mu::framework::Orientation> orientation) {
+        if (orientation.first.isEmpty()) {
+            return;
+        }
+
+        DockPage* page = pageByUri(m_currentPageUri);
+        if (!page) {
+            return;
+        }
+
+        for (DockBase* dock: page->allDocks()) {
+            if (dock->objectName() != orientation.first) {
+                continue;
+            }
+
+            DockToolBar* toolBar = dynamic_cast<DockToolBar*>(dock);
+            if (!toolBar) {
+                return;
+            }
+
+            toolBar->setOrientation(static_cast<Qt::Orientation>(orientation.second));
+            break;
+        }
+    });
 }
 
 QString DockWindow::currentPageUri() const

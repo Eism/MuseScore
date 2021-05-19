@@ -33,6 +33,9 @@ class DockToolBar : public DockBase
     Q_PROPERTY(bool movable READ movable WRITE setMovable NOTIFY movableChanged)
     Q_PROPERTY(Qt::Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
 
+    Q_PROPERTY(QSize horizontalPreferedSize READ horizontalPreferedSize WRITE setHorizontalPreferedSize NOTIFY horizontalPreferedSizeChanged)
+    Q_PROPERTY(QSize verticalPreferedSize READ verticalPreferedSize WRITE setVerticalPreferedSize NOTIFY verticalPreferedSizeChanged)
+
 public:
     explicit DockToolBar(QQuickItem* parent = nullptr);
 
@@ -40,6 +43,9 @@ public:
     Qt::Orientation orientation() const;
 
     Q_INVOKABLE void setDraggableMouseArea(QQuickItem* mouseArea);
+
+    QSize horizontalPreferedSize() const;
+    QSize verticalPreferedSize() const;
 
 public slots:
     void setMinimumWidth(int width) override;
@@ -50,9 +56,15 @@ public slots:
     void setMovable(bool movable);
     void setOrientation(Qt::Orientation orientation);
 
+    void setHorizontalPreferedSize(QSize horizontalPreferedSize);
+    void setVerticalPreferedSize(QSize verticalPreferedSize);
+
 signals:
     void movableChanged(bool movable);
     void orientationChanged(Qt::Orientation orientation);
+
+    void horizontalPreferedSizeChanged(QSize horizontalPreferedSize);
+    void verticalPreferedSizeChanged(QSize verticalPreferedSize);
 
 private slots:
     void updateOrientation();
@@ -60,12 +72,15 @@ private slots:
 private:
     void componentComplete() override;
     DockType type() const override;
+    QRect dragRect() const override;
 
     class DraggableArea;
     DraggableArea* m_draggableArea = nullptr;
 
     bool m_movable = true;
     Qt::Orientation m_orientation = Qt::Horizontal;
+    QSize m_horizontalPreferedSize;
+    QSize m_verticalPreferedSize;
 };
 }
 

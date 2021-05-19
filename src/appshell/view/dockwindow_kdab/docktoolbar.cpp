@@ -109,6 +109,14 @@ DockToolBar::DockToolBar(QQuickItem* parent)
     m_draggableArea(new DraggableArea())
 {
     setAllowedAreas(Qt::TopDockWidgetArea);
+
+    connect(this, &DockToolBar::orientationChanged, [this](Qt::Orientation orientation){
+        if (orientation == Qt::Horizontal) {
+            applySize(QSize(720, 48), QSize(100500, 48));
+        } else {
+            applySize(QSize(48, 400), QSize(96, 100500));
+        }
+    });
 }
 
 bool DockToolBar::movable() const
@@ -129,6 +137,16 @@ void DockToolBar::setDraggableMouseArea(QQuickItem* mouseArea)
 
     m_draggableArea->setParent(mouseArea);
     m_draggableArea->setMouseArea(mouseArea);
+}
+
+QSize DockToolBar::horizontalPreferedSize() const
+{
+    return m_horizontalPreferedSize;
+}
+
+QSize DockToolBar::verticalPreferedSize() const
+{
+    return m_verticalPreferedSize;
 }
 
 void DockToolBar::setMinimumWidth(int width)
@@ -199,6 +217,24 @@ void DockToolBar::setOrientation(Qt::Orientation orientation)
     emit orientationChanged(orientation);
 }
 
+void DockToolBar::setHorizontalPreferedSize(QSize horizontalPreferedSize)
+{
+    if (m_horizontalPreferedSize == horizontalPreferedSize)
+        return;
+
+    m_horizontalPreferedSize = horizontalPreferedSize;
+    emit horizontalPreferedSizeChanged(m_horizontalPreferedSize);
+}
+
+void DockToolBar::setVerticalPreferedSize(QSize verticalPreferedSize)
+{
+    if (m_verticalPreferedSize == verticalPreferedSize)
+        return;
+
+    m_verticalPreferedSize = verticalPreferedSize;
+    emit verticalPreferedSizeChanged(m_verticalPreferedSize);
+}
+
 void DockToolBar::updateOrientation()
 {
     if (dockWidget()->isFloating()) {
@@ -249,9 +285,11 @@ void DockToolBar::componentComplete()
         }
 
         connect(frame, &KDDockWidgets::Frame::isInMainWindowChanged, this, [this]() {
-            QTimer::singleShot(0, this, &DockToolBar::updateOrientation);
+//            QTimer::singleShot(0, this, &DockToolBar::updateOrientation);
         }, Qt::UniqueConnection);
     });
+
+    applySize(QSize(720, 48), QSize(100500, 48));
 
     m_draggableArea->setDockWidget(dockWidget());
 }
@@ -259,4 +297,12 @@ void DockToolBar::componentComplete()
 DockType DockToolBar::type() const
 {
     return DockType::ToolBar;
+}
+
+QRect DockToolBar::dragRect() const
+{
+    QRect rect = m_draggableArea->rect();
+    rect.moveTopLeft(m_draggableArea->mapToGlobal(QPoint(0, 0)));
+
+    return rect;
 }

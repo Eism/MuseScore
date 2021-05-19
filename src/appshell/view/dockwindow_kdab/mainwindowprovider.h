@@ -35,6 +35,12 @@ public:
     bool isFullScreen() const override;
     void toggleFullScreen() override;
     const QScreen* screen() const override;
+
+    void setDockOrientation(const QString& dockName, framework::Orientation orientation) override;
+    async::Channel<std::pair<QString, framework::Orientation>> dockOrientationChanged() const override;
+
+private:
+    async::Channel<std::pair<QString, framework::Orientation>> m_dockOrientationChanged;
 };
 }
 

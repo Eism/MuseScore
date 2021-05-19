@@ -61,6 +61,7 @@ public:
     DockCentral* centralDock() const;
     QList<DockPanel*> panels() const;
     QList<DockStatusBar*> statusBars() const;
+    QList<DockBase*> allDocks() const;
 
     void close();
 
@@ -75,7 +76,6 @@ signals:
 private:
     void componentComplete() override;
 
-    QList<DockBase*> allDocks() const;
 
     QString m_uri;
     uicomponents::QmlListProperty<DockToolBar> m_mainToolBars;
