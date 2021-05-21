@@ -46,11 +46,14 @@ class NoteInputBarModel : public QAbstractListModel, public ui::AbstractMenuMode
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
+    Q_PROPERTY(QVariantList additionalItems READ additionalItems NOTIFY additionalItemsChanged)
+
 public:
     explicit NoteInputBarModel(QObject* parent = nullptr);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void load();
@@ -58,8 +61,11 @@ public:
 
     Q_INVOKABLE QVariantMap get(int index);
 
+    QVariantList additionalItems() const;
+
 signals:
     void countChanged(int count);
+    void additionalItemsChanged();
 
 private:
     enum Roles {
@@ -70,7 +76,8 @@ private:
         HintRole,
         SubitemsRole,
         ShowSubitemsByPressAndHoldRole,
-        OrderRole
+        OrderRole,
+        Additional
     };
 
     void onActionsStateChanges(const actions::ActionCodeList& codes) override;
@@ -142,6 +149,9 @@ private:
     const ChordRest* elementToChordRest(const Element* element) const;
 
     QList<ui::MenuItem> m_items;
+    QList<ui::MenuItem> m_additionalItems;
+
+    QSet<QString> m_additionalActionsCodes;
 };
 }
 

@@ -33,9 +33,9 @@ Item {
         property int itemIndex: 0
 
         onLoaded: {
-            itemModel = Qt.binding( function() { return Boolean(modelData) ? modelData : null });
+            itemModel = Qt.binding(function() { return Boolean(modelData) ? modelData : null });
             itemIndex = index
-            root.visible = Qt.binding( function() { return Boolean(item) ? item.visible : false })
+//            root.visible = Qt.binding( function() { return Boolean(item) ? item.visible : false })
         }
     }
 }

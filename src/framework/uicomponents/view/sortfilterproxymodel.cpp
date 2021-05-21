@@ -52,6 +52,10 @@ SortFilterProxyModel::SortFilterProxyModel(QObject* parent)
             }
         });
     });
+
+    connect(this, &SortFilterProxyModel::sourceModelChanged, this, [this](){
+        emit countChanged(count());
+    });
 }
 
 QQmlListProperty<FilterValue> SortFilterProxyModel::filters()
@@ -64,10 +68,25 @@ QQmlListProperty<SorterValue> SortFilterProxyModel::sorters()
     return m_sorters.property();
 }
 
-void SortFilterProxyModel::refresh()
+QVariantMap SortFilterProxyModel::get(int index)
 {
-    setFilterFixedString(filterRegExp().pattern());
-    setSortCaseSensitivity(sortCaseSensitivity());
+    QVariantMap result;
+
+    QHash<int, QByteArray> names = roleNames();
+    QHashIterator<int, QByteArray> i(names);
+    while (i.hasNext()) {
+        i.next();
+        QModelIndex idx = this->index(index, 0);
+        QVariant data = idx.data(i.key());
+        result[i.value()] = data;
+    }
+
+    return result;
+}
+
+int SortFilterProxyModel::count() const
+{
+    return this->rowCount();
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
@@ -114,13 +133,6 @@ bool SortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& 
     Val rightData = Val::fromQVariant(sourceModel()->data(right, sorterRoleKey));
 
     return leftData < rightData;
-}
-
-void SortFilterProxyModel::reset()
-{
-    beginResetModel();
-    resetInternalData();
-    endResetModel();
 }
 
 void SortFilterProxyModel::fillRoleIds()

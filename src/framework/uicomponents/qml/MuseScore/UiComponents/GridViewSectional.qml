@@ -46,6 +46,15 @@ Item {
     property int columns: noLimit
     property int columnSpacing: 2
 
+    property int contentWidth: loader.width
+    property int contentHeight: loader.height
+
+    property var sections: Boolean(model) ? privateProperties.modelSections() : []
+
+    function refresh() {
+        root.sections = privateProperties.modelSections()
+    }
+
     QtObject {
         id: privateProperties
 
@@ -69,7 +78,11 @@ Item {
     }
 
     Loader {
-        anchors.fill: parent
+        id: loader
+
+        width: isHorizontal ? item.childrenRect.width : root.parent.width
+        height: isHorizontal ? root.parent.height : item.childrenRect.height
+
         sourceComponent: isHorizontal ? horizontalView : verticalView
     }
 
@@ -80,7 +93,7 @@ Item {
             spacing: privateProperties.spacingBeforeSection
 
             Repeater {
-                model: Boolean(root.model) ? privateProperties.modelSections() : []
+                model: root.sections
 
                 Row {
                     spacing: privateProperties.spacingAfterSection
@@ -92,10 +105,14 @@ Item {
                         width: root.sectionWidth
                         height: root.sectionHeight
 
+                        visible: _delegate.count > 0
+
                         sectionDelegate: root.sectionDelegate
                     }
 
                     GridViewDelegate {
+                        id: _delegate
+
                         anchors.verticalCenter: parent.verticalCenter
 
                         model: Boolean(root.model) ? root.model : null
@@ -123,7 +140,7 @@ Item {
             spacing: privateProperties.spacingBeforeSection
 
             Repeater {
-                model: Boolean(root.model) ? privateProperties.modelSections() : []
+                model: root.sections
 
                 Column {
                     spacing: privateProperties.spacingAfterSection

@@ -68,8 +68,40 @@ QVariant NoteInputBarModel::data(const QModelIndex& index, int role) const
     case SubitemsRole: return subitems(item.code);
     case ShowSubitemsByPressAndHoldRole: return isNeedShowSubitemsByPressAndHold(item.code);
     case OrderRole: return index.row();
+    case Additional: {
+        for (int i = 0; i < m_additionalItems.length(); ++i) {
+            if (m_additionalItems[i].code == item.code) {
+                return true;
+            }
+        }
+        return false;
+    }
     }
     return QVariant();
+}
+
+bool NoteInputBarModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    MenuItem item = m_items.at(index.row());
+    switch (role) {
+        case Additional:
+        if (value.toBool()) {
+            m_additionalItems.append(item);
+        } else {
+            for (int i = 0; i < m_additionalItems.length(); ++i) {
+                if (m_additionalItems[i].code == item.code) {
+                    m_additionalItems.removeAt(i);
+                }
+            }
+        }
+        emit additionalItemsChanged();
+        emit dataChanged(index, index, { Additional });
+        return true;
+    default:
+        break;
+    }
+
+    return false;
 }
 
 int NoteInputBarModel::rowCount(const QModelIndex&) const
@@ -88,6 +120,7 @@ QHash<int, QByteArray> NoteInputBarModel::roleNames() const
         { SubitemsRole, "subitemsRole" },
         { ShowSubitemsByPressAndHoldRole, "showSubitemsByPressAndHoldRole" },
         { OrderRole, "orderRole" },
+        { Additional, "additionalRole" }
     };
     return roles;
 }
@@ -861,6 +894,17 @@ QVariantMap NoteInputBarModel::get(int index)
     }
 
     return result;
+}
+
+QVariantList NoteInputBarModel::additionalItems() const
+{
+    QVariantList items;
+
+    for (const MenuItem& item: m_additionalItems) {
+        items << item.toMap();
+    }
+
+    return items;
 }
 
 INotationPtr NoteInputBarModel::notation() const

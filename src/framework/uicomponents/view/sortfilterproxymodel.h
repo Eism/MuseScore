@@ -36,23 +36,28 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(QQmlListProperty<mu::uicomponents::FilterValue> filters READ filters)
     Q_PROPERTY(QQmlListProperty<mu::uicomponents::SorterValue> sorters READ sorters)
 
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+
 public:
     explicit SortFilterProxyModel(QObject* parent = nullptr);
 
     QQmlListProperty<FilterValue> filters();
     QQmlListProperty<SorterValue> sorters();
 
-    Q_INVOKABLE void refresh();
+    Q_INVOKABLE QVariantMap get(int index);
+
+    int count() const;
 
 signals:
     void filtersChanged(QQmlListProperty<FilterValue> filters);
+
+    void countChanged(int count);
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const;
 
 private:
-    void reset();
     void fillRoleIds();
 
     SorterValue* currentSorterValue() const;

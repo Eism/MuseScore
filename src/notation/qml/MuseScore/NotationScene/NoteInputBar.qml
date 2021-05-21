@@ -54,9 +54,38 @@ Rectangle {
         noteInputModel.load()
     }
 
+    SortFilterProxyModel {
+        id: filterModel
+
+        objectName: "123"
+
+        sourceModel: noteInputModel
+
+        filters: [
+            FilterValue {
+                roleName: "additionalRole"
+                roleValue: false
+                compareType: CompareType.Equal
+            }
+        ]
+    }
+
+    Connections {
+        target: noteInputModel
+
+        function onCountChanged(count) {
+            filterModel.countChanged(count)
+//            gridView.refresh()
+        }
+    }
+
     GridViewSectional {
         id: gridView
-        anchors.fill: parent
+
+        anchors.left: parent.left
+
+        width: contentWidth
+        height: root.height
 
         sectionRole: "sectionRole"
 
@@ -66,7 +95,12 @@ Rectangle {
         cellWidth: 36
         cellHeight: cellWidth
 
-        model: noteInputModel
+        sectionWidth: 1
+        sectionHeight: root.height
+        rows: 1
+        columns: gridView.noLimit
+
+        model: filterModel
 
         sectionDelegate: SeparatorLine {
             orientation: gridView.isHorizontal ? Qt.Vertical : Qt.Horizontal
@@ -119,6 +153,26 @@ Rectangle {
                 menuLoader.toggleOpened(item.subitemsRole, btn.navigation)
             }
 
+            Connections {
+                target: root
+
+                function onWidthChanged() {
+                    if (!Boolean(btn.item)) {
+                        return
+                    }
+
+                    var bar = btn.mapToItem(root, btn.x, root.y)
+                    //                    console.log("==== width changed " + root.width + ": " + bar.x + "+" + btn.width + ">"+root.width + "-" + customizeButton.width)
+
+                    if (bar.x + btn.width > root.width - customizeButton.width) {
+                        btn.item.additionalRole = true
+                        console.log("==== visible = false")
+                    } else {
+                        btn.item.additionalRole = false
+                    }
+                }
+            }
+
             Canvas {
 
                 visible: Boolean(item) && item.showSubitemsByPressAndHoldRole
@@ -149,14 +203,46 @@ Rectangle {
     }
 
     FlatButton {
-        id: customizeButton
+        id: additionalButton
+
+        anchors.left: gridView.right
+        anchors.verticalCenter: parent.verticalCenter
 
         anchors.margins: 8
 
         width: gridView.cellWidth
         height: gridView.cellHeight
 
-        icon: IconCode.CONFIGURE
+        icon: IconCode.MENU_THREE_DOTS
+        iconFont: ui.theme.toolbarIconsFont
+        normalStateColor: "transparent"
+        navigation.panel: keynavSub
+        navigation.order: 99
+
+        visible: noteInputModel.additionalItems.lenght > 0
+
+        onClicked: {
+            addMenuLoader.toggleOpened(noteInputModel.additionalItems, additionalButton.navigation)
+        }
+
+        StyledMenuLoader {
+            id: addMenuLoader
+            onHandleAction: noteInputModel.handleAction(actionCode, actionIndex)
+        }
+    }
+
+    FlatButton {
+        id: customizeButton
+
+        anchors.left: additionalButton.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        anchors.margins: 8
+
+        width: gridView.cellWidth
+        height: gridView.cellHeight
+
+        icon: IconCode.SETTINGS_COG
         iconFont: ui.theme.toolbarIconsFont
         normalStateColor: "transparent"
         navigation.panel: keynavSub
@@ -167,38 +253,38 @@ Rectangle {
         }
     }
 
-    states: [
-        State {
-            when: privatesProperties.isHorizontal
-            PropertyChanges {
-                target: gridView
-                sectionWidth: 1
-                sectionHeight: root.height
-                rows: 1
-                columns: gridView.noLimit
-            }
+    //    states: [
+    //        State {
+    //            when: privatesProperties.isHorizontal
+    //            PropertyChanges {
+    //                target: gridView
+    //                sectionWidth: 1
+    //                sectionHeight: root.height
+    //                rows: 1
+    //                columns: gridView.noLimit
+    //            }
 
-            AnchorChanges {
-                target: customizeButton
-                anchors.right: root.right
-                anchors.verticalCenter: root.verticalCenter
-            }
-        },
-        State {
-            when: !privatesProperties.isHorizontal
-            PropertyChanges {
-                target: gridView
-                sectionWidth: root.width
-                sectionHeight: 1
-                rows: gridView.noLimit
-                columns: 2
-            }
+    //            AnchorChanges {
+    //                target: customizeButton
+    //                anchors.right: root.right
+    //                anchors.verticalCenter: root.verticalCenter
+    //            }
+    //        },
+    //        State {
+    //            when: !privatesProperties.isHorizontal
+    //            PropertyChanges {
+    //                target: gridView
+    //                sectionWidth: root.width
+    //                sectionHeight: 1
+    //                rows: gridView.noLimit
+    //                columns: 2
+    //            }
 
-            AnchorChanges {
-                target: customizeButton
-                anchors.bottom: root.bottom
-                anchors.right: root.right
-            }
-        }
-    ]
+    //            AnchorChanges {
+    //                target: customizeButton
+    //                anchors.bottom: root.bottom
+    //                anchors.right: root.right
+    //            }
+    //        }
+    //    ]
 }

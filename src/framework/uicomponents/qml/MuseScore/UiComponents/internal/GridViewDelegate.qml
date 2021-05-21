@@ -39,6 +39,8 @@ Item {
     property int columns: 0
     property int columnSpacing: 2
 
+    property alias count: filterModel.count
+
     width: gridView.columns * gridView.cellWidth - root.columnSpacing
     height: gridView.rows * gridView.cellHeight - root.rowSpacing
 
