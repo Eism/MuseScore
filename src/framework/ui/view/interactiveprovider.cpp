@@ -30,6 +30,7 @@
 
 using namespace mu;
 using namespace mu::ui;
+using namespace mu::framework;
 
 static const QString PAGE_TYPE_DOCK("dock");
 static const QString PAGE_TYPE_POPUP("popup");
@@ -44,39 +45,28 @@ RetVal<Val> InteractiveProvider::question(const std::string& title, const framew
                                           const framework::IInteractive::ButtonDatas& buttons, int defBtn,
                                           const QFlags<framework::IInteractive::Option>& options)
 {
-    return RetVal<Val>::make_ok(Val());
+    return openStandardDialog("QUESTION", QString::fromStdString(title), text, buttons, defBtn, options);
 }
 
-framework::IInteractive::Result InteractiveProvider::info(const std::string& title, const std::string& text,
-                                                          const QFlags<framework::IInteractive::Option>& options)
+RetVal<Val> InteractiveProvider::info(const std::string& title, const std::string& text, const IInteractive::ButtonDatas& buttons,
+                                      int defBtn,
+                                      const QFlags<framework::IInteractive::Option>& options)
 {
-    QmlLaunchData* data = new QmlLaunchData();
-    data->setValue("title", QString::fromStdString(title));
-    data->setValue("text", QString::fromStdString(text));
-
-    if (options.testFlag(framework::IInteractive::Option::WithIcon)) {
-        data->setValue("withIcon", true);
-    }
-
-    if (options.testFlag(framework::IInteractive::Option::WithShowAgain)) {
-        data->setValue("withShowAgain", true);
-    }
-
-    emit fireOpenDialog(data);
-
-    return framework::IInteractive::Result();
+    return openStandardDialog("INFO", QString::fromStdString(title), text, buttons, defBtn, options);
 }
 
-framework::IInteractive::Result InteractiveProvider::warning(const std::string& title, const std::string& text,
-                                                             const QFlags<framework::IInteractive::Option>& options)
+RetVal<Val> InteractiveProvider::warning(const std::string& title, const std::string& text, const IInteractive::ButtonDatas& buttons,
+                                         int defBtn,
+                                         const QFlags<framework::IInteractive::Option>& options)
 {
-    return framework::IInteractive::Result();
+    return openStandardDialog("WARNING", QString::fromStdString(title), text, buttons, defBtn, options);
 }
 
-framework::IInteractive::Result InteractiveProvider::error(const std::string& title, const std::string& text,
-                                                           const QFlags<framework::IInteractive::Option>& options)
+RetVal<Val> InteractiveProvider::error(const std::string& title, const std::string& text, const IInteractive::ButtonDatas& buttons,
+                                       int defBtn,
+                                       const QFlags<framework::IInteractive::Option>& options)
 {
-    return framework::IInteractive::Result();
+    return openStandardDialog("ERROR", QString::fromStdString(title), text, buttons, defBtn, options);
 }
 
 RetVal<Val> InteractiveProvider::open(const UriQuery& q)
@@ -317,6 +307,65 @@ RetVal<InteractiveProvider::OpenData> InteractiveProvider::openQml(const UriQuer
     result.val.objectID = data->value("objectID").toString();
 
     delete data;
+
+    return result;
+}
+
+RetVal<Val> InteractiveProvider::openStandardDialog(const QString& type, const QString& title, const framework::IInteractive::Text& text,
+                                                    const framework::IInteractive::ButtonDatas& buttons, int defBtn,
+                                                    const QFlags<framework::IInteractive::Option>& options)
+{
+    QmlLaunchData* data = new QmlLaunchData();
+    data->setValue("type", type);
+
+    QVariantMap params;
+    params["title"] = title;
+    params["text"] = QString::fromStdString(text.text);
+    //todo format
+
+    QVariantList buttonList;
+    for (const IInteractive::ButtonData& buttonData: buttons) {
+        QVariantMap buttonObj;
+        buttonObj["buttonId"] = QVariant::fromValue(buttonData.btn);
+        buttonObj["title"] = QVariant::fromValue(QString::fromStdString(buttonData.text));
+        buttonObj["accent"] = QVariant::fromValue(buttonData.accent);
+
+        buttonList << buttonObj;
+    }
+
+    if (!buttonList.empty()) {
+        params["buttons"] = buttonList;
+    }
+
+    if (options.testFlag(framework::IInteractive::Option::WithIcon)) {
+        params["withIcon"] = true;
+    }
+
+    if (options.testFlag(framework::IInteractive::Option::WithShowAgain)) {
+        params["withShowAgain"] = true;
+    }
+
+    data->setValue("params", params);
+
+    emit fireOpenDialog(data);
+
+    Ret ret = toRet(data->value("ret"));
+    QString objectID = data->value("objectID").toString();
+
+    delete data;
+
+    RetVal<Val> result;
+    if (!ret) {
+        result.ret = ret;
+        return result;
+    }
+
+    if (!objectID.isEmpty()) {
+        RetVal<Val> rv = m_retvals.take(objectID);
+        if (rv.ret.valid()) {
+            result = rv;
+        }
+    }
 
     return result;
 }

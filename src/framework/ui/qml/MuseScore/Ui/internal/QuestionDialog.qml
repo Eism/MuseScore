@@ -24,37 +24,8 @@ import QtQuick 2.15
 import MuseScore.Ui 1.0
 import MuseScore.UiComponents 1.0
 
-StyledDialogView {
+StandardDialog {
     id: root
 
-    property alias title: content.title
-    property alias text: content.text
-
-    property alias withIcon: content.withIcon
-    property alias iconCode: content.iconCode
-
-    property alias withShowAgain: content.withShowAgain
-
-    property alias buttons: content.buttons
-
-    margins: 16
-
-    StandatdDialogPanel {
-        id: content
-
-        anchors.fill: parent
-
-        onContentWidthChanged: {
-            root.contentWidth = Math.max(Math.min(491, content.contentWidth), 338)
-        }
-
-        onContentHeightChanged: {
-            root.contentHeight = Math.max(104, content.contentHeight)
-        }
-
-        onClicked: {
-            root.ret = { "errcode": 0, "value": { "buttonId": buttonId, "showAgain": showAgain}}
-            root.hide()
-        }
-    }
+    iconCode: IconCode.QUESTION
 }

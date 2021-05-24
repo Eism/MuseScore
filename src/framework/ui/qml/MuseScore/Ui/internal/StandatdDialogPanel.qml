@@ -34,82 +34,120 @@ Rectangle {
     property alias text: textLabel.text
 
     property bool withIcon: false
-    property bool iconCode: ""
+    property alias iconCode: icon.iconCode
 
     property bool withShowAgain: false
 
+    property var buttons: []
+
+    property var contentWidth: Math.max(textContent.contentWidth, buttons.contentWidth)
+    property var contentHeight: content.contentHeight
+
+    signal clicked(string buttonId, bool showAgain)
+
     ColumnLayout {
+        id: content
+
         anchors.fill: parent
+
+        property int contentHeight: childrenRect.height
 
         spacing: 16
 
         RowLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            id: textContent
+
+            property int contentWidth: childrenRect.width
+
+            Layout.preferredWidth: childrenRect.width
+            Layout.preferredHeight: childrenRect.height
 
             spacing: 28
 
             StyledIconLabel {
-                iconCode: iconFromCode(root.iconCode)
-                visible: !isEmpty
+                id: icon
+
+                Layout.alignment: Qt.AlignTop
+
+                font.pixelSize: 48
+
+                visible: root.withIcon && !isEmpty
             }
 
-            ColumnLayout {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            Column {
+                property int _preferredWidth: Math.max(Math.min(titleLabel.implicitWidth, 420),
+                                                       Math.min(textLabel.implicitWidth, 420))
+
+                Layout.preferredWidth: _preferredWidth
+                Layout.preferredHeight: childrenRect.height
 
                 spacing: 16
 
                 StyledTextLabel {
                     id: titleLabel
 
-                    Layout.fillWidth: true
+                    width: parent._preferredWidth + /*todo*/ 4
 
-                    font.family: ui.theme.largeBodyBoldFont
+                    font: ui.theme.largeBodyBoldFont
+                    horizontalAlignment: Text.AlignLeft
+                    maximumLineCount: 2
+                    wrapMode: Text.WordWrap
                 }
 
                 StyledTextLabel {
                     id: textLabel
 
-                    Layout.fillWidth: true
+                    width: parent._preferredWidth + /*todo*/ 4
+
+                    horizontalAlignment: Text.AlignLeft
+                    maximumLineCount: 3
+                    wrapMode: Text.WordWrap
 
                     visible: !isEmpty
                 }
 
                 CheckBox {
+                    id: withShowAgainCheckBox
+
                     Layout.fillWidth: true
 
                     text: qsTrc("ui", "Show this message again")
 
-                    visible: root.withShowAgain
+                    checked: true
+
+                    visible: Boolean(root.withShowAgain)
+
+                    onClicked: {
+                        checked = !checked
+                    }
                 }
             }
         }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+        Item {
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
 
-            spacing: 28
+            ListView {
+                id: buttons
+                anchors.right: parent.right
+                spacing: 12
 
-            // todo
-            FlatButton {
-                text: "Ok"
+                width: contentWidth
+                height: contentHeight
+
+                model: root.buttons
+                orientation: Qt.Horizontal
+
+                delegate: FlatButton {
+                    text: modelData.title
+                    accentButton: Boolean(modelData.accent)
+
+                    onClicked: {
+                        root.clicked(modelData.buttonId, withShowAgainCheckBox.checked)
+                    }
+                }
             }
         }
-    }
-
-    function iconFromCode(code) {
-        switch (code) {
-        case "QUESTION":
-            return IconCode.AMBITUS
-        case "INFO":
-            return IconCode.AUDIO
-        case "WARNING":
-            return IconCode.BRACE
-        case "ERROR":
-            return IconCode.COUNT_IN
-        }
-
-        return IconCode.NONE
     }
 }

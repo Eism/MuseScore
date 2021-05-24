@@ -38,6 +38,17 @@
 using namespace mu;
 using namespace mu::framework;
 
+IInteractive::Result standardDialogResult(const RetVal<Val>& retVal)
+{
+    if (!retVal.ret) {
+        return IInteractive::Result();
+    }
+
+    int btn = retVal.val.toQVariant().toMap()["buttonId"].toInt();
+    bool showAgain = retVal.val.toQVariant().toMap()["showAgain"].toBool();
+    return IInteractive::Result(btn, showAgain);
+}
+
 IInteractive::Result Interactive::question(const std::string& title, const std::string& text,
                                            const Buttons& buttons,
                                            const Button& def,
@@ -55,8 +66,7 @@ IInteractive::Result Interactive::question(const std::string& title, const std::
 IInteractive::Result Interactive::question(const std::string& title, const Text& text, const ButtonDatas& btns, int defBtn,
                                            const QFlags<Option>& options) const
 {
-    provider()->question(title, text, btns, defBtn, options);
-    return Result();
+    return standardDialogResult(provider()->question(title, text, btns, defBtn, options));
 }
 
 IInteractive::ButtonData Interactive::buttonData(Button b) const
@@ -87,22 +97,25 @@ IInteractive::ButtonData Interactive::buttonData(Button b) const
     return ButtonData(int(b), "");
 }
 
-IInteractive::Result Interactive::info(const std::string& title, const std::string& text,
+IInteractive::Result Interactive::info(const std::string& title, const std::string& text, const ButtonDatas& buttons,
+                                       int defBtn,
                                        const QFlags<Option>& options) const
 {
-    return provider()->info(title, text, options);
+    return standardDialogResult(provider()->info(title, text, buttons, defBtn, options));
 }
 
-IInteractive::Result Interactive::warning(const std::string& title, const std::string& text,
+IInteractive::Result Interactive::warning(const std::string& title, const std::string& text, const ButtonDatas& buttons,
+                                          int defBtn,
                                           const QFlags<IInteractive::Option>& options) const
 {
-    return provider()->warning(title, text, options);
+    return standardDialogResult(provider()->warning(title, text, buttons, defBtn, options));
 }
 
-IInteractive::Result Interactive::error(const std::string& title, const std::string& text,
+IInteractive::Result Interactive::error(const std::string& title, const std::string& text, const ButtonDatas& buttons,
+                                        int defBtn,
                                         const QFlags<Option>& options) const
 {
-    return provider()->error(title, text, options);
+    return standardDialogResult(provider()->error(title, text, buttons, defBtn, options));
 }
 
 mu::io::path Interactive::selectOpeningFile(const QString& title, const io::path& dir, const QString& filter)

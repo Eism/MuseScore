@@ -100,9 +100,10 @@ QString InteractiveTestsModel::currentUri() const
 
 void InteractiveTestsModel::question()
 {
-    IInteractive::Result result = interactive()->question("Test", "It works?", {
-        IInteractive::Button::Yes,
-        IInteractive::Button::No });
+    IInteractive::Result result = interactive()->question("Do you really want to delete the 'xxx' workspace?", "",
+                                                          { interactive()->buttonData(IInteractive::Button::No),
+                                                            interactive()->buttonData(IInteractive::Button::Yes) }, 0,
+                                                          { IInteractive::Option::WithIcon });
 
     if (result.standartButton() == IInteractive::Button::Yes) {
         LOGI() << "Yes!!";
@@ -128,17 +129,27 @@ void InteractiveTestsModel::customQuestion()
 
 void InteractiveTestsModel::information()
 {
-    interactive()->info("Test", "This is info text");
+    interactive()->info("Tuplet cannot cross barlines", "", {}, 0,
+                        { IInteractive::Option::WithShowAgain });
 }
 
 void InteractiveTestsModel::warning()
 {
-    interactive()->warning("Test", "This is warning text");
+    int noSaveButton = int(IInteractive::Button::CustomButton) + 1;
+    int saveButton = noSaveButton + 1;
+
+    interactive()->warning("Do you want to save changes to the score “Untitled” before closing?",
+                           "Your changes will be lost if you don’t save them.",
+                           { IInteractive::ButtonData(noSaveButton, "Don’t save"),
+                             interactive()->buttonData(IInteractive::Button::Cancel),
+                             IInteractive::ButtonData(saveButton, "Save", true) }, saveButton,
+                           { IInteractive::Option::WithIcon });
 }
 
 void InteractiveTestsModel::critical()
 {
-    interactive()->error("Test", "This is critical text");
+    interactive()->error("Cannot read file C:/Users/Username/Desktop/Composition.mscz",
+                         "An error has occured when trying to open this file",  {}, 0, { IInteractive::Option::WithIcon });
 }
 
 void InteractiveTestsModel::require()

@@ -62,12 +62,15 @@ public:
                          const framework::IInteractive::ButtonDatas& buttons, int defBtn = int(framework::IInteractive::Button::NoButton),
                          const QFlags<framework::IInteractive::Option>& options = {});
 
-    framework::IInteractive::Result info(const std::string& title, const std::string& text,
-                                         const QFlags<framework::IInteractive::Option>& options = {}) override;
-    framework::IInteractive::Result warning(const std::string& title, const std::string& text,
-                                            const QFlags<framework::IInteractive::Option>& options = {}) override;
-    framework::IInteractive::Result error(const std::string& title, const std::string& text,
-                                          const QFlags<framework::IInteractive::Option>& options = {}) override;
+    RetVal<Val> info(const std::string& title, const std::string& text, const framework::IInteractive::ButtonDatas& buttons,
+                     int defBtn = int(framework::IInteractive::Button::NoButton),
+                     const QFlags<framework::IInteractive::Option>& options = {}) override;
+    RetVal<Val> warning(const std::string& title, const std::string& text, const framework::IInteractive::ButtonDatas& buttons,
+                        int defBtn = int(framework::IInteractive::Button::NoButton),
+                        const QFlags<framework::IInteractive::Option>& options = {}) override;
+    RetVal<Val> error(const std::string& title, const std::string& text, const framework::IInteractive::ButtonDatas& buttons,
+                      int defBtn = int(framework::IInteractive::Button::NoButton),
+                      const QFlags<framework::IInteractive::Option>& options = {}) override;
 
     RetVal<Val> open(const UriQuery& uri) override;
     RetVal<bool> isOpened(const Uri& uri) const override;
@@ -102,11 +105,16 @@ private:
 
     void fillData(QmlLaunchData* data, const UriQuery& q) const;
     void fillData(QObject* object, const UriQuery& q) const;
+
     Ret toRet(const QVariant& jsr) const;
     RetVal<Val> toRetVal(const QVariant& jsrv) const;
 
     RetVal<OpenData> openWidgetDialog(const UriQuery& q);
     RetVal<OpenData> openQml(const UriQuery& q);
+    RetVal<Val> openStandardDialog(const QString& type, const QString& title, const framework::IInteractive::Text& text,
+                                   const framework::IInteractive::ButtonDatas& buttons,
+                                   int defBtn = int(framework::IInteractive::Button::NoButton),
+                                   const QFlags<framework::IInteractive::Option>& options = {});
 
     void closeWidgetDialog(const QVariant& dialogMetaTypeId);
     void closeQml(const QVariant& objectID);

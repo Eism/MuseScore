@@ -59,67 +59,37 @@ Item {
             }
 
             if (page.type === ContainerType.QmlDialog) {
+                var dialogPath = "../../" + page.path
 
-                var comp = Qt.createComponent("../../" + page.path);
-                if (comp.status !== Component.Ready) {
-                    console.log("[qml] failed create component: " + page.path + ", err: " + comp.errorString())
-                    data.setValue("ret", {errcode: 102 }) // CreateFailed
-                    return;
+                var dialogObj = createDialog(dialogPath, page.params)
+                data.setValue("ret", dialogObj.ret)
+                data.setValue("objectID", dialogObj.object.objectID)
+
+                if (dialogObj.ret.errcode > 0) {
+                    return
                 }
-
-                var obj = comp.createObject(root.topParent, page.params);
-                obj.objectID = root.provider.objectID(obj)
-
-                var ret = (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0}
-                data.setValue("ret", (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0})
-                data.setValue("objectID", obj.objectID)
-
-                if (ret.errcode > 0) {
-                    return;
-                }
-
-                obj.closed.connect(function() {
-                    root.provider.onPopupClose(obj.objectID, obj.ret ? obj.ret : {errcode: 0})
-                    obj.destroy()
-                })
-
-                root.provider.onOpen(page.type, obj.objectID)
 
                 if (Boolean(data.value("sync")) && data.value("sync") === true) {
-                    obj.exec()
+                    dialogObj.object.exec()
                 } else {
-                    obj.show()
+                    dialogObj.object.show()
                 }
             }
         }
 
-        function fireOpenDialog(data) {
-            var dialogPath = "internal/StandatdDialog.qml"
-            var comp = Qt.createComponent(dialogPath)
-            if (comp.status !== Component.Ready) {
-                console.log("[qml] failed create component: " + dialogPath + ", err: " + comp.errorString())
-                data.setValue("ret", {errcode: 102 }) // CreateFailed
+        function onFireOpenDialog(data) {
+            var dialog = data.data()
+            var dialogPath = standardDialogPath(dialog.type)
+
+            var dialogObj = createDialog(dialogPath, dialog.params)
+            data.setValue("ret", dialogObj.ret)
+            data.setValue("objectID", dialogObj.object.objectID)
+
+            if (dialogObj.ret.errcode > 0) {
                 return
             }
 
-            var obj = comp.createObject(root.topParent) // todo
-
-            var ret = (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0}
-            data.setValue("ret", (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0})
-            data.setValue("objectID", obj.objectID)
-
-            if (ret.errcode > 0) {
-                return;
-            }
-
-            obj.closed.connect(function() {
-//                root.provider.onPopupClose(obj.objectID, obj.ret ? obj.ret : {errcode: 0})
-//                obj.destroy()
-            })
-
-//            root.provider.onOpen(page.type, obj.objectID)
-
-            obj.exec()
+            dialogObj.object.exec()
         }
 
         function onFireClose(objectID) {
@@ -129,5 +99,46 @@ Item {
                 }
             }
         }
+    }
+
+    function standardDialogPath(type) {
+        switch (type) {
+        case "QUESTION":
+            return "internal/QuestionDialog.qml"
+        case "INFO":
+            return "internal/InfoDialog.qml"
+        case "WARNING":
+            return "internal/WarningDialog.qml"
+        case "ERROR":
+            return "internal/ErrorDialog.qml"
+        }
+
+        return ""
+    }
+
+    function createDialog(path, params) {
+        var comp = Qt.createComponent(path)
+        if (comp.status !== Component.Ready) {
+            console.log("[qml] failed create component: " + path + ", err: " + comp.errorString())
+            return { "ret": { "errcode": 102 } } // CreateFailed
+        }
+
+        var obj = comp.createObject(root.topParent, params)
+        obj.objectID = root.provider.objectID(obj)
+
+        var ret = (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0}
+
+        if (ret.errcode > 0) {
+            return { "ret": ret, "object" : obj }
+        }
+
+        obj.closed.connect(function() {
+            root.provider.onPopupClose(obj.objectID, obj.ret ? obj.ret : {errcode: 0})
+            obj.destroy()
+        })
+
+        root.provider.onOpen(ContainerType.QmlDialog, obj.objectID)
+
+        return { "ret": ret, "object" : obj }
     }
 }

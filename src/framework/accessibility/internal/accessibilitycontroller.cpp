@@ -30,7 +30,7 @@
 #include "async/async.h"
 #include "log.h"
 
-#define ACCESSIBILITY_LOGGING_ENABLED
+//#define ACCESSIBILITY_LOGGING_ENABLED
 
 #ifdef ACCESSIBILITY_LOGGING_ENABLED
 #define MYLOG() LOGI()

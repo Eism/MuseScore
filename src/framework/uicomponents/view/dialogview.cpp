@@ -61,6 +61,8 @@ void DialogView::beforeShow()
 
     //! NOTE ok will be if they call accept
     setErrCode(Ret::Code::Cancel);
+
+    setTitle("");
 }
 
 void DialogView::onHidden()

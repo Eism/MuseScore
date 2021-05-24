@@ -44,13 +44,16 @@ public:
     ButtonData buttonData(Button b) const override;
 
     // info
-    Result info(const std::string& title, const std::string& text, const QFlags<Option>& options = {}) const override;
+    Result info(const std::string& title, const std::string& text, const ButtonDatas& buttons, int defBtn = int(Button::NoButton),
+                const QFlags<Option>& options = {}) const override;
 
     // warning
-    Result warning(const std::string& title, const std::string& text, const QFlags<Option>& options = {}) const override;
+    Result warning(const std::string& title, const std::string& text, const ButtonDatas& buttons, int defBtn = int(Button::NoButton),
+                   const QFlags<Option>& options = {}) const override;
 
     // error
-    Result error(const std::string& title, const std::string& text, const QFlags<Option>& options = {}) const override;
+    Result error(const std::string& title, const std::string& text, const ButtonDatas& buttons, int defBtn = int(Button::NoButton),
+                 const QFlags<Option>& options = {}) const override;
 
     // files
     io::path selectOpeningFile(const QString& title, const io::path& dir, const QString& filter) override;

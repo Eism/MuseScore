@@ -6,5 +6,9 @@
         <file>qml/MuseScore/Ui/KeyNavDevDialog.qml</file>
         <file>qml/MuseScore/Ui/internal/StandardDialog.qml</file>
         <file>qml/MuseScore/Ui/internal/StandatdDialogPanel.qml</file>
+        <file>qml/MuseScore/Ui/internal/ErrorDialog.qml</file>
+        <file>qml/MuseScore/Ui/internal/InfoDialog.qml</file>
+        <file>qml/MuseScore/Ui/internal/QuestionDialog.qml</file>
+        <file>qml/MuseScore/Ui/internal/WarningDialog.qml</file>
     </qresource>
 </RCC>
