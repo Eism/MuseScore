@@ -93,6 +93,35 @@ Item {
             }
         }
 
+        function fireOpenDialog(data) {
+            var dialogPath = "internal/StandatdDialog.qml"
+            var comp = Qt.createComponent(dialogPath)
+            if (comp.status !== Component.Ready) {
+                console.log("[qml] failed create component: " + dialogPath + ", err: " + comp.errorString())
+                data.setValue("ret", {errcode: 102 }) // CreateFailed
+                return
+            }
+
+            var obj = comp.createObject(root.topParent) // todo
+
+            var ret = (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0}
+            data.setValue("ret", (obj.ret && obj.ret.errcode) ? obj.ret : {errcode: 0})
+            data.setValue("objectID", obj.objectID)
+
+            if (ret.errcode > 0) {
+                return;
+            }
+
+            obj.closed.connect(function() {
+//                root.provider.onPopupClose(obj.objectID, obj.ret ? obj.ret : {errcode: 0})
+//                obj.destroy()
+            })
+
+//            root.provider.onOpen(page.type, obj.objectID)
+
+            obj.exec()
+        }
+
         function onFireClose(objectID) {
             for(var i = 0; i < root.topParent.children.length; ++i) {
                 if (root.topParent.children[i].objectID === objectID) {

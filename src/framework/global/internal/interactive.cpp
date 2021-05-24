@@ -55,50 +55,8 @@ IInteractive::Result Interactive::question(const std::string& title, const std::
 IInteractive::Result Interactive::question(const std::string& title, const Text& text, const ButtonDatas& btns, int defBtn,
                                            const QFlags<Option>& options) const
 {
-    Q_UNUSED(options)
-
-    //! NOTE Temporarily, need to replace the qml dialog
-
-    auto format = [](IInteractive::TextFormat f) {
-        switch (f) {
-        case IInteractive::TextFormat::PlainText: return Qt::PlainText;
-        case IInteractive::TextFormat::RichText:  return Qt::RichText;
-        }
-        return Qt::PlainText;
-    };
-
-    QMap<QAbstractButton*, int> btnsMap;
-    auto makeButton = [&btnsMap](const ButtonData& b, QWidget* parent) {
-        QPushButton* btn = new QPushButton(parent);
-        btn->setText(QString::fromStdString(b.text));
-        btnsMap[btn] = b.btn;
-        return btn;
-    };
-
-    QMessageBox msgBox;
-    msgBox.setWindowTitle(QString::fromStdString(title));
-    msgBox.setText(QString::fromStdString(text.text));
-    msgBox.setTextFormat(format(text.format));
-
-    for (const ButtonData& b : btns) {
-        QPushButton* btn = makeButton(b, &msgBox);
-        msgBox.addButton(btn, QMessageBox::ActionRole);
-
-        if (b.btn == defBtn) {
-            msgBox.setDefaultButton(btn);
-        }
-    }
-
-    QGridLayout* layout = (QGridLayout*)msgBox.layout();
-    QSpacerItem* hSpacer = new QSpacerItem(300, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    layout->addItem(hSpacer, layout->rowCount(), 0, 1, layout->columnCount());
-
-    msgBox.exec();
-
-    QAbstractButton* clickedBtn = msgBox.clickedButton();
-    int retBtn = btnsMap.value(clickedBtn);
-
-    return Result(retBtn);
+    provider()->question(title, text, btns, defBtn, options);
+    return Result();
 }
 
 IInteractive::ButtonData Interactive::buttonData(Button b) const
@@ -132,19 +90,19 @@ IInteractive::ButtonData Interactive::buttonData(Button b) const
 IInteractive::Result Interactive::info(const std::string& title, const std::string& text,
                                        const QFlags<Option>& options) const
 {
-    return message(MessageType::Info, title, text, options);
+    return provider()->info(title, text, options);
 }
 
 IInteractive::Result Interactive::warning(const std::string& title, const std::string& text,
                                           const QFlags<IInteractive::Option>& options) const
 {
-    return message(MessageType::Warning, title, text, options);
+    return provider()->warning(title, text, options);
 }
 
 IInteractive::Result Interactive::error(const std::string& title, const std::string& text,
                                         const QFlags<Option>& options) const
 {
-    return message(MessageType::Error, title, text, options);
+    return provider()->error(title, text, options);
 }
 
 mu::io::path Interactive::selectOpeningFile(const QString& title, const io::path& dir, const QString& filter)

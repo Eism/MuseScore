@@ -40,6 +40,45 @@ InteractiveProvider::InteractiveProvider()
 {
 }
 
+RetVal<Val> InteractiveProvider::question(const std::string& title, const framework::IInteractive::Text& text,
+                                          const framework::IInteractive::ButtonDatas& buttons, int defBtn,
+                                          const QFlags<framework::IInteractive::Option>& options)
+{
+    return RetVal<Val>::make_ok(Val());
+}
+
+framework::IInteractive::Result InteractiveProvider::info(const std::string& title, const std::string& text,
+                                                          const QFlags<framework::IInteractive::Option>& options)
+{
+    QmlLaunchData* data = new QmlLaunchData();
+    data->setValue("title", QString::fromStdString(title));
+    data->setValue("text", QString::fromStdString(text));
+
+    if (options.testFlag(framework::IInteractive::Option::WithIcon)) {
+        data->setValue("withIcon", true);
+    }
+
+    if (options.testFlag(framework::IInteractive::Option::WithShowAgain)) {
+        data->setValue("withShowAgain", true);
+    }
+
+    emit fireOpenDialog(data);
+
+    return framework::IInteractive::Result();
+}
+
+framework::IInteractive::Result InteractiveProvider::warning(const std::string& title, const std::string& text,
+                                                             const QFlags<framework::IInteractive::Option>& options)
+{
+    return framework::IInteractive::Result();
+}
+
+framework::IInteractive::Result InteractiveProvider::error(const std::string& title, const std::string& text,
+                                                           const QFlags<framework::IInteractive::Option>& options)
+{
+    return framework::IInteractive::Result();
+}
+
 RetVal<Val> InteractiveProvider::open(const UriQuery& q)
 {
     m_openingUriQuery = q;

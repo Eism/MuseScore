@@ -58,6 +58,17 @@ class InteractiveProvider : public QObject, public IInteractiveProvider
 public:
     explicit InteractiveProvider();
 
+    RetVal<Val> question(const std::string& title, const framework::IInteractive::Text& text,
+                         const framework::IInteractive::ButtonDatas& buttons, int defBtn = int(framework::IInteractive::Button::NoButton),
+                         const QFlags<framework::IInteractive::Option>& options = {});
+
+    framework::IInteractive::Result info(const std::string& title, const std::string& text,
+                                         const QFlags<framework::IInteractive::Option>& options = {}) override;
+    framework::IInteractive::Result warning(const std::string& title, const std::string& text,
+                                            const QFlags<framework::IInteractive::Option>& options = {}) override;
+    framework::IInteractive::Result error(const std::string& title, const std::string& text,
+                                          const QFlags<framework::IInteractive::Option>& options = {}) override;
+
     RetVal<Val> open(const UriQuery& uri) override;
     RetVal<bool> isOpened(const Uri& uri) const override;
 
@@ -73,6 +84,8 @@ public:
 signals:
     void fireOpen(QmlLaunchData* data);
     void fireClose(QVariant data);
+
+    void fireOpenDialog(QmlLaunchData* data);
 
 private:
     struct OpenData
