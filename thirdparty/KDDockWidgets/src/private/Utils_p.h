@@ -222,7 +222,7 @@ inline int startDragDistance()
 #ifdef KDDOCKWIDGETS_QTWIDGETS
     return QApplication::startDragDistance();
 #else
-    return 4;
+    return 40;
 #endif
 }
 

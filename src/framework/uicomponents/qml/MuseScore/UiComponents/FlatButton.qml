@@ -93,7 +93,6 @@ FocusScope {
     }
 
     signal clicked(var mouse)
-    signal pressAndHold(var mouse)
 
     objectName: root.text
 
@@ -288,10 +287,6 @@ FocusScope {
 
         onPressed: {
             ui.tooltip.hide(root, true)
-        }
-
-        onPressAndHold: function(mouse) {
-            root.pressAndHold(mouse)
         }
 
         onContainsMouseChanged: {
