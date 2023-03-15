@@ -137,6 +137,8 @@ QAccessible::State AccessibleItemInterface::state() const
     case IAccessible::Role::Button: {
         state.focusable = true;
         state.focused = item->accessibleState(IAccessible::State::Focused);
+
+        state.pressed = item->accessibleState(IAccessible::State::Pressed);
     } break;
     case IAccessible::Role::RadioButton: {
         state.focusable = true;
@@ -272,6 +274,10 @@ void AccessibleItemInterface::setText(QAccessible::Text, const QString&)
 
 QVariant AccessibleItemInterface::currentValue() const
 {
+    if (role() == QAccessible::Button) {
+        return m_object->item()->accessibleState(IAccessible::State::Pressed) ? qtrc("accessibility", "Selected") : "";
+    }
+
     return m_object->item()->accessibleValue();
 }
 
@@ -389,7 +395,7 @@ QString AccessibleItemInterface::attributes(int, int* startOffset, int* endOffse
 void* AccessibleItemInterface::interface_cast(QAccessible::InterfaceType type)
 {
     QAccessible::Role itemRole = role();
-    if (type == QAccessible::InterfaceType::ValueInterface && itemRole == QAccessible::Slider) {
+    if (type == QAccessible::InterfaceType::ValueInterface && (itemRole == QAccessible::Slider || itemRole == QAccessible::Button)) {
         return static_cast<QAccessibleValueInterface*>(this);
     } else if (type == QAccessible::InterfaceType::TextInterface) {
         return static_cast<QAccessibleTextInterface*>(this);

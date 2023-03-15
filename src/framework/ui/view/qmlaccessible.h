@@ -98,6 +98,7 @@ public:
     STATE_PROPERTY(selected, State::Selected)
     STATE_PROPERTY(focused, State::Focused)
     STATE_PROPERTY(checked, State::Checked)
+    STATE_PROPERTY(pressed, State::Pressed)
 
     AccessibleItem(QObject* parent = nullptr);
     ~AccessibleItem();

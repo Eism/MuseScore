@@ -133,6 +133,8 @@ Item {
             navigation.panel: keynavSub
             navigation.name: Boolean(item) ? item.id : ""
             navigation.order: Boolean(itemModel) ? itemModel.order : 0
+            accessible.pressed: (Boolean(item) && item.checked)
+
             isClickOnKeyNavTriggered: false
             navigation.onTriggered: {
                 if (menuLoader.isMenuOpened || hasMenu) {

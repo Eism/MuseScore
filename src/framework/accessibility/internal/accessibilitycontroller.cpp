@@ -256,6 +256,9 @@ void AccessibilityController::stateChanged(IAccessible* aitem, State state, bool
     case State::Checked: {
         qstate.checked = true;
     } break;
+    case State::Pressed: {
+        qstate.pressed = true;
+    } break;
     default: {
         LOGE() << "not handled state: " << int(state);
         return;

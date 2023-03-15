@@ -74,6 +74,7 @@ Item {
             navigation.panel: root.navPanel
             navigation.name: toolTipTitle
             navigation.order: model.index
+            accessible.pressed: (Boolean(item) && item.checked)
 
             onClicked: {
                 if (menuLoader.isMenuOpened || item.subitems.length) {
