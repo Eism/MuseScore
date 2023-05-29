@@ -50,6 +50,7 @@
 #include "../libmscore/chord.h"
 #include "../libmscore/chordline.h"
 #include "../libmscore/clef.h"
+#include "../libmscore/capo.h"
 
 #include "../libmscore/deadslapped.h"
 #include "../libmscore/dynamic.h"
@@ -161,7 +162,7 @@ using namespace mu::engraving::layout::v0;
 using LayoutTypes = rtti::TypeList<Accidental, ActionIcon, Ambitus, Arpeggio, Articulation,
                                    BagpipeEmbellishment, BarLine, Beam, Bend, StretchedBend,
                                    HBox, VBox, FBox, TBox, Bracket, Breath,
-                                   Chord, ChordLine, Clef,
+                                   Chord, ChordLine, Clef, Capo,
                                    Dynamic, Expression,
                                    Fermata, FiguredBass, Fingering, FretDiagram,
                                    Glissando, GlissandoSegment, GradualTempoChange, GradualTempoChangeSegment,
@@ -1371,6 +1372,12 @@ void TLayout::layout(Clef* item, LayoutContext&)
     item->setPos(x, yoff * _spatium + (stepOffset * 0.5 * _spatium));
 
     item->setbbox(r);
+}
+
+void TLayout::layout(Capo* item, LayoutContext& ctx)
+{
+    layoutTextBase(item, ctx);
+    item->autoplaceSegmentElement();
 }
 
 void TLayout::layout(DeadSlapped* item, LayoutContext&)
