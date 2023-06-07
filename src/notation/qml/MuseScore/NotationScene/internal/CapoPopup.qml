@@ -38,12 +38,17 @@ StyledPopupView {
     showArrow: false
 
     function updatePosition(pos, size) {
+        var h = Math.max(root.contentHeight, capoModel.capoIsOn ? 360 : 160)
         root.x = pos.x + size.x + 12
-        root.y = pos.y - root.contentHeight / 2
+        root.y = pos.y - h / 2
     }
 
     CapoSettingsModel {
         id: capoModel
+
+        onItemRectChanged: function(rect) {
+            updatePosition(Qt.point(rect.x, rect.y), Qt.point(rect.width, rect.height))
+        }
     }
 
     Component.onCompleted: {
