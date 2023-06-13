@@ -30,7 +30,7 @@ StyledPopupView {
     id: root
 
     property int navigationOrderStart: 0
-    property int navigationOrderEnd: 0
+    property int navigationOrderEnd: capoSettingsNavPanel.order
 
     contentWidth: content.width
     contentHeight: content.height
