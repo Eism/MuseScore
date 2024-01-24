@@ -24,6 +24,8 @@ import json
 import markdown
 
 RELEASE_INFO_FILE = sys.argv[1]
+PREVIOUS_RELEASE_VERSION = sys.argv[2]
+PREVIOUS_RELEASE_INFO_FILE = sys.argv[3]
 
 print("=== Load json ===")
 
@@ -33,20 +35,42 @@ json_file.close()
 
 print("=== Make html version of body ===")
 
+def bodyToHtml(release_body_markdown):
+    release_body_html = markdown.markdown(release_body_markdown)
+
+    # Correct result of Markdown parser
+    # Escape single quotes
+    release_body_html = release_body_html.replace("'", "`")
+
+    # Correct new lines next to <ul> and </ul>
+    release_body_html = release_body_html.replace("\n<ul>\n", "<ul>")
+    release_body_html = release_body_html.replace("\n</ul>\n", "</ul>")
+
+    return "'" + release_body_html + "'"
+
 release_body_markdown = release_info_json["body"]
 
-release_body_html = markdown.markdown(release_body_markdown)
-
-# Correct result of Markdown parser
-# Escape single quotes
-release_body_html = release_body_html.replace("'", "`")
-
-# Correct new lines next to <ul> and </ul>
-release_body_html = release_body_html.replace("\n<ul>\n", "<ul>")
-release_body_html = release_body_html.replace("\n</ul>\n", "</ul>")
-
-release_info_json["body"] = "'" + release_body_html + "'"
+release_info_json["body"] = bodyToHtml(release_body_markdown)
 release_info_json["bodyMarkdown"] = release_body_markdown
+
+previous_release_body_markdown = ""
+
+if PREVIOUS_RELEASE_VERSION:
+    print("=== Load json for previous release ===")
+
+    json_file = open(PREVIOUS_RELEASE_INFO_FILE, "r+")
+    previous_release_info_json = json.load(json_file)
+    json_file.close()
+
+    print("=== Make html version of body for previous release ===")
+
+    previous_release_body_markdown = previous_release_info_json["body"]
+
+    print("=== Add previous major/minor release notes to body ===")
+    previous_release_body_markdown = re.sub(r'^###.*\n', f'### {PREVIOUS_RELEASE_VERSION} release notes\n', previous_release_body_markdown, count=1, flags=re.MULTILINE)
+
+    release_info_json["previousReleaseBody"] = bodyToHtml(previous_release_body_markdown)
+    release_info_json["previousReleaseBodyMarkdown"] = previous_release_body_markdown
 
 print("=== Split release assets ===")
 
