@@ -142,7 +142,7 @@ if (MUE_BUILD_CRASHPAD_CLIENT)
         install(PROGRAMS ${MUE_CRASHPAD_HANDLER_PATH} DESTINATION bin)
     elseif(OS_IS_MAC)
         if (NOT MUE_CRASHPAD_HANDLER_PATH)
-            set(MUE_CRASHPAD_HANDLER_PATH ${CPAD_ROOT_PATH}/macos/x86-64/crashpad_handler)
+            set(MUE_CRASHPAD_HANDLER_PATH ${CPAD_ROOT_PATH}/macos/crashpad_handler)
         endif()
 
         install(PROGRAMS ${MUE_CRASHPAD_HANDLER_PATH} DESTINATION ${Mscore_SHARE_NAME}Contents/MacOS)
