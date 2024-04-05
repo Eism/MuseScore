@@ -274,7 +274,7 @@ int main(int argc, char** argv)
     app.addModule(new mu::musesampler::MuseSamplerModule());
 #endif
     app.addModule(new mu::network::NetworkModule());
-    app.addModule(new mu::shortcuts::ShortcutsModule());
+    app.addModule(new muse::shortcuts::ShortcutsModule());
 #ifdef MUSE_MODULE_UI
     app.addModule(new muse::ui::UiModule());
     app.addModule(new muse::uicomponents::UiComponentsModule());
