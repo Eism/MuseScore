@@ -21,7 +21,7 @@
  */
 #include "networkmanagerstub.h"
 
-using namespace mu::network;
+using namespace muse::network;
 
 mu::Ret NetworkManagerStub::get(const QUrl&, IncomingDevice*, const RequestHeaders&)
 {
