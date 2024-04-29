@@ -31,6 +31,7 @@
 #include <QRandomGenerator>
 
 #include "io/buffer.h"
+#include "io/file.h"
 
 #include "engraving/compat/scoreaccess.h"
 #include "engraving/infrastructure/mscwriter.h"
@@ -155,7 +156,7 @@ Ret BackendApi::exportScorePartsPdfs(const io::path_t& in, const io::path_t& out
 
     std::string scoreFileName = io::dirpath(in).toStdString() + "/" + io::filename(in, false).toStdString() + ".pdf";
 
-    Ret ret = doExportScorePartsPdfs(prj.val->masterNotation(), outputFile, scoreFileName);
+    Ret ret = doExportScorePartsPdfs(prj.val->masterNotation(), outputFile, scoreFileName, io::absoluteDirpath(out));
 
     outputFile.close();
 
@@ -570,7 +571,7 @@ Ret BackendApi::doExportScoreParts(const IMasterNotationPtr masterNotation, QIOD
 }
 
 Ret BackendApi::doExportScorePartsPdfs(const IMasterNotationPtr masterNotation, QIODevice& destinationDevice,
-                                       const std::string& scoreFileName)
+                                       const std::string& scoreFileName, const path_t &pdfsOut)
 {
     QJsonObject jsonForPdfs;
     jsonForPdfs["score"] = QString::fromStdString(scoreFileName);
@@ -583,6 +584,17 @@ Ret BackendApi::doExportScorePartsPdfs(const IMasterNotationPtr masterNotation, 
     QJsonArray partsArray;
     QJsonArray partsNamesArray;
 
+    fileSystem()->makePath(pdfsOut);
+
+    {
+        QByteArray partBin = processWriter(PDF_WRITER_NAME, masterNotation->notation()).val;
+
+        File pdf(pdfsOut + "/" + masterNotation->notation()->name() + ".pdf");
+        pdf.open(File::WriteOnly);
+        pdf.write(QByteArray::fromBase64(partBin));
+        pdf.close();
+    }
+
     ExcerptNotationList excerpts = allExcerpts(masterNotation);
 
     for (IExcerptNotationPtr e : excerpts) {
@@ -590,6 +602,12 @@ Ret BackendApi::doExportScorePartsPdfs(const IMasterNotationPtr masterNotation, 
         partsNamesArray.append(partNameVal);
 
         QByteArray partBin = processWriter(PDF_WRITER_NAME, e->notation()).val;
+
+        File pdf(pdfsOut + "/" + e->name() + ".pdf");
+        pdf.open(File::WriteOnly);
+        pdf.write(QByteArray::fromBase64(partBin));
+        pdf.close();
+
         QJsonValue partVal(QString::fromLatin1(partBin));
         partsArray.append(partVal);
 

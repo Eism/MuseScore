@@ -83,7 +83,7 @@ private:
 
     static Ret doExportScoreParts(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice);
     static Ret doExportScorePartsPdfs(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice,
-                                      const std::string& scoreFileName);
+                                      const std::string& scoreFileName, const io::path_t& pdfsOut);
     static Ret doExportScoreTranspose(const notation::INotationPtr notation, BackendJsonWriter& jsonWriter, bool addSeparator = false);
 
     static RetVal<QByteArray> scorePartJson(mu::engraving::Score* score, const std::string& fileName);
