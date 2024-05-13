@@ -231,6 +231,7 @@ RetVal<project::INotationProjectPtr> BackendApi::openProject(const io::path_t& p
         return make_ret(Ret::Code::InternalError);
     }
 
+    unrollRepeats(masterNotation);
     switchToPageView(masterNotation);
     renderExcerptsContents(masterNotation);
 
@@ -571,7 +572,7 @@ Ret BackendApi::doExportScoreParts(const IMasterNotationPtr masterNotation, QIOD
 }
 
 Ret BackendApi::doExportScorePartsPdfs(const IMasterNotationPtr masterNotation, QIODevice& destinationDevice,
-                                       const std::string& scoreFileName, const path_t &pdfsOut)
+                                       const std::string& scoreFileName, const path_t& pdfsOut)
 {
     QJsonObject jsonForPdfs;
     jsonForPdfs["score"] = QString::fromStdString(scoreFileName);
@@ -771,6 +772,17 @@ Ret BackendApi::applyTranspose(const INotationPtr notation, const std::string& o
     }
 
     return ok ? make_ret(Ret::Code::Ok) : make_ret(Ret::Code::InternalError);
+}
+
+void BackendApi::unrollRepeats(notation::IMasterNotationPtr masterNotation)
+{
+    MasterScore* origin = masterNotation->masterScore();
+    auto fileInfo = origin->fileInfo();
+
+    MasterScore* newScore = origin->unrollRepeats();
+    newScore->setFileInfoProvider(fileInfo);
+
+    masterNotation->setMasterScore(std::move(newScore));
 }
 
 void BackendApi::switchToPageView(IMasterNotationPtr masterNotation)

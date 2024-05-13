@@ -140,6 +140,11 @@ MasterScore* EngravingProject::masterScore() const
     return m_masterScore;
 }
 
+void EngravingProject::setMasterScore(MasterScore* masterScore)
+{
+    m_masterScore = masterScore;
+}
+
 Ret EngravingProject::loadMscz(const MscReader& msc, SettingsCompat& settingsCompat, bool ignoreVersionError)
 {
     TRACEFUNC;
