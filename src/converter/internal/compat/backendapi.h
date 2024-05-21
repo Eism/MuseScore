@@ -88,15 +88,18 @@ private:
     static muse::RetVal<QByteArray> processWriter(const std::string& writerName, const notation::INotationPtrList notations,
                                                   const project::INotationWriter::Options& options);
 
-    static Ret doExportScoreParts(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice);
-    static Ret doExportScorePartsPdfs(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice,
-                                      const std::string& scoreFileName, const io::path_t& pdfsOut);
-    static Ret doExportScoreTranspose(const notation::INotationPtr notation, BackendJsonWriter& jsonWriter, bool addSeparator = false);
+    static muse::Ret doExportScoreParts(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice);
+    static muse::Ret doExportScorePartsPdfs(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice,
+                                            const std::string& scoreFileName, const muse::io::path_t& pdfsOut);
+    static muse::Ret doExportScoreTranspose(const notation::INotationPtr notation, BackendJsonWriter& jsonWriter,
+                                            bool addSeparator = false);
 
     static muse::RetVal<QByteArray> scorePartJson(mu::engraving::Score* score, const std::string& fileName);
 
     static muse::RetVal<notation::TransposeOptions> parseTransposeOptions(const std::string& optionsJson);
     static muse::Ret applyTranspose(const notation::INotationPtr notation, const std::string& optionsJson);
+
+    static void unrollRepeats(notation::IMasterNotationPtr masterNotation);
 
     static void switchToPageView(notation::IMasterNotationPtr masterNotation);
     static void renderExcerptsContents(notation::IMasterNotationPtr masterNotation);

@@ -290,6 +290,10 @@ Ret NotationProject::doImport(const muse::io::path_t& path, const muse::io::path
         return ret;
     }
 
+    m_engravingProject->setMasterScore(score->unrollRepeats());
+    m_engravingProject->setFileInfoProvider(std::make_shared<ProjectFileInfoProvider>(this));
+    score = m_engravingProject->masterScore();
+
     // Setup master score post-reading
     ret = m_engravingProject->setupMasterScore(forceMode);
     if (!ret) {

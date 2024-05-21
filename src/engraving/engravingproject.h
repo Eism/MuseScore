@@ -66,6 +66,7 @@ public:
     bool readOnly() const;
 
     MasterScore* masterScore() const;
+    void setMasterScore(MasterScore* masterScore);
     muse::Ret setupMasterScore(bool forceMode);
 
     muse::Ret loadMscz(const MscReader& msc, SettingsCompat& settingsCompat, bool ignoreVersionError);
