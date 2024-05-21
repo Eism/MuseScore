@@ -39,6 +39,8 @@ set(CMAKE_MODULE_PATH
 set(MUSE_FRAMEWORK_PATH ${CMAKE_CURRENT_LIST_DIR})
 set(MUSE_FRAMEWORK_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/src/framework)
 
+set(MUSE_MODULE_ACCESSIBILITY OFF)
+
 ###########################################
 # Setup option and build settings
 ###########################################

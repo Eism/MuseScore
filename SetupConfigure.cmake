@@ -110,6 +110,8 @@ if (OS_IS_FBSD)
     set(MUSE_MODULE_DIAGNOSTICS_CRASHPAD_CLIENT OFF)
 endif()
 
+set(MUSE_MODULE_ACCESSIBILITY OFF)
+
 ###########################################
 # CONFIGURE: VTest
 ###########################################
