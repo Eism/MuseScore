@@ -71,7 +71,7 @@ void MuseSamplerModule::resolveImports()
 
 void MuseSamplerModule::onInit(const IApplication::RunMode& mode)
 {
-    if (IApplication::RunMode::AudioPluginRegistration == mode) {
+    if (IApplication::RunMode::GuiApp != mode) {
         return;
     }
 
