@@ -307,7 +307,11 @@ void LyricsLayout::layoutDashes(LyricsLineSegment* item)
     LyricsLine* lyricsLine = item->lyricsLine();
     Lyrics* startLyrics = lyricsLine->lyrics();
 
-    ChordRest* endChordRest = toChordRest(lyricsLine->endElement());
+    const ChordRest* endChordRest = elementToChordRest(lyricsLine->endElement());
+    if (!endChordRest) {
+        return;
+    }
+
     Lyrics* endLyrics = nullptr;
     for (Lyrics* lyr : endChordRest->lyrics()) {
         if (lyr->no() == startLyrics->no()) {

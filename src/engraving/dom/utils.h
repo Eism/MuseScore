@@ -31,6 +31,7 @@
 
 namespace mu::engraving {
 class Chord;
+class ChordRest;
 class EngravingItem;
 class KeySig;
 class Note;
@@ -101,5 +102,7 @@ extern bool isFirstSystemKeySig(const KeySig* ks);
 extern String bendAmountToString(int fulls, int quarts);
 
 extern InstrumentTrackId makeInstrumentTrackId(const EngravingItem* item);
+
+extern const ChordRest* elementToChordRest(const EngravingItem* element);
 } // namespace mu::engraving
 #endif

@@ -30,6 +30,7 @@
 #include "chord.h"
 #include "chordrest.h"
 #include "clef.h"
+#include "hook.h"
 #include "keysig.h"
 #include "measure.h"
 #include "note.h"
@@ -41,6 +42,7 @@
 #include "segment.h"
 #include "sig.h"
 #include "staff.h"
+#include "stem.h"
 #include "system.h"
 #include "tuplet.h"
 
@@ -1378,5 +1380,25 @@ InstrumentTrackId makeInstrumentTrackId(const EngravingItem* item)
     };
 
     return trackId;
+}
+
+const ChordRest* elementToChordRest(const EngravingItem* element)
+{
+    if (!element) {
+        return nullptr;
+    }
+    if (element->isChordRest()) {
+        return toChordRest(element);
+    }
+    if (element->isNote()) {
+        return toNote(element)->chord();
+    }
+    if (element->isStem()) {
+        return toStem(element)->chord();
+    }
+    if (element->isHook()) {
+        return toHook(element)->chord();
+    }
+    return nullptr;
 }
 }
