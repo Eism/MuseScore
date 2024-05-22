@@ -66,6 +66,7 @@ public:
     bool readOnly() const;
 
     MasterScore* masterScore() const;
+    void setMasterScore(MasterScore* masterScore);
     Ret setupMasterScore(bool forceMode);
 
     Ret loadMscz(const MscReader& msc, SettingsCompat& settingsCompat, bool ignoreVersionError);
