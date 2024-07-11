@@ -377,6 +377,29 @@ int AccessibleItem::accessibleCharacterCount() const
     return static_cast<int>(text->plainText().size());
 }
 
+QRect AccessibleItem::accessibleCharacterRect(int offset) const
+{
+    if (!m_element || !m_element->isTextBase()) {
+        return QRect();
+    }
+
+    QRect result;
+
+    TextCursor* textCursor = new TextCursor(toTextBase(m_element));
+    auto startCoord = textCursor->positionToLocalCoord(offset);
+    if (startCoord.first == muse::nidx || startCoord.second == muse::nidx) {
+        return QRect();
+    }
+
+    textCursor->setRow(startCoord.first);
+    textCursor->setColumn(startCoord.second);
+
+    result = textCursor->currentCharacterRect().toQRect();
+
+    delete textCursor;
+    return result;
+}
+
 int AccessibleItem::accessibleRowIndex() const
 {
     NOT_IMPLEMENTED;

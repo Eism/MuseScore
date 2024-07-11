@@ -248,6 +248,17 @@ Char TextCursor::currentCharacter() const
     return s.at(0);
 }
 
+RectF TextCursor::currentCharacterRect() const
+{
+    const TextBase::LayoutData* ldata = m_text->ldata();
+    IF_ASSERT_FAILED(ldata) {
+        return RectF();
+    }
+
+    const TextBlock& t = ldata->blocks.at(row());
+    return t.boundingRect();
+}
+
 //---------------------------------------------------------
 //   updateCursorFormat
 //---------------------------------------------------------

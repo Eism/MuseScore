@@ -185,6 +185,7 @@ public:
     void moveCursorToEnd() { movePosition(TextCursor::MoveOperation::End); }
     void moveCursorToStart() { movePosition(TextCursor::MoveOperation::Start); }
     Char currentCharacter() const;
+    RectF currentCharacterRect() const;
     bool set(const PointF& p, TextCursor::MoveMode mode = TextCursor::MoveMode::MoveAnchor);
     String selectedText(bool withFormat = false) const;
     String extractText(int r1, int c1, int r2, int c2, bool withFormat = false) const;

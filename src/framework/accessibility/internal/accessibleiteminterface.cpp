@@ -368,11 +368,9 @@ int AccessibleItemInterface::characterCount() const
     return m_object->item()->accessibleCharacterCount();
 }
 
-QRect AccessibleItemInterface::characterRect(int) const
+QRect AccessibleItemInterface::characterRect(int offset) const
 {
-    NOT_IMPLEMENTED;
-
-    return QRect();
+    return m_object->item()->accessibleCharacterRect(offset);
 }
 
 int AccessibleItemInterface::offsetAtPoint(const QPoint&) const

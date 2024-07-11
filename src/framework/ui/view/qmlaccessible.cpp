@@ -361,6 +361,12 @@ int AccessibleItem::accessibleCharacterCount() const
     return text().size();
 }
 
+QRect AccessibleItem::accessibleCharacterRect(int) const
+{
+    NOT_IMPLEMENTED;
+    return QRect();
+}
+
 async::Channel<IAccessible::Property, Val> AccessibleItem::accessiblePropertyChanged() const
 {
     return m_accessiblePropertyChanged;

@@ -136,6 +136,7 @@ public:
     QString accessibleTextAfterOffset(int offset, TextBoundaryType boundaryType, int* startOffset, int* endOffset) const override;
     QString accessibleTextAtOffset(int offset, TextBoundaryType boundaryType, int* startOffset, int* endOffset) const override;
     int accessibleCharacterCount() const override;
+    QRect accessibleCharacterRect(int offset) const override;
 
     // ListView item Interface
     int accessibleRowIndex() const override;

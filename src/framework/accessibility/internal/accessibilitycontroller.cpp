@@ -681,6 +681,11 @@ int AccessibilityController::accessibleCharacterCount() const
     return 0;
 }
 
+QRect AccessibilityController::accessibleCharacterRect(int) const
+{
+    return QRect();
+}
+
 int AccessibilityController::accessibleRowIndex() const
 {
     return 0;

@@ -91,6 +91,7 @@ public:
         QString accessibleTextAfterOffset(int, TextBoundaryType, int*, int*) const override { return QString(); }
         QString accessibleTextAtOffset(int, TextBoundaryType, int*, int*) const override { return QString(); }
         int accessibleCharacterCount() const override { return 0; }
+        QRect accessibleCharacterRect(int) const override { return QRect(); }
 
         int accessibleRowIndex() const override { return 0; }
 
