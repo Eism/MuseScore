@@ -58,7 +58,7 @@ else()
 
     set(SENTRY_CLI "sentry-cli")
     execute_process(
-        COMMAND ${SENTRY_CLI} upload-dif -o ${SENTRY_ORG} -p ${SENTRY_PROJECT} ${SYMBOLS_PATH} --log-level=debug
+        COMMAND ${SENTRY_CLI} upload-dif -o ${SENTRY_ORG} -p ${SENTRY_PROJECT} ${SYMBOLS_PATH} --log-level=debug --wait
         RESULT_VARIABLE result
     )
 endif()
