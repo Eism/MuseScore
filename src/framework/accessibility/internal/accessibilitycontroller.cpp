@@ -210,14 +210,23 @@ void AccessibilityController::propertyChanged(IAccessible* item, IAccessible::Pr
     case IAccessible::Property::Parent: etype = QAccessible::ParentChanged;
         break;
     case IAccessible::Property::Name: {
+        bool triggerRevoicing = false;
+
 #ifdef Q_OS_MAC
-        m_needToVoicePanelInfo = false;
-        etype = QAccessible::NameChanged;
-        break;
+        triggerRevoicing = false;
 #else
-        triggerRevoicingOfChangedName(item);
-        return;
+        //! if it is one character than we can send NameChange and don't use hack with revoicing
+        triggerRevoicing = item->accessibleName().size() > 1;
 #endif
+
+        if (triggerRevoicing) {
+            triggerRevoicingOfChangedName(item);
+            return;
+        } else {
+            m_needToVoicePanelInfo = false;
+            etype = QAccessible::NameChanged;
+            break;
+        }
     }
     case IAccessible::Property::Description: etype = QAccessible::DescriptionChanged;
         break;
