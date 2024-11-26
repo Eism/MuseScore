@@ -53,3 +53,17 @@ jobs:
         bash ./buildscripts/ci/linux/runutests.sh
       env:
         ASAN_OPTIONS: "detect_leaks=0"
+    - name: Code coverage
+      run: |
+        HERE=$(pwd)
+        lcov --capture --directory "${HERE}/build.debug" --output-file "${HERE}/coverage.info"
+        lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info" --ignore-errors inconsistent
+        genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
+
+        7z a "${HERE}/coverage.7z" "${HERE}/coverage-report/*"
+        chmod a+rw "coverage.7z"
+    - name: Upload coverage info on GitHub
+      uses: actions/upload-artifact@v4
+      with:
+        name: "coverage.7z"
+        path: "$(pwd)/coverage.7z"

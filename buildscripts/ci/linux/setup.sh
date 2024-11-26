@@ -58,6 +58,7 @@ apt_packages_basic=(
   desktop-file-utils
   file
   git
+  lcov # for code coverage
   pkg-config
   software-properties-common # installs `add-apt-repository`
   unzip

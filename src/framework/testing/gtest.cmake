@@ -34,6 +34,15 @@ message(STATUS "Configuring ${MODULE_TEST}")
 get_property(gmock_LIBS GLOBAL PROPERTY gmock_LIBS)
 get_property(gmock_INCLUDE_DIRS GLOBAL PROPERTY gmock_INCLUDE_DIRS)
 
+if (MUSE_ENABLE_UNIT_TESTS_CODE_COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --coverage")
+
+    set_source_files_properties(${CMAKE_BINARY_DIR}/mocs_* PROPERTIES COMPILE_FLAGS "-fno-profile-arcs")
+endif()
+
 add_executable(${MODULE_TEST}
     ${CMAKE_CURRENT_LIST_DIR}/gmain.cpp
     ${CMAKE_CURRENT_LIST_DIR}/environment.cpp
