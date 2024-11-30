@@ -56,7 +56,7 @@ jobs:
     - name: Code coverage
       run: |
         HERE=$(pwd)
-        lcov --capture --directory "${HERE}/build.debug" --output-file "${HERE}/coverage.info"
+        lcov --capture --directory "${HERE}/build.debug/" --output-file "${HERE}/coverage.info"
         lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info" --ignore-errors inconsistent
         genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
 
