@@ -57,7 +57,7 @@ jobs:
       run: |
         HERE=$(pwd)
         lcov --capture --directory "${HERE}/build.debug/" --output-file "${HERE}/coverage.info"
-        lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info" --ignore-errors inconsistent
+        lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info"
         genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
 
         cp "${HERE}/filtered_coverage.info" "${HERE}/coverage-report/filtered_coverage.info"
@@ -71,8 +71,7 @@ jobs:
           --s3_url "${S3_URL}" \
           --file_path "${HERE}/coverage.7z"
 
-        git clone https://github.com/RaZeR-RBI/lcov-badger.git
-        python3 lcov-badger/lcov-badger.py "${HERE}/filtered_coverage.info" "${HERE}/coverage_badge.svg"
+        python3 buildscripts/ci/linux/tools/lcov_badger.py "${HERE}/filtered_coverage.info" "${HERE}/coverage_badge.svg"
 
         S3_URL='s3://extensions.musescore.org/test/code_coverage/coverage_badge.svg'
 
