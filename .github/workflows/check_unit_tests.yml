@@ -60,10 +60,29 @@ jobs:
         lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info" --ignore-errors inconsistent
         genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
 
+        cp "${HERE}/filtered_coverage.info" "${HERE}/coverage-report/filtered_coverage.info"
         7z a "${HERE}/coverage.7z" "${HERE}/coverage-report/*"
-        chmod a+rw "coverage.7z"
+        chmod a+rw "${HERE}/coverage.7z"
+
+        S3_URL='s3://extensions.musescore.org/test/code_coverage/coverage.7z'
+        bash ./buildscripts/ci/learn/push_file_to_s3.sh \
+          --s3_key '${{ secrets.S3_KEY }}' \
+          --s3_secret '${{ secrets.S3_SECRET }}' \
+          --s3_url "${S3_URL}" \
+          --file_path "${HERE}/coverage.7z"
+
+        git clone https://github.com/RaZeR-RBI/lcov-badger.git
+        python3 lcov-badger/lcov-badger.py "${HERE}/filtered_coverage.info" "${HERE}/coverage_badge.svg"
+
+        S3_URL='s3://extensions.musescore.org/test/code_coverage/coverage_badge.svg'
+
+        bash ./buildscripts/ci/learn/push_file_to_s3.sh \
+          --s3_key '${{ secrets.S3_KEY }}' \
+          --s3_secret '${{ secrets.S3_SECRET }}' \
+          --s3_url "${S3_URL}" \
+          --file_path "${HERE}/coverage_badge.svg"
     - name: Upload coverage info on GitHub
       uses: actions/upload-artifact@v4
       with:
-        name: "coverage.7z"
-        path: "$(pwd)/coverage.7z"
+        name: "coverage_badge"
+        path: "coverage_badge.svg"
