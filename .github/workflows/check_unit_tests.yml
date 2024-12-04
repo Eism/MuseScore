@@ -58,7 +58,7 @@ jobs:
         HERE=$(pwd)
         lcov --capture --directory "${HERE}/build.debug/" --output-file "${HERE}/coverage.info" --base-directory "${HERE}/"
         lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' --output-file "${HERE}/filtered_coverage.info"
-        genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
+        genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report" --debug
 
         cp "${HERE}/filtered_coverage.info" "${HERE}/coverage-report/filtered_coverage.info"
         7z a "${HERE}/coverage.7z" "${HERE}/coverage-report/*"
