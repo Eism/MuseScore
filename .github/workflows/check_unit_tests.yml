@@ -34,6 +34,11 @@ jobs:
         sudo apt-get update && sudo apt-get install -y ccache
         bash ./buildscripts/ci/tools/setup_ccache_config.sh
 
+    - name: Free up disk space
+      run: |
+        sudo docker system prune -a -f
+        sudo rm -rf /usr/local/lib/android
+
     - name: Setup environment
       run: |
         bash ./buildscripts/ci/linux/setup.sh
@@ -43,11 +48,6 @@ jobs:
         bash ./buildscripts/ci/linux/build_utest.sh -n ${{ env.BUILD_NUMBER }}
         echo "============== ccache ==============="
         ccache -s
-    - name: Free up disk space
-      # After building, too little disk space is left. Remove unnecessary tools to free up disk space.
-      run: |
-        sudo docker system prune -a -f
-        sudo rm -rf /usr/local/lib/android
     - name: Run tests
       run: |
         bash ./buildscripts/ci/linux/runutests.sh
