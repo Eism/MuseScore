@@ -60,6 +60,7 @@ jobs:
         lcov --remove "${HERE}/coverage.info" '/usr/*' '*/tests/*' '*/thirdparty/*' '*/moc_*' '*framework/Headers/*' '*/hb-*' '*/Qt/*' --output-file "${HERE}/filtered_coverage.info"
         # genhtml "${HERE}/filtered_coverage.info" --output-directory "${HERE}/coverage-report"
 
+        mkdir "${HERE}/coverage-report/"
         cp "${HERE}/filtered_coverage.info" "${HERE}/coverage-report/filtered_coverage.info"
         7z a "${HERE}/coverage.7z" "${HERE}/coverage-report/*"
         chmod a+rw "${HERE}/coverage.7z"
