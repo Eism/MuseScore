@@ -1,0 +1,65 @@
+name: 'Deploy: Backend'
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_default:
+        description: 'Configure default backend on site'
+        default: 'false'
+  workflow_call:
+    inputs:
+      is_default:
+        description: 'Configure default backend on site'
+        default: 'false'
+        type: string
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' || github.repository == 'musescore/MuseScore'
+    steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.12.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Clone repository
+      uses: actions/checkout@v4
+
+    - name: "Configure workflow"
+      run: |
+        pip install jenkinsapi
+
+        bash ./buildscripts/ci/tools/make_build_number.sh
+        BUILD_NUMBER=$(cat ./build.artifacts/env/build_number.env)
+
+        bash ./buildscripts/ci/tools/make_version_env.sh $BUILD_NUMBER
+        VERSION=$(cat ./build.artifacts/env/build_version.env)
+        
+        VERSION_MAJOR_MINOR=$(echo "$VERSION" | cut -d '.' -f 1,2)
+
+        echo "VERSION_MAJOR_MINOR=$VERSION_MAJOR_MINOR" | tee -a $GITHUB_ENV
+
+    - name: Build and deploy to musescore.com
+      run: |
+        # for the first deploy of the current version we need to first build
+
+        WITH_BUILD="false"
+        if [ "${{ inputs.is_default }}" = "false" ]; then
+            WITH_BUILD="true"
+        fi
+
+        python3 ./buildscripts/ci/backend/deploy.py \
+            --mu_version ${{ env.VERSION_MAJOR_MINOR }} \
+            --with_build $WITH_BUILD \
+            --deploy_stage "musescore.com prod" \
+            --is_default ${{ inputs.is_default }} \
+            --api_token ${{ secrets.JENKINS_API_TOKEN }}
+
+    - name: Deploy to museclass.com
+      run: |
+        python3 ./buildscripts/ci/backend/deploy.py \
+            --mu_version ${{ env.VERSION_MAJOR_MINOR }} \
+            --deploy_stage "museclass prod" \
+            --is_default ${{ inputs.is_default }}  \
+            --api_token ${{ secrets.JENKINS_API_TOKEN }}
