@@ -110,6 +110,7 @@ jobs:
       if: env.DO_PUBLISH == 'true'
       uses: ./.github/workflows/deploy_backend.yml
       with:
+        version_major_minor: ${{ env.VERSION_MAJOR_MINOR }}
         is_default: "false"
 
     - name: Upload artifacts on GitHub

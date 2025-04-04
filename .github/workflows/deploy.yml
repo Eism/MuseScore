@@ -22,34 +22,35 @@ defaults:
 
 jobs:
 
-  # plan:
-  #   name: 'Plan: ${{ inputs.release_type}} (tag=${{ inputs.create_tag }})'
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     tag_name: ${{ steps.make_tag_info.outputs.TAG_NAME }}
-  #     release_name: ${{ steps.make_tag_info.outputs.RELEASE_NAME }}
-  #   steps:
-  #   - name: Clone repo with history
-  #     uses: actions/checkout@v4
-  #     with:
-  #       fetch-depth: 0 # entire history for all branches and tags
-  #   - id: make_tag_info
-  #     name: Make tag info
-  #     env:
-  #       RELEASE_TYPE: ${{ inputs.release_type }}
-  #       CREATE_TAG: ${{ inputs.create_tag }}
-  #     run: |
-  #       git tag --list | tail -n 20
-  #       echo ==========
-  #       buildscripts/ci/release/make_tag_name.sh | tee -a "${GITHUB_OUTPUT}"
-  #       echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
-  #       echo ==========
-  #       # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions
-  #       if [[ "${CREATE_TAG}" == 'true' ]]; then
-  #         echo "::notice ::Tag will be created"
-  #       else
-  #         echo "::warning ::Tag will NOT be created"
-  #       fi
+  plan:
+    name: 'Plan: ${{ inputs.release_type}} (tag=${{ inputs.create_tag }})'
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.make_tag_info.outputs.TAG_NAME }}
+      release_name: ${{ steps.make_tag_info.outputs.RELEASE_NAME }}
+      release_major_minor: ${{ steps.make_tag_info.outputs.RELEASE_MAJOR_MINOR }}
+    steps:
+    - name: Clone repo with history
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # entire history for all branches and tags
+    - id: make_tag_info
+      name: Make tag info
+      env:
+        RELEASE_TYPE: ${{ inputs.release_type }}
+        CREATE_TAG: ${{ inputs.create_tag }}
+      run: |
+        git tag --list | tail -n 20
+        echo ==========
+        buildscripts/ci/release/make_tag_name.sh | tee -a "${GITHUB_OUTPUT}"
+        echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+        echo ==========
+        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions
+        if [[ "${CREATE_TAG}" == 'true' ]]; then
+          echo "::notice ::Tag will be created"
+        else
+          echo "::warning ::Tag will NOT be created"
+        fi
 
   # build:
   #   name: Build
@@ -128,6 +129,7 @@ jobs:
     uses: ./.github/workflows/deploy_backend.yml
     secrets: inherit
     with:
+      version_major_minor: ${{ needs.plan.outputs.release_major_minor }}
       is_default: "true"
       environment: production # requires approval
 
