@@ -124,14 +124,14 @@ jobs:
     name: Set new release as default on backend
     needs:
       - plan # to access outputs
-      - create_release
+      # - create_release
     if: ${{ ! failure() && ! cancelled() }}
     uses: ./.github/workflows/deploy_backend.yml
     secrets: inherit
     with:
       version_major_minor: ${{ needs.plan.outputs.release_major_minor }}
       is_default: "true"
-      environment: production # requires approval
+      # environment: production # requires approval
 
   # notify_users:
   #   name: Notify users
