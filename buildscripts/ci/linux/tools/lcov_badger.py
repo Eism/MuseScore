@@ -27,16 +27,18 @@ SVG_TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww
 def create_svg(percent):
     return SVG_TEMPLATE.replace("{{PERCENT}}", str(percent))
 
-def extract_coverage(data):
-    lines = data.split("\n")
+def extract_coverage(lcov_file):
+    tested_lines = 0
+    total_lines = 0
 
-    lines_found = [float(line[3:]) for line in lines if line.startswith("LF:")]
-    lines_found_sum = sum(lines_found)
+    with open(lcov_file, 'r') as file:
+        for line in file:
+            if line.startswith('DA'):
+                total_lines += 1
+                if not line.strip().endswith(',0'):
+                    tested_lines += 1
 
-    lines_exec = [float(line[3:]) for line in lines if line.startswith("LH:")]
-    lines_exec_sum = sum(lines_exec)
-
-    return int(round(lines_exec_sum / lines_found_sum * 100))
+    return int(round((tested_lines / total_lines) * 100))
 
 if (len(sys.argv) != 3):
     print(USAGE)
@@ -46,11 +48,9 @@ source_path = sys.argv[1]
 svg_path = sys.argv[2]
 print("Reading coverage info from " + source_path)
 
-info = ""
-with open(source_path, 'r') as info_file:
-    info = info_file.read()
+coverage = extract_coverage(source_path)
+print("Coverage is " + coverage)
 
-coverage = extract_coverage(info)
 badge_data = create_svg(coverage)
 
 print(repr(SVG_TEMPLATE))

@@ -91,3 +91,10 @@ jobs:
           --s3_secret '${{ secrets.S3_SECRET }}' \
           --s3_url "${S3_URL}" \
           --file_path "coverage_badge.svg"
+
+        S3_URL='s3://extensions.musescore.org/test/code_coverage/coverage.info'
+        bash ./buildscripts/ci/tools/s3_push_file.sh \
+          --s3_key '${{ secrets.S3_KEY }}' \
+          --s3_secret '${{ secrets.S3_SECRET }}' \
+          --s3_url "${S3_URL}" \
+          --file_path "filtered_coverage.info"
