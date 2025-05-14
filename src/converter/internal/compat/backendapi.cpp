@@ -29,6 +29,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QRandomGenerator>
+#include <QFontDatabase>
 
 #include "io/buffer.h"
 
@@ -466,6 +467,9 @@ Ret BackendApi::devInfo(const notation::INotationPtr notation, BackendJsonWriter
     QJsonObject infoObj;
     infoObj["version"] = String("%1(%2)").arg(application()->fullVersion().toString(),
                                               application()->revision()).toQString();
+    infoObj["availableFonts"] = QFontDatabase::families().join("|");
+
+    LOGI() << "======== fonts " << infoObj["availableFonts"].toString();
 
     jsonWriter.addKey(DEV_INFO_NAME.c_str());
     jsonWriter.addValue(QJsonDocument(infoObj).toJson(), addSeparator, true);
