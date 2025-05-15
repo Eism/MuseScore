@@ -109,7 +109,6 @@ echo "Installing MS Fonts..."
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 
 apt-get install -y ttf-mscorefonts-installer
-mv $(find / -type d -name "ttf-mscorefonts-installer.*")/* /usr/share/fonts/truetype/msttcorefonts/
 
 echo "Updating Fonts Cache..."
 fc-cache -f -v
