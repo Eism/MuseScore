@@ -105,7 +105,13 @@ echo "Installing Google Fonts..."
 mkdir -p "$FONTS_DIR"
 find . -type f \( -iname "*.ttf" -o -iname "*.otf" \) -exec cp {} "$FONTS_DIR" \;
 
-echo "Installing Fonts Cache..."
+echo "Installing MS Fonts..."
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+
+apt-get install -y ttf-mscorefonts-installer
+mv $(find / -type d -name "ttf-mscorefonts-installer.*")/* /usr/share/fonts/truetype/msttcorefonts/
+
+echo "Updating Fonts Cache..."
 fc-cache -f -v
 
 echo "Cleaning..."
