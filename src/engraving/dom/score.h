@@ -1053,6 +1053,11 @@ public:
     void removeSystemLocksContainingMMRests();
     void updateSystemLocksOnCreateMMRests(Measure* first, Measure* last);
 
+    void rebuildFretBox();
+    void undoRenameChordInFretBox(const Harmony* harmony, const String& oldName);
+    void undoAddChordToFretBox(const EngravingItem* harmonyOrFretDiagram);
+    void undoRemoveChordFromFretBox(const EngravingItem* harmonyOrFretDiagram);
+
     friend class Chord;
 
 protected:
@@ -1144,6 +1149,8 @@ private:
     Note* addPitchToChord(NoteVal&, Chord* chord, InputState* externalInputState = nullptr);
     Note* addTiedMidiPitch(int pitch, bool addFlag, Chord* prevChord, bool allowTransposition);
     Note* addNoteToTiedChord(Chord*, const NoteVal& noteVal, bool forceAccidental = false, const std::set<SymId>& articulationIds = {});
+
+    FBox* findFretBox() const;
 
     MasterScore* m_masterScore = nullptr;
     std::list<MuseScoreView*> m_viewer;
