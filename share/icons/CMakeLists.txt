@@ -30,33 +30,33 @@ elseif(OS_IS_WIN)
     # See also windows_icons.rc
 
     if (WIN_PORTABLE)
-        install(FILES AppIcon/MS4_AppIcon.ico RENAME appicon.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo)
-        install(FILES AppIcon/MS4_AppIcon_16x16.png RENAME appicon_16.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo)
-        install(FILES AppIcon/MS4_AppIcon_32x32.png RENAME appicon_32.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo)
-        install(FILES AppIcon/MS4_AppIcon_128x128.png RENAME appicon_128.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo)
-        install(FILES MsczIcon/MS4_MsczIcon.ico RENAME mscz.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo/FileTypeIcons)
-        install(FILES MsczIcon/MS4_MsczIcon_512x512.png RENAME mscz.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo/FileTypeIcons)
-        install(FILES MscxIcon/MS4_MscxIcon.ico RENAME mscx.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo/FileTypeIcons)
-        install(FILES MscxIcon/MS4_MscxIcon_512x512.png RENAME mscx.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../AppInfo/FileTypeIcons)
+        install(FILES AppIcon/MS4_AppIcon.ico RENAME appicon.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo)
+        install(FILES AppIcon/MS4_AppIcon_16x16.png RENAME appicon_16.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo)
+        install(FILES AppIcon/MS4_AppIcon_32x32.png RENAME appicon_32.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo)
+        install(FILES AppIcon/MS4_AppIcon_128x128.png RENAME appicon_128.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo)
+        install(FILES MsczIcon/MS4_MsczIcon.ico RENAME mscz.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo/FileTypeIcons)
+        install(FILES MsczIcon/MS4_MsczIcon_512x512.png RENAME mscz.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo/FileTypeIcons)
+        install(FILES MscxIcon/MS4_MscxIcon.ico RENAME mscx.ico DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo/FileTypeIcons)
+        install(FILES MscxIcon/MS4_MscxIcon_512x512.png RENAME mscx.png DESTINATION ${CMAKE_INSTALL_PREFIX}/../../App/AppInfo/FileTypeIcons)
     endif()
 
 elseif(OS_IS_LIN)
     foreach(SIZE 16 24 32 48 64 96 128 512)
-        install(FILES AppIcon/MS4_AppIcon_${SIZE}x${SIZE}.png 
-                RENAME mscore${MUSE_APP_INSTALL_SUFFIX}.png 
+        install(FILES AppIcon/MS4_AppIcon_${SIZE}x${SIZE}.png
+                RENAME mscore${MUSE_APP_INSTALL_SUFFIX}.png
                 DESTINATION share/icons/hicolor/${SIZE}x${SIZE}/apps)
     endforeach()
 
-    install(FILES MsczIcon/MS4_MsczIcon_512x512.png 
+    install(FILES MsczIcon/MS4_MsczIcon_512x512.png
             RENAME application-x-musescore${MUSE_APP_INSTALL_SUFFIX}.png
             DESTINATION share/icons/hicolor/512x512/mimetypes)
-    install(FILES MscxIcon/MS4_MscxIcon_512x512.png 
+    install(FILES MscxIcon/MS4_MscxIcon_512x512.png
             RENAME application-x-musescore${MUSE_APP_INSTALL_SUFFIX}+xml.png
             DESTINATION share/icons/hicolor/512x512/mimetypes)
-    install(FILES MsczIcon/MS4_MsczIcon.svg 
+    install(FILES MsczIcon/MS4_MsczIcon.svg
             RENAME application-x-musescore${MUSE_APP_INSTALL_SUFFIX}.svg
             DESTINATION share/icons/hicolor/scalable/mimetypes)
-    install(FILES MscxIcon/MS4_MscxIcon.svg 
+    install(FILES MscxIcon/MS4_MscxIcon.svg
             RENAME application-x-musescore${MUSE_APP_INSTALL_SUFFIX}+xml.svg
             DESTINATION share/icons/hicolor/scalable/mimetypes)
 
