@@ -196,12 +196,12 @@ ECHO "Start portable packing..."
 
 :: Create launcher
 ECHO "Start comLauncherGenerator..."
-CALL C:\portableappslauncher\Launcher\PortableApps.comLauncherGenerator.exe %CD%\%INSTALL_DIR%
+powershell -Command "Start-Process 'C:\portableappslauncher\PortableApps.comLauncher\PortableApps.comLauncherGenerator.exe' -ArgumentList '%CD%\%INSTALL_DIR%' -NoNewWindow -Wait
 ECHO "Finished comLauncherGenerator"
 
 :: Create Installer
 ECHO "Start comInstaller..."
-CALL C:\portableappsinstaller\Installer\PortableApps.comInstaller.exe %CD%\%INSTALL_DIR%
+powershell -Command "Start-Process 'C:\portableappsinstaller\PortableApps.comInstaller\PortableApps.comInstaller.exe' -ArgumentList '%CD%\%INSTALL_DIR%' -NoNewWindow -Wait
 ECHO "Finished comInstaller"
 
 :: find the paf.exe file
