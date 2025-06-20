@@ -248,6 +248,15 @@ jobs:
         access_token: ${{ github.token }}
     - name: Clone repository
       uses: actions/checkout@v4
+      
+    - name: Show which Bash is used
+      shell: cmd
+      run: |
+        echo ==== WHERE BASH ====
+        where bash
+        echo ==== VERSION ====
+        bash --version
+
     - name: Configure workflow
       shell: bash
       env:
