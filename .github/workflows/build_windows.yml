@@ -262,11 +262,11 @@ jobs:
       env:
         pull_request_title: ${{ github.event.pull_request.title }}
       run: |
-        bash ./buildscripts/ci/tools/make_build_mode_env.sh -e ${{ github.event_name }} -m ${{ inputs.build_mode }}
-        BUILD_MODE=$(cat ./build.artifacts/env/build_mode.env)
+        bash buildscripts\\ci\\tools\\make_build_mode_env.sh -e ${{ github.event_name }} -m ${{ inputs.build_mode }}
+        BUILD_MODE=$(cat build.artifacts\\env\\build_mode.env)
 
-        bash ./buildscripts/ci/tools/make_build_number.sh
-        BUILD_NUMBER=$(cat ./build.artifacts/env/build_number.env)
+        bash buildscripts\\ci\\tools\\make_build_number.sh
+        BUILD_NUMBER=$(cat build.artifacts\\env\\build_number.env)
 
         DO_UPDATE_TS='false'
         if [[ "$BUILD_MODE" == "testing" || "$BUILD_MODE" == "stable" ]]; then
@@ -314,9 +314,10 @@ jobs:
         key: ${{runner.os}}-${{runner.arch}}-ccache-${{ env.CCACHE_TIMESTAMP }}
         restore-keys: ${{runner.os}}-${{runner.arch}}-ccache-
     - name: Setup ccache
+      shell: bash
       run: |
         choco install -y ccache
-        bash ./buildscripts/ci/tools/setup_ccache_config.sh
+        bash buildscripts\\ci\\tools\\setup_ccache_config.sh
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
@@ -337,7 +338,7 @@ jobs:
         POSTPROCESS_ARGS: "--warn-only ${{ env.DO_PLACEHOLDER_TRANSLATIONS == 'true' && '--generate-placeholder-translations' || '' }}"
         POSTPROCESS_LAUNCHER: "python3 -X utf8"
       run: |
-        bash ./tools/translations/run_lupdate.sh
+        bash tools\\translations\\run_lupdate.sh
     - name: Update .ts files (tx pull)
       if: env.DO_UPDATE_TS == 'true'
       uses: cbjeukendrup/cli-action@windows
@@ -362,13 +363,14 @@ jobs:
         IF ${{ secrets.WIN_SIGN_S3_KEY != 0 }} == true ( SET S_K=${{ secrets.WIN_SIGN_S3_KEY }} ) ELSE ( SET S_K="''" )
         buildscripts\ci\windows\package.bat --portable ON  --signsecret %S_S% --signkey %S_K%
     - name: Checksum
+      shell: bash
       run: |
-        bash ./buildscripts/ci/tools/checksum.sh
+        bash buildscripts\\ci\\tools\\checksum.sh
     - name: Publish to OSUOSL
       if: env.DO_PUBLISH == 'true'
       shell: bash
       run: |
-        bash ./buildscripts/ci/tools/osuosl/publish.sh -s ${{ secrets.OSUOSL_SSH_ENCRYPT_SECRET }} --os windows -v 4 --arch x86_64
+        bash buildscripts\\ci\\tools\\osuosl\\publish.sh -s ${{ secrets.OSUOSL_SSH_ENCRYPT_SECRET }} --os windows -v 4 --arch x86_64
     - name: Upload artifacts on GitHub
       uses: actions/upload-artifact@v4
       with:
