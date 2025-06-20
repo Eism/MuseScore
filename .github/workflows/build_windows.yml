@@ -59,8 +59,6 @@ jobs:
   windows_x64:
     if: github.event_name != 'workflow_dispatch' || contains(inputs.platforms, 'windows_x64')
     runs-on: windows-2022
-    env:
-      PATH: 'C:\Program Files\Git\bin;C:\Program Files\Git\usr\bin;${{ env.PATH }}'
     steps:
     - name: Cancel Previous Runs
       uses: styfle/cancel-workflow-action@0.12.1
@@ -248,6 +246,24 @@ jobs:
       uses: styfle/cancel-workflow-action@0.12.1
       with:
         access_token: ${{ github.token }}
+
+    - name: Prioritize Git Bash in PATH
+      shell: cmd
+      run: echo "PATH=C:\Program Files\Git\usr\bin;C:\Program Files\Git\bin;%PATH%" >> %GITHUB_ENV%
+
+    - name: Print all bash paths
+      shell: cmd
+      run: where bash
+
+    - name: Force Git Bash usage
+      shell: "C:\\Program Files\\Git\\bin\\bash.exe"
+      env:
+        PATH: "C:/Program Files/Git/usr/bin:C:/Program Files/Git/bin:${PATH}"
+      run: |
+        echo "Using bash from:"
+        which bash
+        bash --version
+
     - name: Clone repository
       uses: actions/checkout@v4
       
@@ -263,6 +279,7 @@ jobs:
       shell: bash
       env:
         pull_request_title: ${{ github.event.pull_request.title }}
+        PATH: "C:/Program Files/Git/usr/bin:C:/Program Files/Git/bin:${PATH}"
       run: |
         bash buildscripts\\ci\\tools\\make_build_mode_env.sh -e ${{ github.event_name }} -m ${{ inputs.build_mode }}
         BUILD_MODE=$(cat build.artifacts\\env\\build_mode.env)
