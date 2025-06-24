@@ -210,6 +210,12 @@ void DockWindow::init()
             savePageState(page->objectName());
         }
     });
+
+    workspaceManager()->currentWorkspaceAboutToBeResetted().onNotify(this, [this]() {
+        if (const DockPageView* page = currentPage()) {
+            resetPageToDefault(page);
+        }
+    });
 }
 
 void DockWindow::loadPage(const QString& uri, const QVariantMap& params)
@@ -324,9 +330,7 @@ void DockWindow::restoreDefaultLayout()
     interactiveProvider()->currentUriAboutToBeChanged().notify();
 
     if (m_currentPage) {
-        for (DockBase* dock : m_currentPage->allDocks()) {
-            dock->resetToDefault();
-        }
+        resetPageToDefault(m_currentPage);
     }
 
     m_reloadCurrentPageAllowed = false;
@@ -657,6 +661,13 @@ void DockWindow::restorePageState(const DockPageView* page)
                 reloadCurrentPage();
             }
         });
+    }
+}
+
+void DockWindow::resetPageToDefault(const DockPageView* page)
+{
+    for (DockBase* dock : page->allDocks()) {
+        dock->resetToDefault();
     }
 }
 

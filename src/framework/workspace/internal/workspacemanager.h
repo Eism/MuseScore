@@ -53,6 +53,7 @@ public:
 
     IWorkspacePtr currentWorkspace() const override;
     async::Notification currentWorkspaceAboutToBeChanged() const override;
+    async::Notification currentWorkspaceAboutToBeResetted() const override;
     async::Notification currentWorkspaceChanged() const override;
 
     IWorkspacePtrList workspaces() const override;
@@ -60,6 +61,7 @@ public:
     async::Notification workspacesListChanged() const override;
 
     IWorkspacePtr cloneWorkspace(const IWorkspacePtr& workspace, const std::string& newWorkspaceName) const override;
+    void resetWorkspace(const IWorkspacePtr& workspace) override;
 
     void changeCurrentWorkspace(const std::string& newWorkspaceName) override;
     void createAndAppendNewWorkspace() override;
@@ -96,6 +98,7 @@ private:
     WorkspacePtr m_defaultWorkspace;
     WorkspacePtr m_currentWorkspace;
     async::Notification m_currentWorkspaceAboutToBeChanged;
+    async::Notification m_currentWorkspaceAboutToBeResetted;
     async::Notification m_currentWorkspaceChanged;
 
     std::vector<WorkspacePtr> m_workspaces;

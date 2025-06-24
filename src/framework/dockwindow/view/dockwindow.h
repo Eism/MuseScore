@@ -132,6 +132,7 @@ private:
 
     void savePageState(const QString& pageName);
     void restorePageState(const DockPageView* page);
+    void resetPageToDefault(const DockPageView* page);
 
     void reloadCurrentPage();
     bool restoreLayout(const QByteArray& layout, bool restoreRelativeToMainWindow = false);

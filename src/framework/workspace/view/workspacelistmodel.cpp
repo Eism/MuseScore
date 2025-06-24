@@ -233,7 +233,8 @@ void WorkspaceListModel::resetWorkspace(int workspaceIndex)
     promise.onResolve(this, [this, resetButton, workspaceIndex](const IInteractive::Result& res) {
         if (res.isButton(resetButton)) {
             IWorkspacePtr workspace = m_workspaces.at(workspaceIndex);
-            workspace->reset();
+
+            workspacesManager()->resetWorkspace(workspace);
 
             QModelIndex modelIndex = index(workspaceIndex);
             emit dataChanged(modelIndex, modelIndex);

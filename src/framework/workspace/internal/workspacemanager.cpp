@@ -73,6 +73,11 @@ async::Notification WorkspaceManager::currentWorkspaceAboutToBeChanged() const
     return m_currentWorkspaceAboutToBeChanged;
 }
 
+async::Notification WorkspaceManager::currentWorkspaceAboutToBeResetted() const
+{
+    return m_currentWorkspaceAboutToBeResetted;
+}
+
 async::Notification WorkspaceManager::currentWorkspaceChanged() const
 {
     return m_currentWorkspaceChanged;
@@ -109,6 +114,15 @@ async::Notification WorkspaceManager::workspacesListChanged() const
 IWorkspacePtr WorkspaceManager:: cloneWorkspace(const IWorkspacePtr& workspace, const std::string& newWorkspaceName) const
 {
     return std::make_shared<Workspace>(makeNewWorkspacePath(newWorkspaceName), dynamic_cast<Workspace*>(workspace.get()), iocContext());
+}
+
+void WorkspaceManager::resetWorkspace(const IWorkspacePtr& workspace)
+{
+    if (workspace == currentWorkspace()) {
+        m_currentWorkspaceAboutToBeResetted.notify();
+    }
+
+    workspace->reset();
 }
 
 void WorkspaceManager::changeCurrentWorkspace(const std::string& newWorkspaceName)
