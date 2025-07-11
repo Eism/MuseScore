@@ -72,8 +72,8 @@ static const ElementStyle fretStyle {
 //   FretDiagram
 //---------------------------------------------------------
 
-static std::unordered_map<String, String> s_harmonyToDiagramMap;
-static std::unordered_map<String, std::vector<String> > s_diagramPatternToHarmoniesMap;
+static std::unordered_map<String /*key*/, String /*harmonyXml*/> s_harmonyToDiagramMap;
+static std::unordered_map<String /*pattern*/, std::vector<String /*harmonyName*/> > s_diagramPatternToHarmoniesMap;
 
 static const muse::io::path_t HARMONY_TO_DIAGRAM_FILE_PATH("://data/harmony_to_diagram.xml");
 
@@ -196,7 +196,7 @@ void FretDiagram::updateDiagram(const String& harmonyName)
         readHarmonyToDiagramFile(HARMONY_TO_DIAGRAM_FILE_PATH);
     }
 
-    String _harmonyName = harmonyName;
+    String harmonyKey = harmonyName;
 
     NoteSpellingType spellingType = style().styleV(Sid::chordSymbolSpelling).value<NoteSpellingType>();
     if (spellingType != NoteSpellingType::STANDARD) {
@@ -208,7 +208,14 @@ void FretDiagram::updateDiagram(const String& harmonyName)
         _harmonyName = tpc2name(tpc, NoteSpellingType::STANDARD, noteCase) + acc;
     }
 
-    String diagramXml = muse::value(s_harmonyToDiagramMap, _harmonyName.toLower());
+    ParsedChord chord;
+    if (chord.parse(_harmonyName, score()->chordList())) {
+        harmonyKey = chord.handle();
+    } else {
+        LOGE() << "Error parse " << _harmonyName;
+    }
+
+    String diagramXml = muse::value(s_harmonyToDiagramMap, harmonyKey);
 
     if (diagramXml.empty()) {
         return;
@@ -1356,8 +1363,19 @@ void FretDiagram::readHarmonyToDiagramFile(const muse::io::path_t& filePath) con
                        read460::HarmonyToDiagramReader::FretDiagramInfo> harmonyToDiagramMap
         = read460::HarmonyToDiagramReader::read(reader);
 
+    const ChordList* chordList = score()->chordList();
+
     for (auto& [key, value] : harmonyToDiagramMap) {
-        s_harmonyToDiagramMap.insert({ key, value.xml });
+        Strinng harmonyKey = key;
+
+        ParsedChord chord;
+        if (chord.parse(key, chordList)) {
+            harmonyKey = chord.handle();
+        } else {
+            LOGE() << "Error parse " << key;
+        }
+
+        s_harmonyToDiagramMap.insert({ harmonyKey, value.xml });
         s_diagramPatternToHarmoniesMap[value.pattern].push_back(key);
     }
 }
