@@ -30,6 +30,29 @@ static const QString POPUP_WINDOW_VIEW_NAME(POPUP_WINDOW_NAME + "_QQuickView");
 
 using namespace muse::uicomponents;
 
+static bool isWayland()
+{
+#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+    return false;
+#else
+    static int sIsWayland = -1;
+    if (sIsWayland == -1) {
+        static const QString XCB = "xcb";
+
+        QString platformName = qGuiApp->platformName();
+        if (platformName.contains(XCB)) {
+            sIsWayland = 0;
+        } else {
+            static const QString WAYLAND = "wayland";
+            QString sessionType = qEnvironmentVariable("XDG_SESSION_TYPE");
+            sIsWayland = sessionType.contains(WAYLAND) || platformName.contains(WAYLAND);
+        }
+    }
+
+    return sIsWayland;
+#endif
+}
+
 PopupWindow_QQuickView::PopupWindow_QQuickView(const modularity::ContextPtr& iocCtx, QObject* parent)
     : IPopupWindow(parent), muse::Injectable(iocCtx)
 {
@@ -88,15 +111,18 @@ void PopupWindow_QQuickView::init(QQmlEngine* engine, bool isDialogMode, bool is
     // popup
     else {
         Qt::WindowFlags flags;
-        if (qGuiApp->platformName().contains("wayland")) {
+        if (isWayland()) {
             flags = Qt::Popup;
         } else {
-            flags = Qt::Tool;
+            flags = Qt::Tool
+                    // needed for accessibility in spinboxes
+                    // see https://github.com/musescore/MuseScore/pull/29888#issuecomment-3302731855
+                    | Qt::BypassWindowManagerHint;
         }
 
-        flags |= Qt::FramelessWindowHint           // Without border
-                 | Qt::NoDropShadowWindowHint      // Without system shadow
-                 | Qt::BypassWindowManagerHint;    // Otherwise, it does not work correctly on Gnome (Linux) when resizing)
+        flags |= Qt::FramelessWindowHint        // Without border
+                 | Qt::NoDropShadowWindowHint   // Without system shadow
+        ;
 
         m_view->setFlags(flags);
         m_view->setColor(QColor(Qt::transparent));
