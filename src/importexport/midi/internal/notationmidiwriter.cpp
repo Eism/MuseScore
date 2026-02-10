@@ -35,7 +35,7 @@ using namespace mu::project;
 using namespace mu::notation;
 using namespace mu::engraving;
 
-std::vector<INotationWriter::UnitType> NotationMidiWriter::supportedUnitTypes() const
+std::vector<UnitType> NotationMidiWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

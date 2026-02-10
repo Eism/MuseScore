@@ -66,18 +66,18 @@ void EngravingPluginAPIHelper::closeScore()
     projectFilesController()->closeOpenedProject();
 }
 
-std::optional<INotationWriter::UnitType> EngravingPluginAPIHelper::determineWriterUnitType(const std::string& ext) const
+std::optional<UnitType> EngravingPluginAPIHelper::determineWriterUnitType(const std::string& ext) const
 {
     const INotationWriterPtr writer = writers()->writer(ext);
     if (!writer) {
         return std::nullopt;
     }
 
-    if (writer->supportsUnitType(INotationWriter::UnitType::PER_PAGE)) {
-        return INotationWriter::UnitType::PER_PAGE;
-    } else if (writer->supportsUnitType(INotationWriter::UnitType::PER_PART)) {
-        return INotationWriter::UnitType::PER_PART;
+    if (writer->supportsUnitType(UnitType::PER_PAGE)) {
+        return UnitType::PER_PAGE;
+    } else if (writer->supportsUnitType(UnitType::PER_PART)) {
+        return UnitType::PER_PART;
     } else {
-        return INotationWriter::UnitType::MULTI_PART;
+        return UnitType::MULTI_PART;
     }
 }

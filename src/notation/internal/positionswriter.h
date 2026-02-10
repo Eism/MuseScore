@@ -48,8 +48,8 @@ public:
     explicit PositionsWriter(const muse::modularity::ContextPtr& ctx);
     explicit PositionsWriter(ElementType elementType, const muse::modularity::ContextPtr& ctx);
 
-    std::vector<UnitType> supportedUnitTypes() const override;
-    bool supportsUnitType(UnitType unitType) const override;
+    std::vector<project::UnitType> supportedUnitTypes() const override;
+    bool supportsUnitType(project::UnitType unitType) const override;
 
     muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& device, const Options& options = Options()) override;
     muse::Ret writeList(const INotationPtrList& notations, muse::io::IODevice& device, const Options& options = Options()) override;

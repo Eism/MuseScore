@@ -95,7 +95,7 @@ PositionsWriter::PositionsWriter(PositionsWriter::ElementType elementType, const
 {
 }
 
-std::vector<INotationWriter::UnitType> PositionsWriter::supportedUnitTypes() const
+std::vector<UnitType> PositionsWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

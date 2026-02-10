@@ -30,7 +30,7 @@ using namespace mu::project;
 using namespace muse;
 
 namespace mu::engraving {
-std::vector<INotationWriter::UnitType> BrailleWriter::supportedUnitTypes() const
+std::vector<UnitType> BrailleWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

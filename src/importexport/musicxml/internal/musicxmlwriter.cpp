@@ -32,7 +32,7 @@ using namespace mu::project;
 using namespace muse;
 using namespace muse::io;
 
-std::vector<INotationWriter::UnitType> MusicXmlWriter::supportedUnitTypes() const
+std::vector<UnitType> MusicXmlWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

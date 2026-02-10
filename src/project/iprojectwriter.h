@@ -26,8 +26,8 @@
 #include "types/ret.h"
 #include "types/val.h"
 
-#include "async/channel.h"
-#include "global/progress.h"
+#include "types/projecttypes.h"
+
 #include "inotationproject.h"
 
 namespace mu::project {
@@ -36,12 +36,6 @@ class IProjectWriter
 public:
 
     virtual ~IProjectWriter() = default;
-
-    enum class UnitType {
-        PER_PAGE,
-        PER_PART,
-        MULTI_PART
-    };
 
     enum class OptionKey {
         UNIT_TYPE,

@@ -32,18 +32,14 @@
 #include "global/progress.h"
 #include "notation/inotation.h"
 
+#include "types/projecttypes.h"
+
 namespace mu::project {
 class INotationWriter
 {
 public:
 
     virtual ~INotationWriter() = default;
-
-    enum class UnitType {
-        PER_PAGE,
-        PER_PART,
-        MULTI_PART
-    };
 
     enum class OptionKey {
         UNIT_TYPE,

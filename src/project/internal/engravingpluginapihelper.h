@@ -47,6 +47,6 @@ public:
     void closeScore() override;
 
 private:
-    std::optional<INotationWriter::UnitType> determineWriterUnitType(const std::string& ext) const;
+    std::optional<UnitType> determineWriterUnitType(const std::string& ext) const;
 };
 }

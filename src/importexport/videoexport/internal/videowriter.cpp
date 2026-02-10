@@ -39,7 +39,7 @@ using namespace mu::notation;
 using namespace muse::draw;
 using namespace muse::midi;
 
-std::vector<IProjectWriter::UnitType> VideoWriter::supportedUnitTypes() const
+std::vector<UnitType> VideoWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

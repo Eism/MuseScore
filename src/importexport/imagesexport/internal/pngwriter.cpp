@@ -34,7 +34,7 @@ using namespace mu::notation;
 using namespace muse;
 using namespace muse::io;
 
-std::vector<INotationWriter::UnitType> PngWriter::supportedUnitTypes() const
+std::vector<UnitType> PngWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PAGE };
 }

@@ -51,7 +51,7 @@ std::vector<UnitType> ExportProjectScenario::supportedUnitTypes(const ExportType
 }
 
 RetVal<muse::io::path_t> ExportProjectScenario::askExportPath(const INotationPtrList& notations, const ExportType& exportType,
-                                                              INotationWriter::UnitType unitType, muse::io::path_t defaultPath) const
+                                                              UnitType unitType, muse::io::path_t defaultPath) const
 {
     INotationProjectPtr project = context()->currentProject();
 
@@ -64,7 +64,7 @@ RetVal<muse::io::path_t> ExportProjectScenario::askExportPath(const INotationPtr
     bool isCreatingOnlyOneFile = guessIsCreatingOnlyOneFile(notations, unitType);
     bool isExportingOnlyOneScore = notations.size() == 1;
 
-    if (unitType == INotationWriter::UnitType::MULTI_PART && !isExportingOnlyOneScore) {
+    if (unitType == UnitType::MULTI_PART && !isExportingOnlyOneScore) {
         bool containsMaster = std::find_if(notations.cbegin(), notations.cend(), [this](INotationPtr notation) {
             return isMainNotation(notation);
         }) != notations.cend();
@@ -81,7 +81,7 @@ RetVal<muse::io::path_t> ExportProjectScenario::askExportPath(const INotationPtr
             filenameAddition = "-" + io::escapeFileName(notations.front()->name()).toStdString();
         }
 
-        if (unitType == INotationWriter::UnitType::PER_PAGE && isCreatingOnlyOneFile) {
+        if (unitType == UnitType::PER_PAGE && isCreatingOnlyOneFile) {
             // So there is only one page
             filenameAddition += "-1";
         }
@@ -100,7 +100,7 @@ RetVal<muse::io::path_t> ExportProjectScenario::askExportPath(const INotationPtr
 }
 
 bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, const muse::io::path_t destinationPath,
-                                         INotationWriter::UnitType unitType, bool openDestinationFolderOnExport) const
+                                         UnitType unitType, bool openDestinationFolderOnExport) const
 {
     std::string suffix = io::suffix(destinationPath);
     INotationWriterPtr writer = writers()->writer(suffix);
@@ -184,7 +184,7 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
     };
 
     switch (unitType) {
-    case INotationWriter::UnitType::PER_PAGE: {
+    case UnitType::PER_PAGE: {
         for (const INotationPtr& notation : notations) {
             size_t pageCount = notation->elements()->msScore()->pages().size();
             bool isMain = isMainNotation(notation);
@@ -210,7 +210,7 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
             }
         }
     } break;
-    case INotationWriter::UnitType::PER_PART: {
+    case UnitType::PER_PART: {
         for (const INotationPtr& notation : notations) {
             muse::io::path_t definitivePath = isCreatingOnlyOneFile
                                               ? destinationPath
@@ -229,7 +229,7 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
             ++currentFileNum;
         }
     } break;
-    case INotationWriter::UnitType::MULTI_PART: {
+    case UnitType::MULTI_PART: {
         auto exportFunction = [writer, notations, options](IODevice& destinationDevice) {
                 if (notations.size() == 1) {
                     return writer->write(notations.front(), destinationDevice, options);
@@ -262,10 +262,10 @@ void ExportProjectScenario::setExportInfo(const ExportInfo& exportInfo)
 }
 
 bool ExportProjectScenario::guessIsCreatingOnlyOneFile(const notation::INotationPtrList& notations,
-                                                       INotationWriter::UnitType unitType) const
+                                                       UnitType unitType) const
 {
     switch (unitType) {
-    case INotationWriter::UnitType::PER_PAGE: {
+    case UnitType::PER_PAGE: {
         if (notations.size() == 1) {
             INotationPtr notation = notations.front();
 
@@ -290,19 +290,19 @@ bool ExportProjectScenario::guessIsCreatingOnlyOneFile(const notation::INotation
 
         return false;
     };
-    case INotationWriter::UnitType::PER_PART:
+    case UnitType::PER_PART:
         return notations.size() == 1;
-    case INotationWriter::UnitType::MULTI_PART:
+    case UnitType::MULTI_PART:
         return true;
     }
 
     return false;
 }
 
-size_t ExportProjectScenario::exportFileCount(const INotationPtrList& notations, INotationWriter::UnitType unitType) const
+size_t ExportProjectScenario::exportFileCount(const INotationPtrList& notations, UnitType unitType) const
 {
     switch (unitType) {
-    case INotationWriter::UnitType::PER_PAGE: {
+    case UnitType::PER_PAGE: {
         size_t count = 0;
 
         for (const INotationPtr& notation : notations) {
@@ -311,9 +311,9 @@ size_t ExportProjectScenario::exportFileCount(const INotationPtrList& notations,
 
         return count;
     };
-    case INotationWriter::UnitType::PER_PART:
+    case UnitType::PER_PART:
         return notations.size();
-    case INotationWriter::UnitType::MULTI_PART:
+    case UnitType::MULTI_PART:
         return 1;
     }
 

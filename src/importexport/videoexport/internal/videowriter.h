@@ -35,8 +35,8 @@ class VideoWriter : public project::IProjectWriter
     muse::GlobalInject<muse::IApplication> application;
 
 public:
-    std::vector<UnitType> supportedUnitTypes() const override;
-    bool supportsUnitType(UnitType unitType) const override;
+    std::vector<project::UnitType> supportedUnitTypes() const override;
+    bool supportsUnitType(project::UnitType unitType) const override;
 
     muse::Ret write(project::INotationProjectPtr project, QIODevice& device, const Options& options = Options()) override;
     muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath, const Options& options = Options()) override;

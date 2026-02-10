@@ -35,7 +35,7 @@ using namespace muse;
 using namespace mu::iex::mei;
 using namespace mu::project;
 
-std::vector<INotationWriter::UnitType> MeiWriter::supportedUnitTypes() const
+std::vector<UnitType> MeiWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

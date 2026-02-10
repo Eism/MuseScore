@@ -133,7 +133,7 @@ public:
     QVariantList availableUnitTypes() const;
     int selectedUnitType() const;
     void setUnitType(int unitType);
-    void setUnitType(project::INotationWriter::UnitType unitType);
+    void setUnitType(project::UnitType unitType);
 
     Q_INVOKABLE bool exportScores();
 
@@ -218,7 +218,7 @@ signals:
     void selectionChanged();
 
     void selectedExportTypeChanged(QVariantMap newExportType);
-    void selectedUnitTypeChanged(project::INotationWriter::UnitType newUnitType);
+    void selectedUnitTypeChanged(project::UnitType newUnitType);
 
     void pdfResolutionChanged(int resolution);
     void pdfTransparentBackgroundChanged(bool transparent);
@@ -278,6 +278,6 @@ private:
     ExportTypeList m_exportTypeList {};
     ExportType m_selectedExportType = ExportType();
     muse::io::path_t m_exportPath;
-    project::INotationWriter::UnitType m_selectedUnitType = project::INotationWriter::UnitType::PER_PART;
+    project::UnitType m_selectedUnitType = project::UnitType::PER_PART;
 };
 }

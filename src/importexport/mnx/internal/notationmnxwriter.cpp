@@ -33,7 +33,7 @@ using namespace mu::project;
 using namespace muse;
 using namespace muse::io;
 
-std::vector<INotationWriter::UnitType> NotationMnxWriter::supportedUnitTypes() const
+std::vector<UnitType> NotationMnxWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }

@@ -34,7 +34,7 @@ using namespace mu::project;
 using namespace mu::notation;
 using namespace mu::iex::musicxml;
 
-using UnitType = INotationWriter::UnitType;
+using UnitType = UnitType;
 
 static const UnitType DEFAULT_EXPORT_UNITTYPE = UnitType::PER_PART;
 
@@ -416,7 +416,7 @@ bool ExportDialogModel::exportScores()
     struct Params {
         INotationPtrList notations;
         muse::io::path_t exportPath;
-        project::INotationWriter::UnitType selectedUnitType;
+        project::UnitType selectedUnitType;
         bool openFolderOnExport = false;
     };
 

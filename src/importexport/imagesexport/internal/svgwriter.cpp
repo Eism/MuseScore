@@ -44,7 +44,7 @@ using namespace mu::notation;
 using namespace muse;
 using namespace muse::io;
 
-std::vector<INotationWriter::UnitType> SvgWriter::supportedUnitTypes() const
+std::vector<UnitType> SvgWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PAGE };
 }

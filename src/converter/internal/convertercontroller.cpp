@@ -517,7 +517,7 @@ Ret ConverterController::convertScorePartsToPdf(INotationWriterPtr writer, IMast
     TRACEFUNC;
 
     const INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(INotationWriter::UnitType::PER_PART) },
+        { INotationWriter::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
     };
 
     for (const IExcerptNotationPtr& e : masterNotation->excerpts()) {
@@ -567,7 +567,7 @@ Ret ConverterController::convertScorePartsToMp3(INotationWriterPtr writer, IMast
     TRACEFUNC;
 
     const INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(INotationWriter::UnitType::PER_PART) },
+        { INotationWriter::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
     };
 
     for (const IExcerptNotationPtr& e : masterNotation->excerpts()) {

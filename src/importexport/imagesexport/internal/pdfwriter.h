@@ -37,7 +37,7 @@ class PdfWriter : public AbstractImageWriter
     muse::GlobalInject<muse::IApplication> application;
 
 public:
-    std::vector<project::INotationWriter::UnitType> supportedUnitTypes() const override;
+    std::vector<project::UnitType> supportedUnitTypes() const override;
     muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& dstDevice, const Options& options = Options()) override;
     muse::Ret writeList(const notation::INotationPtrList& notations, muse::io::IODevice& dstDevice,
                         const Options& options = Options()) override;

@@ -36,7 +36,6 @@
 #include "cloud/cloudtypes.h"
 #include "notation/inotation.h"
 #include "notation/notationtypes.h"
-#include "../inotationwriter.h"
 
 namespace mu::project {
 struct ProjectCreateOptions
@@ -124,10 +123,16 @@ struct CloudAudioInfo {
     }
 };
 
+enum class UnitType {
+    PER_PAGE,
+    PER_PART,
+    MULTI_PART
+};
+
 struct ExportInfo {
     QString id;
     muse::io::path_t exportPath;
-    INotationWriter::UnitType unitType;
+    UnitType unitType;
     std::vector<notation::INotationWeakPtr> notations;
 };
 

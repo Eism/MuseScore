@@ -28,6 +28,7 @@
 #include "iprojectconfiguration.h"
 #include "interactive/iinteractive.h"
 #include "inotationwritersregister.h"
+#include "iprojectrwregister.h"
 #include "importexport/imagesexport/iimagesexportconfiguration.h"
 #include "context/iglobalcontext.h"
 #include "io/ifilesystem.h"
@@ -41,6 +42,7 @@ class ExportProjectScenario : public IExportProjectScenario, public muse::async:
     muse::GlobalInject<iex::imagesexport::IImagesExportConfiguration> imagesExportConfiguration;
     muse::ContextInject<muse::IInteractive> interactive = { this };
     muse::ContextInject<INotationWritersRegister> writers = { this };
+    muse::ContextInject<IProjectRWRegister> projectRWRegister = { this };
     muse::ContextInject<context::IGlobalContext> context = { this };
 
 public:
@@ -50,14 +52,12 @@ public:
     {
     }
 
-    std::vector<INotationWriter::UnitType> supportedUnitTypes(const ExportType& exportType) const override;
+    std::vector<UnitType> supportedUnitTypes(const ExportType& exportType) const override;
 
     muse::RetVal<muse::io::path_t> askExportPath(const notation::INotationPtrList& notations, const ExportType& exportType,
-                                                 INotationWriter::UnitType unitType = INotationWriter::UnitType::PER_PART,
-                                                 muse::io::path_t defaultPath = "") const override;
+                                                 UnitType unitType = UnitType::PER_PART, muse::io::path_t defaultPath = "") const override;
 
-    bool exportScores(notation::INotationPtrList notations, const muse::io::path_t destinationPath,
-                      INotationWriter::UnitType unitType = INotationWriter::UnitType::PER_PART,
+    bool exportScores(notation::INotationPtrList notations, const muse::io::path_t destinationPath, UnitType unitType = UnitType::PER_PART,
                       bool openDestinationFolderOnExport = false) const override;
 
     const ExportInfo& exportInfo() const override;
@@ -74,8 +74,8 @@ private:
     /// is not initialized yet, so we can't be certain about the page count. We should not initialize
     /// these scores either, until the user really starts the export, because initializing these scores
     /// means making changes to the file, which can't be done without the user's consent.
-    bool guessIsCreatingOnlyOneFile(const notation::INotationPtrList& notations, INotationWriter::UnitType unitType) const;
-    size_t exportFileCount(const notation::INotationPtrList& notations, INotationWriter::UnitType unitType) const;
+    bool guessIsCreatingOnlyOneFile(const notation::INotationPtrList& notations, UnitType unitType) const;
+    size_t exportFileCount(const notation::INotationPtrList& notations, UnitType unitType) const;
 
     bool isMainNotation(notation::INotationPtr notation) const;
     notation::IMasterNotationPtr masterNotation() const;

@@ -41,7 +41,7 @@ MscNotationWriter::MscNotationWriter(engraving::MscIoMode mode)
 {
 }
 
-std::vector<INotationWriter::UnitType> MscNotationWriter::supportedUnitTypes() const
+std::vector<UnitType> MscNotationWriter::supportedUnitTypes() const
 {
     return { UnitType::MULTI_PART };
 }

@@ -37,7 +37,7 @@ using namespace muse::io;
 using namespace muse::draw;
 using namespace mu::engraving;
 
-std::vector<INotationWriter::UnitType> PdfWriter::supportedUnitTypes() const
+std::vector<UnitType> PdfWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART, UnitType::MULTI_PART };
 }

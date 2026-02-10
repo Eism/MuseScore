@@ -28,7 +28,7 @@ using namespace mu::iex::imagesexport;
 using namespace mu::project;
 using namespace mu::notation;
 
-std::vector<INotationWriter::UnitType> AbstractImageWriter::supportedUnitTypes() const
+std::vector<UnitType> AbstractImageWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }
@@ -69,7 +69,7 @@ Ret AbstractImageWriter::writeList(const INotationPtrList&, io::IODevice&, const
     return Ret(Ret::Code::NotSupported);
 }
 
-INotationWriter::UnitType AbstractImageWriter::unitTypeFromOptions(const Options& options) const
+UnitType AbstractImageWriter::unitTypeFromOptions(const Options& options) const
 {
     std::vector<UnitType> supported = supportedUnitTypes();
     IF_ASSERT_FAILED(!supported.empty()) {

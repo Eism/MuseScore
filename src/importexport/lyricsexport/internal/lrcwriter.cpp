@@ -40,7 +40,7 @@ using namespace mu::engraving;
 using namespace mu::project;
 using namespace mu::iex::lrcexport;
 
-std::vector<INotationWriter::UnitType> LRCWriter::supportedUnitTypes() const
+std::vector<UnitType> LRCWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
 }
