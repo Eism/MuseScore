@@ -33,18 +33,21 @@ using namespace muse::io;
 using namespace mu::project;
 using namespace mu::notation;
 
-std::vector<INotationWriter::UnitType> ExportProjectScenario::supportedUnitTypes(const ExportType& exportType) const
+std::vector<UnitType> ExportProjectScenario::supportedUnitTypes(const ExportType& exportType) const
 {
     IF_ASSERT_FAILED(!exportType.suffixes.isEmpty()) {
         return {};
     }
 
-    auto writer = writers()->writer(exportType.suffixes.front().toStdString());
-    if (!writer) {
-        return {};
+    if (auto writer = writers()->writer(exportType.suffixes.front().toStdString())) {
+        return writer->supportedUnitTypes();
     }
 
-    return writer->supportedUnitTypes();
+    if (auto writer = projectRWRegister()->writer(exportType.suffixes.front().toStdString())) {
+        return writer->supportedUnitTypes();
+    }
+
+    return {};
 }
 
 RetVal<muse::io::path_t> ExportProjectScenario::askExportPath(const INotationPtrList& notations, const ExportType& exportType,
