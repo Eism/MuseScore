@@ -106,7 +106,7 @@ bool PositionsWriter::supportsUnitType(UnitType unitType) const
     return std::find(unitTypes.cbegin(), unitTypes.cend(), unitType) != unitTypes.cend();
 }
 
-Ret PositionsWriter::write(INotationPtr notation, io::IODevice& destinationDevice, const Options&)
+Ret PositionsWriter::write(INotationPtr notation, io::IODevice& destinationDevice, const project::Options&)
 {
     IF_ASSERT_FAILED(notation) {
         return make_ret(Ret::Code::UnknownError);
@@ -135,7 +135,7 @@ Ret PositionsWriter::write(INotationPtr notation, io::IODevice& destinationDevic
     return true;
 }
 
-Ret PositionsWriter::writeList(const INotationPtrList&, io::IODevice&, const Options&)
+Ret PositionsWriter::writeList(const INotationPtrList&, io::IODevice&, const project::Options&)
 {
     NOT_SUPPORTED;
     return Ret(Ret::Code::NotSupported);

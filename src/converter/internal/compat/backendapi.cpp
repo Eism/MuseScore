@@ -304,9 +304,9 @@ Ret BackendApi::exportScorePngs(const INotationPtr notation, BackendJsonWriter& 
         ByteArray pngData;
         auto pngDevice = Buffer::opened(IODevice::ReadWrite, &pngData);
 
-        INotationWriter::Options options = {
-            { INotationWriter::OptionKey::PAGE_NUMBER, Val(static_cast<int>(i)) },
-            { INotationWriter::OptionKey::TRANSPARENT_BACKGROUND, Val(false) }
+        project::Options options = {
+            { project::OptionKey::PAGE_NUMBER, Val(static_cast<int>(i)) },
+            { project::OptionKey::TRANSPARENT_BACKGROUND, Val(false) }
         };
 
         Ret writeRet = pngWriter->write(notation, pngDevice, options);
@@ -346,10 +346,10 @@ Ret BackendApi::exportScoreSvgs(const INotationPtr notation, const muse::io::pat
         ByteArray svgData;
         auto svgDevice = Buffer::opened(IODevice::ReadWrite, &svgData);
 
-        INotationWriter::Options options {
-            { INotationWriter::OptionKey::PAGE_NUMBER, Val(static_cast<int>(i)) },
-            { INotationWriter::OptionKey::TRANSPARENT_BACKGROUND, Val(false) },
-            { INotationWriter::OptionKey::BEATS_COLORS, Val::fromQVariant(beatsColors) }
+        project::Options options {
+            { project::OptionKey::PAGE_NUMBER, Val(static_cast<int>(i)) },
+            { project::OptionKey::TRANSPARENT_BACKGROUND, Val(false) },
+            { project::OptionKey::BEATS_COLORS, Val::fromQVariant(beatsColors) }
         };
 
         Ret writeRet = svgWriter->write(notation, svgDevice, options);
@@ -502,7 +502,7 @@ RetVal<QByteArray> BackendApi::processWriter(const std::string& writerName, cons
 }
 
 RetVal<QByteArray> BackendApi::processWriter(const std::string& writerName, const INotationPtrList notations,
-                                             const INotationWriter::Options& options)
+                                             const project::Options& options)
 {
     auto writer = writers()->writer(writerName);
     if (!writer) {
@@ -605,8 +605,8 @@ Ret BackendApi::doExportScorePartsPdfs(const IMasterNotationPtr masterNotation, 
 
     jsonForPdfs["scoreFullPostfix"] = QString("-Score_and_parts") + ".pdf";
 
-    INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(UnitType::MULTI_PART) }
+    project::Options options {
+        { project::OptionKey::UNIT_TYPE, Val(UnitType::MULTI_PART) }
     };
 
     QByteArray fullScoreData = processWriter(PDF_WRITER_NAME, notations, options).val;

@@ -24,7 +24,6 @@
 #define MU_PROJECT_IPROJECTWRITER_H
 
 #include "types/ret.h"
-#include "types/val.h"
 
 #include "types/projecttypes.h"
 
@@ -37,20 +36,13 @@ public:
 
     virtual ~IProjectWriter() = default;
 
-    enum class OptionKey {
-        UNIT_TYPE,
-        PAGE_NUMBER,
-        TRANSPARENT_BACKGROUND,
-        NOTES_COLORS
-    };
-
-    using Options = QMap<OptionKey, muse::Val>;
-
     virtual std::vector<UnitType> supportedUnitTypes() const = 0;
     virtual bool supportsUnitType(UnitType unitType) const = 0;
 
-    virtual muse::Ret write(project::INotationProjectPtr project, QIODevice& device, const Options& options = Options()) = 0;
-    virtual muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath, const Options& options = Options()) = 0;
+    virtual muse::Ret write(project::INotationProjectPtr project, QIODevice& device,
+                            const project::Options& options = project::Options()) = 0;
+    virtual muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath,
+                            const project::Options& options = project::Options()) = 0;
 };
 
 using IProjectWriterPtr = std::shared_ptr<IProjectWriter>;

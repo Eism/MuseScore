@@ -52,6 +52,12 @@ public:
     double trailingSec() const override;
     void setTrailingSec(std::optional<double> trailingSec) override;
 
+    int audioSampleRate() const override;
+    void setAudioSampleRate(std::optional<int> sampleRate) override;
+
+    int audioBitrate() const override;
+    void setAudioBitrate(std::optional<int> bitrate) override;
+
 private:
     std::optional<ViewMode> m_viewMode = std::nullopt;
     std::optional<bool> m_showPiano = std::nullopt;
@@ -60,6 +66,8 @@ private:
     std::optional<int> m_fps = std::nullopt;
     std::optional<double> m_leadingSec = std::nullopt;
     std::optional<double> m_trailingSec = std::nullopt;
+    std::optional<int> m_audioSampleRate = std::nullopt;
+    std::optional<int> m_audioBitrate = std::nullopt;
 };
 }
 

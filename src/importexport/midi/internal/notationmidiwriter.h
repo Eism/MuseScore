@@ -43,9 +43,10 @@ public:
     std::vector<project::UnitType> supportedUnitTypes() const override;
     bool supportsUnitType(project::UnitType unitType) const override;
 
-    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& dstDevice, const Options& options = Options()) override;
+    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& dstDevice,
+                    const project::Options& options = project::Options()) override;
     muse::Ret writeList(const notation::INotationPtrList& notations, muse::io::IODevice& dstDevice,
-                        const Options& options = Options()) override;
+                        const project::Options& options = project::Options()) override;
 };
 }
 

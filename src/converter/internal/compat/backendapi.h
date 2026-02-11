@@ -84,7 +84,7 @@ private:
 
     static muse::RetVal<QByteArray> processWriter(const std::string& writerName, const notation::INotationPtr notation);
     static muse::RetVal<QByteArray> processWriter(const std::string& writerName, const notation::INotationPtrList notations,
-                                                  const project::INotationWriter::Options& options);
+                                                  const project::Options& options);
 
     static muse::Ret doExportScoreParts(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice);
     static muse::Ret doExportScorePartsPdfs(const notation::IMasterNotationPtr notation, QIODevice& destinationDevice,

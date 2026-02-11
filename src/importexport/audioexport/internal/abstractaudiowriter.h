@@ -51,9 +51,10 @@ public:
     std::vector<project::UnitType> supportedUnitTypes() const override;
     bool supportsUnitType(project::UnitType unitType) const override;
 
-    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& dstDevice, const Options& options = Options()) override;
+    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& dstDevice,
+                    const project::Options& options = project::Options()) override;
     muse::Ret writeList(const notation::INotationPtrList& notations, muse::io::IODevice& dstDevice,
-                        const Options& options = Options()) override;
+                        const project::Options& options = project::Options()) override;
 
     muse::Progress* progress() override;
     void abort() override;
@@ -64,7 +65,7 @@ protected:
 private:
     void doWrite(muse::io::IODevice& dstDevice, const muse::audio::SoundTrackFormat& format);
 
-    project::UnitType unitTypeFromOptions(const Options& options) const;
+    project::UnitType unitTypeFromOptions(const project::Options& options) const;
 
     muse::Progress m_progress;
     bool m_isCompleted = false;

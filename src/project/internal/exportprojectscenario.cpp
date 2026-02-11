@@ -104,14 +104,15 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
 {
     std::string suffix = io::suffix(destinationPath);
     INotationWriterPtr writer = writers()->writer(suffix);
+    IProjectWriterPtr projectWriter = projectRWRegister()->writer(suffix);
 
-    if (!writer) {
+    if (!writer && !projectWriter) {
         return false;
     }
 
-    IF_ASSERT_FAILED(writer->supportsUnitType(unitType)) {
-        return false;
-    }
+    // IF_ASSERT_FAILED(writer->supportsUnitType(unitType) || projectWriter->supportsUnitType(unitType)) {
+    // return false;
+    // }
 
     // Make sure we do this in the same as we did it in `askExportPath`, so before initializing notations
     bool isCreatingOnlyOneFile = guessIsCreatingOnlyOneFile(notations, unitType);
@@ -145,7 +146,11 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
     std::vector<ViewMode> viewModes = this->viewModes(notations);
     setViewModes(notations, ViewMode::PAGE);
 
-    Progress* writerProgress = writer->progress();
+    Progress* writerProgress = nullptr;
+    if (writer) {
+        writerProgress = writer->progress();
+    }
+
     size_t fileCount = exportFileCount(notations, unitType);
     size_t currentFileNum = 0;
 
@@ -179,8 +184,8 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
     // not reach this point. But if we do, existing files should be overridden.
     m_fileConflictPolicy = isCreatingOnlyOneFile ? FileConflictPolicy::ReplaceAll : FileConflictPolicy::Undefined;
 
-    INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(unitType) },
+    project::Options options {
+        { project::OptionKey::UNIT_TYPE, Val(unitType) },
     };
 
     switch (unitType) {
@@ -190,15 +195,21 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
             bool isMain = isMainNotation(notation);
 
             for (size_t page = 0; page < pageCount; ++page) {
-                options[INotationWriter::OptionKey::PAGE_NUMBER] = Val(static_cast<int>(page));
+                options[project::OptionKey::PAGE_NUMBER] = Val(static_cast<int>(page));
 
                 muse::io::path_t definitivePath = isCreatingOnlyOneFile
                                                   ? destinationPath
                                                   : completeExportPath(destinationPath, notation, isMain, isExportingOnlyOneScore,
                                                                        static_cast<int>(page));
 
-                auto exportFunction = [writer, notation, options](io::IODevice& destinationDevice) {
-                        return writer->write(notation, destinationDevice, options);
+                auto exportFunction = [writer, projectWriter, notation, options](io::IODevice& destinationDevice) {
+                        if (writer) {
+                            return writer->write(notation, destinationDevice, options);
+                        }
+
+                        QBuffer buff;
+                        return projectWriter->write(std::make_shared<project::INotationProject>(
+                                                        notation->project()), buff, options);
                     };
 
                 Ret ret = doExportLoop(definitivePath, exportFunction);

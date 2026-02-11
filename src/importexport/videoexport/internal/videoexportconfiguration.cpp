@@ -30,6 +30,8 @@ static const std::string DEFAULT_RESOLUTION = "1080p";
 static const int DEFAULT_FPS = 24;
 static const double DEFAULT_LEADING_SEC = 3.0;
 static const double DEFAULT_TRAILING_SECONDS = 3.0;
+static const int DEFAULT_AUDIO_SAMPLE_RATE = 44100;
+static const int DEFAULT_AUDIO_BITRATE = 128000;
 
 ViewMode VideoExportConfiguration::viewMode() const
 {
@@ -99,4 +101,24 @@ double VideoExportConfiguration::trailingSec() const
 void VideoExportConfiguration::setTrailingSec(std::optional<double> trailingSec)
 {
     m_trailingSec = trailingSec;
+}
+
+int VideoExportConfiguration::audioSampleRate() const
+{
+    return m_audioSampleRate ? m_audioSampleRate.value() : DEFAULT_AUDIO_SAMPLE_RATE;
+}
+
+void VideoExportConfiguration::setAudioSampleRate(std::optional<int> sampleRate)
+{
+    m_audioSampleRate = sampleRate;
+}
+
+int VideoExportConfiguration::audioBitrate() const
+{
+    return m_audioBitrate ? m_audioBitrate.value() : DEFAULT_AUDIO_BITRATE;
+}
+
+void VideoExportConfiguration::setAudioBitrate(std::optional<int> bitrate)
+{
+    m_audioBitrate = bitrate;
 }

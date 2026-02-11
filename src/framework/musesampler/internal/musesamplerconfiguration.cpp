@@ -42,7 +42,8 @@ muse::io::path_t MuseSamplerConfiguration::libraryPath() const
 #elif defined(Q_OS_MAC)
 muse::io::path_t MuseSamplerConfiguration::libraryPath() const
 {
-    return globalConfig()->genericDataPath() + "/MuseSampler/lib/libMuseSamplerCoreLib.dylib";
+    return "/Users/eism/Downloads/musesampler-mac-lazy-rendering-0.105.0.1005/libMuseSamplerCoreLib.dylib";
+    // return globalConfig()->genericDataPath() + "/MuseSampler/lib/libMuseSamplerCoreLib.dylib";
 }
 
 #else

@@ -23,12 +23,8 @@
 #ifndef MU_PROJECT_INOTATIONWRITER_H
 #define MU_PROJECT_INOTATIONWRITER_H
 
-#include <map>
-
 #include "global/types/ret.h"
-#include "global/types/val.h"
 #include "global/io/iodevice.h"
-#include "global/async/channel.h"
 #include "global/progress.h"
 #include "notation/inotation.h"
 
@@ -40,15 +36,6 @@ class INotationWriter
 public:
 
     virtual ~INotationWriter() = default;
-
-    enum class OptionKey {
-        UNIT_TYPE,
-        PAGE_NUMBER,
-        TRANSPARENT_BACKGROUND,
-        BEATS_COLORS
-    };
-
-    using Options = std::map<OptionKey, muse::Val>;
 
     virtual std::vector<UnitType> supportedUnitTypes() const = 0;
     virtual bool supportsUnitType(UnitType unitType) const = 0;

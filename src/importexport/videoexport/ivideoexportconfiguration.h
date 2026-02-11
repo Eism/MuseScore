@@ -56,6 +56,13 @@ public:
 
     virtual double trailingSec() const = 0;
     virtual void setTrailingSec(std::optional<double> trailingSec) = 0;
+
+    // Optional audio-related settings for video export
+    virtual int audioSampleRate() const = 0;
+    virtual void setAudioSampleRate(std::optional<int> sampleRate) = 0;
+
+    virtual int audioBitrate() const = 0;
+    virtual void setAudioBitrate(std::optional<int> bitrate) = 0;
 };
 }
 

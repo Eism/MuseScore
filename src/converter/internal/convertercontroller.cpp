@@ -467,8 +467,8 @@ muse::Ret ConverterController::convertPage(INotationWriterPtr writer, INotationP
 
     auto outBuf = Buffer::opened(IODevice::WriteOnly);
 
-    const INotationWriter::Options options {
-        { INotationWriter::OptionKey::PAGE_NUMBER, Val(static_cast<int>(pageNum)) },
+    const project::Options options {
+        { project::OptionKey::PAGE_NUMBER, Val(static_cast<int>(pageNum)) },
     };
 
     outBuf.setMeta("file_path", filePath.toStdString());
@@ -516,8 +516,8 @@ Ret ConverterController::convertScorePartsToPdf(INotationWriterPtr writer, IMast
 {
     TRACEFUNC;
 
-    const INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
+    const project::Options options {
+        { project::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
     };
 
     for (const IExcerptNotationPtr& e : masterNotation->excerpts()) {
@@ -566,8 +566,8 @@ Ret ConverterController::convertScorePartsToMp3(INotationWriterPtr writer, IMast
 {
     TRACEFUNC;
 
-    const INotationWriter::Options options {
-        { INotationWriter::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
+    const project::Options options {
+        { project::OptionKey::UNIT_TYPE, Val(UnitType::PER_PART) },
     };
 
     for (const IExcerptNotationPtr& e : masterNotation->excerpts()) {

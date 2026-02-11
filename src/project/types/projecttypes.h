@@ -23,6 +23,7 @@
 #pragma once
 
 #include <variant>
+#include <map>
 
 #include <QString>
 #include <QUrl>
@@ -128,6 +129,15 @@ enum class UnitType {
     PER_PART,
     MULTI_PART
 };
+
+enum class OptionKey {
+    UNIT_TYPE,
+    PAGE_NUMBER,
+    TRANSPARENT_BACKGROUND,
+    BEATS_COLORS
+};
+
+using Options = std::map<OptionKey, muse::Val>;
 
 struct ExportInfo {
     QString id;

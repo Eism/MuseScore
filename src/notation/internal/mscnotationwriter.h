@@ -37,8 +37,10 @@ public:
     std::vector<project::UnitType> supportedUnitTypes() const override;
     bool supportsUnitType(project::UnitType unitType) const override;
 
-    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& device, const Options& options = Options()) override;
-    muse::Ret writeList(const INotationPtrList& notations, muse::io::IODevice& device, const Options& options = Options()) override;
+    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& device,
+                    const project::Options& options = project::Options()) override;
+    muse::Ret writeList(const INotationPtrList& notations, muse::io::IODevice& device,
+                        const project::Options& options = project::Options()) override;
 
 private:
     engraving::MscIoMode m_mode;
