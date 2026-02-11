@@ -24,6 +24,7 @@
 #define MU_PROJECT_IPROJECTWRITER_H
 
 #include "types/ret.h"
+#include "global/io/iodevice.h"
 
 #include "types/projecttypes.h"
 
@@ -39,6 +40,8 @@ public:
     virtual std::vector<UnitType> supportedUnitTypes() const = 0;
     virtual bool supportsUnitType(UnitType unitType) const = 0;
 
+    virtual muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& device,
+                            const project::Options& options = project::Options()) = 0;
     virtual muse::Ret write(project::INotationProjectPtr project, QIODevice& device,
                             const project::Options& options = project::Options()) = 0;
     virtual muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath,

@@ -39,6 +39,9 @@ using namespace mu::notation;
 using namespace muse::draw;
 using namespace muse::midi;
 
+#include <QFile>
+#include <QTemporaryFile>
+
 std::vector<UnitType> VideoWriter::supportedUnitTypes() const
 {
     return { UnitType::PER_PART };
@@ -48,6 +51,114 @@ bool VideoWriter::supportsUnitType(UnitType unitType) const
 {
     std::vector<UnitType> unitTypes = supportedUnitTypes();
     return std::find(unitTypes.cbegin(), unitTypes.cend(), unitType) != unitTypes.cend();
+}
+
+muse::Ret VideoWriter::write(notation::INotationPtr notation, muse::io::IODevice& device, const project::Options&)
+{
+    if (!notation) {
+        return make_ret(muse::Ret::Code::UnknownError);
+    }
+
+    if (!device.isWriteable()) {
+        return make_ret(muse::Ret::Code::UnknownError);
+    }
+
+    Config cfg;
+
+    cfg.fps = configuration()->fps();
+
+    std::string resolution = configuration()->resolution();
+    if (resolution == "2160p") {
+        cfg.width = 3840;
+        cfg.height = 2160;
+    } else if (resolution == "1440p") {
+        cfg.width = 2560;
+        cfg.height = 1440;
+    } else if (resolution == "1080p") {
+        cfg.width = 1920;
+        cfg.height = 1080;
+    } else if (resolution == "720p") {
+        cfg.width = 1280;
+        cfg.height = 720;
+    } else if (resolution == "480p") {
+        cfg.width = 854;
+        cfg.height = 480;
+    } else if (resolution == "360p") {
+        cfg.width = 640;
+        cfg.height = 360;
+    } else {
+        cfg.width = 1920;
+        cfg.height = 1080;
+    }
+
+    // compute bitrate according to Google recommended settings
+    // https://support.google.com/youtube/answer/1722171?hl=en
+    float br = 8;
+    if (cfg.height == 2160) {
+        br = cfg.fps < 35 ? 40 : 60;
+    } else if (cfg.height == 1440) {
+        br = cfg.fps < 35 ? 16 : 24;
+    } else if (cfg.height == 1080) {
+        br = cfg.fps < 35 ? 10 : 15;
+    } else if (cfg.height == 720) {
+        br = cfg.fps < 35 ? 5 : 7.5;
+    } else if (cfg.height == 480) {
+        br = cfg.fps < 35 ? 2.5 : 4;
+    } else if (cfg.height == 360) {
+        br = cfg.fps < 35 ? 1 : 1.5;
+    }
+    cfg.bitrate = int(br * 1000000);
+
+    cfg.leadingSec = configuration()->leadingSec();
+    cfg.trailingSec = configuration()->trailingSec();
+
+    QTemporaryFile tmpFile;
+    tmpFile.setAutoRemove(true);
+
+    if (!tmpFile.open()) {
+        LOGE() << "failed create temporary file for video export";
+        return make_ret(muse::Ret::Code::UnknownError);
+    }
+
+    muse::io::path_t tmpPath(tmpFile.fileName());
+    tmpFile.close();
+
+    // Use a non-owning shared_ptr to the project from notation
+    INotationProject* rawProject = notation->project();
+    if (!rawProject) {
+        return make_ret(muse::Ret::Code::UnknownError);
+    }
+
+    INotationProjectPtr projectPtr(rawProject, [](INotationProject*){});
+
+    muse::Ret ret = generatePagedOriginalVideo(projectPtr, tmpPath, cfg);
+    if (!ret) {
+        return ret;
+    }
+
+    QFile srcFile(tmpPath.toQString());
+    if (!srcFile.open(QIODevice::ReadOnly)) {
+        LOGE() << "failed reopen temporary file for reading: " << tmpPath;
+        return make_ret(muse::Ret::Code::UnknownError);
+    }
+
+    while (!srcFile.atEnd()) {
+        QByteArray chunk = srcFile.read(64 * 1024);
+        if (chunk.isEmpty() && srcFile.error() != QFile::NoError) {
+            LOGE() << "error while reading temporary video file";
+            return make_ret(muse::Ret::Code::UnknownError);
+        }
+
+        qint64 written = device.write(chunk);
+        if (written != chunk.size()) {
+            LOGE() << "failed write all data to target device";
+            return make_ret(muse::Ret::Code::UnknownError);
+        }
+    }
+
+    // device.flush();
+
+    return ret;
 }
 
 muse::Ret VideoWriter::write(INotationProjectPtr, QIODevice&, const Options&)

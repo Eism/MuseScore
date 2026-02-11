@@ -207,9 +207,7 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
                             return writer->write(notation, destinationDevice, options);
                         }
 
-                        QBuffer buff;
-                        return projectWriter->write(std::make_shared<project::INotationProject>(
-                                                        notation->project()), buff, options);
+                        return projectWriter->write(notation, destinationDevice, options);
                     };
 
                 Ret ret = doExportLoop(definitivePath, exportFunction);
@@ -228,8 +226,12 @@ bool ExportProjectScenario::exportScores(notation::INotationPtrList notations, c
                                               : completeExportPath(destinationPath, notation, isMainNotation(
                                                                        notation), isExportingOnlyOneScore);
 
-            auto exportFunction = [writer, notation, options](IODevice& destinationDevice) {
-                    return writer->write(notation, destinationDevice, options);
+            auto exportFunction = [writer, projectWriter, notation, options](IODevice& destinationDevice) {
+                    if (writer) {
+                        return writer->write(notation, destinationDevice, options);
+                    }
+
+                    return projectWriter->write(notation, destinationDevice, options);
                 };
 
             Ret ret = doExportLoop(definitivePath, exportFunction);

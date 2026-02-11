@@ -38,8 +38,12 @@ public:
     std::vector<project::UnitType> supportedUnitTypes() const override;
     bool supportsUnitType(project::UnitType unitType) const override;
 
-    muse::Ret write(project::INotationProjectPtr project, QIODevice& device, const Options& options = Options()) override;
-    muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath, const Options& options = Options()) override;
+    muse::Ret write(notation::INotationPtr notation, muse::io::IODevice& device,
+                    const project::Options& options = project::Options()) override;
+
+    muse::Ret write(project::INotationProjectPtr project, QIODevice& device, const project::Options& options = project::Options()) override;
+    muse::Ret write(project::INotationProjectPtr project, const muse::io::path_t& filePath,
+                    const project::Options& options = project::Options()) override;
 
 private:
 
