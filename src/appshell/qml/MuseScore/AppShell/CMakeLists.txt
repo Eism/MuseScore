@@ -48,6 +48,12 @@ qt_add_qml_module(appshell_qml
         PublishPage/publishtoolbarmodel.h
         welcomedialogmodel.cpp
         welcomedialogmodel.h
+        SplashScreen/splashscreen.cpp
+        SplashScreen/splashscreen.h
+        SplashScreen/loadingscreenmodel.cpp
+        SplashScreen/loadingscreenmodel.h
+        SplashScreen/newinstanceloadingscreenmodel.cpp
+        SplashScreen/newinstanceloadingscreenmodel.h
     QML_FILES
         AboutDialog.qml
         AboutMusicXMLDialog.qml
@@ -82,10 +88,13 @@ qt_add_qml_module(appshell_qml
         PublishPage/PublishToolBar.qml
         WelcomeDialog.qml
         WindowContent.qml
+        SplashScreen/LoadingScreenView.qml
+        SplashScreen/NewInstanceLoadingScreenView.qml
     RESOURCES
         FirstLaunchSetup/resources/MuseSounds.png
         FirstLaunchSetup/resources/VideoTutorials.png
         resources/mu_logo.svg
+        resources/splash_screen.svg
     IMPORTS
         TARGET muse_ui_qml
         TARGET muse_uicomponents_qml
@@ -155,4 +164,5 @@ target_include_directories(appshell_qml PRIVATE
     DevTools/Settings
     FirstLaunchSetup
     PublishPage
+    SplashScreen
 )
