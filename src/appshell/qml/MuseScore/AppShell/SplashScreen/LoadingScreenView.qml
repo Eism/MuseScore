@@ -21,6 +21,8 @@
  */
 import QtQuick
 
+import Muse.UiComponents
+
 import MuseScore.AppShell
 
 Item {
@@ -32,6 +34,37 @@ Item {
     implicitHeight: 406
     width: implicitWidth
     height: implicitHeight
+
+    AccessibleItem {
+        id: accessibleInfo
+
+        visualItem: root
+        role: MUAccessible.Information
+        name: messageText.text
+
+        function readInfo() {
+            accessibleInfo.ignored = false
+            accessibleInfo.focused = true
+        }
+
+        function resetFocus() {
+            accessibleInfo.ignored = true
+            accessibleInfo.focused = false
+        }
+    }
+
+    Component.onCompleted: {
+        updateLayout.start()
+    }
+
+    Timer {
+        id: updateLayout
+        interval: 10
+        repeat: false
+        onTriggered: {
+            accessibleInfo.readInfo()
+        }
+    }
 
     Image {
         id: background
