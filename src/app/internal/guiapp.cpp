@@ -127,6 +127,12 @@ void GuiApp::setup()
     // so that we can use windowCount() as early as possible
     muse::async::processMessages();
 
+#ifndef Q_OS_WIN
+    //! Needs to be set because we use transparent windows for PopupView.
+    //! Needs to be called before any QQuickWindows are shown (including splash screen).
+    QQuickWindow::setDefaultAlphaBuffer(true);
+#endif
+
 #ifdef MUE_ENABLE_SPLASHSCREEN
     modularity::ContextPtr splashCtx;
 #ifndef MUSE_MULTICONTEXT_WIP
@@ -152,6 +158,8 @@ void GuiApp::setup()
 
     if (m_splashScreen) {
         m_splashScreen->show();
+
+        qApp->processEvents();
     }
 #endif
 
@@ -169,6 +177,8 @@ void GuiApp::setup()
     }
 #endif
 
+    qApp->processEvents();
+
     // ====================================================
     // Setup modules: onAllInited
     // ====================================================
@@ -182,6 +192,8 @@ void GuiApp::setup()
         s->onAllInited(runMode);
     }
 #endif
+
+    qApp->processEvents();
 
     // ====================================================
     // Setup modules: onStartApp (on next event loop)
@@ -207,13 +219,11 @@ void GuiApp::setup()
     // Run
     // ====================================================
 
+    qApp->processEvents();
+
     // ====================================================
     // Setup Qml Engine
     // ====================================================
-    //! Needs to be set because we use transparent windows for PopupView.
-    //! Needs to be called before any QQuickWindows are shown.
-    QQuickWindow::setDefaultAlphaBuffer(true);
-
     //! NOTE Adjust GS Api
     //! We can hide this algorithm in GSApiProvider,
     //! but it is intentionally left here to illustrate what is happening.
@@ -374,6 +384,8 @@ muse::modularity::ContextPtr GuiApp::setupNewContext()
 
     QQmlApplicationEngine* engine = muse::modularity::globalIoc()->resolve<muse::ui::IUiEngine>("app")->qmlAppEngine();
 
+    qApp->processEvents();
+
     QString path = QString(":/qt/qml/MuseScore/AppShell/platform/%1/Main.qml").arg(platform);
     QQmlComponent component = QQmlComponent(engine, path);
     if (!component.isReady()) {
@@ -387,6 +399,8 @@ muse::modularity::ContextPtr GuiApp::setupNewContext()
     iocCtx->ctx = ctx;
     qmlCtx->setContextProperty("ioc_context", QVariant::fromValue(iocCtx));
 
+    qApp->processEvents();
+
     QObject* obj = component.create(qmlCtx);
     if (!obj) {
         LOGE() << "failed Qml load\n";
@@ -395,6 +409,8 @@ muse::modularity::ContextPtr GuiApp::setupNewContext()
     }
 
     startupScenario()->runOnSplashScreen();
+
+    qApp->processEvents();
 
     if (m_splashScreen) {
         m_splashScreen->close();
