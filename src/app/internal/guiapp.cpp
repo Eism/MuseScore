@@ -391,23 +391,25 @@ muse::modularity::ContextPtr GuiApp::setupNewContext()
 
     startupScenario()->runOnSplashScreen();
 
-    if (m_splashScreen) {
-        m_splashScreen->close();
-        delete m_splashScreen;
-        m_splashScreen = nullptr;
-    }
+    QMetaObject::invokeMethod(qApp, [this, obj]() {
+        if (m_splashScreen) {
+            m_splashScreen->close();
+            delete m_splashScreen;
+            m_splashScreen = nullptr;
+        }
 
-    // The main window must be shown at this point so KDDockWidgets can read its size correctly
-    // and scale all sizes properly. https://github.com/musescore/MuseScore/issues/21148
-    // but before that, let's make the window transparent,
-    // otherwise the empty window frame will be visible
-    // https://github.com/musescore/MuseScore/issues/29630
-    // Transparency will be removed after the page loads.
-    QQuickWindow* w = dynamic_cast<QQuickWindow*>(obj);
-    w->setOpacity(0.01);
-    w->setVisible(true);
+        // The main window must be shown at this point so KDDockWidgets can read its size correctly
+        // and scale all sizes properly. https://github.com/musescore/MuseScore/issues/21148
+        // but before that, let's make the window transparent,
+        // otherwise the empty window frame will be visible
+        // https://github.com/musescore/MuseScore/issues/29630
+        // Transparency will be removed after the page loads.
+        QQuickWindow* w = dynamic_cast<QQuickWindow*>(obj);
+        w->setOpacity(0.01);
+        w->setVisible(true);
 
-    startupScenario()->runAfterSplashScreen();
+        startupScenario()->runAfterSplashScreen();
+    }, Qt::QueuedConnection);
 
     return ctx;
 }
