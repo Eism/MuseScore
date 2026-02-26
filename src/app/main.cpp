@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QStyleHints>
 #include <QQuickWindow>
+#include <QLoggingCategory>
 
 #include "appfactory.h"
 #include "internal/commandlineparser.h"
@@ -76,6 +77,8 @@ int main(int argc, char** argv)
     // ====================================================
     // Setup global Qt application variables
     // ====================================================
+
+    QLoggingCategory::setFilterRules("qt.accessibility.*=true");
 
     app_init_qrc();
 

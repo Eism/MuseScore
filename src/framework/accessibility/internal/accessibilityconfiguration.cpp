@@ -23,6 +23,8 @@
 
 #include <QAccessible>
 
+#include "log.h"
+
 using namespace muse::accessibility;
 
 class AccessibilityActivationObserver : public QAccessible::ActivationObserver
@@ -31,6 +33,7 @@ public:
     AccessibilityActivationObserver()
     {
         m_isAccessibilityActive = QAccessible::isActive();
+        LOGD() << "AccessibilityActivationObserver created, isAccessibilityActive=" << m_isAccessibilityActive;
     }
 
     bool isAccessibilityActive() const
@@ -40,6 +43,7 @@ public:
 
     void accessibilityActiveChanged(bool active) override
     {
+        LOGD() << "accessibilityActiveChanged: " << m_isAccessibilityActive << " -> " << active;
         m_isAccessibilityActive = active;
     }
 
@@ -51,42 +55,55 @@ AccessibilityActivationObserver* s_accessibilityActivationObserver = nullptr;
 
 AccessibilityConfiguration::~AccessibilityConfiguration()
 {
+    LOGD() << "destructor, m_inited=" << m_inited;
     QAccessible::installActivationObserver(nullptr);
     delete s_accessibilityActivationObserver;
+    s_accessibilityActivationObserver = nullptr;
 }
 
 void AccessibilityConfiguration::init()
 {
+    LOGD() << "init, m_inited=" << m_inited;
     s_accessibilityActivationObserver = new AccessibilityActivationObserver();
 
     QAccessible::installActivationObserver(s_accessibilityActivationObserver);
 
     m_inited = true;
+    LOGD() << "init done, isAccessibilityActive=" << s_accessibilityActivationObserver->isAccessibilityActive();
 }
 
 bool AccessibilityConfiguration::enabled() const
 {
+    bool result = false;
     if (!m_inited) {
+        LOGD() << "enabled: false (not inited)";
         return false;
     }
 
     if (!navigationController()) {
+        LOGD() << "enabled: false (no navigationController)";
         return false;
     }
 
     if (!active()) {
+        LOGD() << "enabled: false (not active)";
         return false;
     }
 
     //! NOTE Accessibility available if navigation is used
-    return navigationController()->activeSection() != nullptr;
+    result = navigationController()->activeSection() != nullptr;
+    LOGD() << "enabled: " << result << " (activeSection=" << (navigationController()->activeSection() ? "set" : "null") << ")";
+    return result;
 }
 
 bool AccessibilityConfiguration::active() const
 {
     if (!m_inited) {
+        LOGD() << "active: false (not inited)";
         return false;
     }
 
-    return s_accessibilityActivationObserver->isAccessibilityActive();
+    bool result = s_accessibilityActivationObserver->isAccessibilityActive();
+    LOGD() << "active: " << result;
+    return result;
 }
