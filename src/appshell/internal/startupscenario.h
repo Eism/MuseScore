@@ -34,6 +34,7 @@
 #include "isessionsmanager.h"
 #include "project/iprojectautosaver.h"
 #include "audioplugins/iregisteraudiopluginsscenario.h"
+#include "ui/inavigationcontroller.h"
 
 #include "update/iappupdatescenario.h"
 #include "musesounds/imusesoundscheckupdatescenario.h"
@@ -46,12 +47,13 @@ class StartupScenario : public IStartupScenario, public muse::Contextable, publi
     muse::GlobalInject<IAppShellConfiguration> configuration;
     muse::ContextInject<muse::IInteractive> interactive = { this };
     muse::ContextInject<muse::actions::IActionsDispatcher> dispatcher = { this };
-    muse::ContextInject<ISessionsManager> sessionsManager = { this };
-    muse::ContextInject<project::IProjectAutoSaver> projectAutoSaver = { this };
     muse::ContextInject<muse::audioplugins::IRegisterAudioPluginsScenario> registerAudioPluginsScenario = { this };
     muse::ContextInject<muse::update::IAppUpdateScenario> appUpdateScenario = { this };
-    muse::ContextInject<mu::musesounds::IMuseSoundsCheckUpdateScenario> museSoundsUpdateScenario = { this };
+    muse::ContextInject<muse::ui::INavigationController> navigationController = { this };
+    muse::ContextInject<musesounds::IMuseSoundsCheckUpdateScenario> museSoundsUpdateScenario = { this };
     muse::ContextInject<musesounds::IMuseSamplerCheckUpdateScenario> museSamplerCheckForUpdateScenario = { this };
+    muse::ContextInject<ISessionsManager> sessionsManager = { this };
+    muse::ContextInject<project::IProjectAutoSaver> projectAutoSaver = { this };
 
 public:
     StartupScenario(const muse::modularity::ContextPtr& iocCtx)

@@ -170,6 +170,9 @@ void StartupScenario::runAfterSplashScreen()
         }
         once = true;
 
+        //! NOTE: focus on the default control on the page
+        navigationController()->resetNavigation();
+
         onStartupPageOpened(modeType);
 
         async::Async::call(this, [this, opened]() {
