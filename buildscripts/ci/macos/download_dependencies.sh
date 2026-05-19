@@ -22,9 +22,28 @@
 echo "Download dependencies"
 trap 'code=$?; echo "error: Download dependencies: command \`$BASH_COMMAND\` exited with code $code." >&2; exit 1' ERR
 
-wget -q --show-progress -O musescore_deps_macos.tar.gz https://raw.githubusercontent.com/cbjeukendrup/musescore_deps/main/musescore_deps_macos.tar.gz
-mkdir -p $HOME/musescore_deps_macos
-tar xf musescore_deps_macos.tar.gz -C $HOME/musescore_deps_macos
-rm musescore_deps_macos.tar.gz
+DEPS_DIR="$HOME/musescore_deps_macos"
+DEPS_BASE_URL="https://raw.githubusercontent.com/musescore/muse_deps/main"
+DEPS_ARCHIVE="macos_universal_relwithdebinfo_appleclang15_os1013.7z"
+
+DEPS=(
+    "flac/1.4.2"
+    "ogg/1.3.5"
+    "vorbis/1.3.7"
+    "opus/1.5.2"
+    "libsndfile/1.0.31"
+)
+
+mkdir -p "$DEPS_DIR"
+for dep in "${DEPS[@]}"; do
+    echo "Download $dep"
+    wget -q --show-progress -O dep.7z "$DEPS_BASE_URL/$dep/$DEPS_ARCHIVE"
+    7z x -y dep.7z -o"$DEPS_DIR"
+    rm dep.7z
+
+    # also fetch the cmake helper next to the extracted lib/include
+    name=$(basename "${dep%/*}")
+    wget -q -O "$DEPS_DIR/${name}.cmake" "$DEPS_BASE_URL/$dep/${name}.cmake"
+done
 
 echo "Download dependencies done"
