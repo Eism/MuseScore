@@ -149,7 +149,7 @@ option(MUE_RUN_WINDEPLOYQT "Run windeployqt" ON)
 set(MUE_VTEST_MSCORE_REF_BIN "${CMAKE_CURRENT_LIST_DIR}/../MU_ORIGIN/MuseScore/build.debug/install/${INSTALL_SUBDIR}/mscore" CACHE PATH "Path to mscore ref bin")
 
 # === Compile ===
-set(MUE_COMPILE_MACOS_PRECOMPILED_DEPS_PATH "" CACHE PATH "Path to precompiled dependencies (macOS only; optional: if not specified, some libraries will be used from the system and others will be built from source)")
+option(MUE_DOWNLOAD_MACOS_PRECOMPILED_DEPS "Download precompiled dependencies (macOS only)" OFF)
 
 option(MUSE_GENERATE_COMPILE_COMMANDS "Generate compile commands" OFF)
 option(MUSE_COMPILE_USE_UNITY "Use unity build" ON)
@@ -208,12 +208,8 @@ endif(MUSE_COMPILE_USE_COMPILER_CACHE)
 # Setup external dependencies
 ###########################################
 
-if (MUE_COMPILE_MACOS_PRECOMPILED_DEPS_PATH)
-    list(PREPEND CMAKE_PREFIX_PATH ${MUE_COMPILE_MACOS_PRECOMPILED_DEPS_PATH})
-
-    # These are included in the precompiled dependencies, so let's use them from there
-    set(MUE_COMPILE_USE_SYSTEM_FLAC ON)
-    set(MUE_COMPILE_USE_SYSTEM_OPUS ON)
+if (MUE_DOWNLOAD_MACOS_PRECOMPILED_DEPS)
+    include(SetupMacOSDependencies)
 endif()
 
 include(SetupQt6)
