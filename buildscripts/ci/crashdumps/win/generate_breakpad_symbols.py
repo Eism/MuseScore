@@ -37,10 +37,11 @@ def GetCommandOutput(command):
 
   From chromium_utils.
   """
-  devnull = open(os.devnull, 'w')
-  proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull)
-  output = proc.communicate()[0]
-  return output.decode()
+  proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  stdout, stderr = proc.communicate()
+  if stderr:
+    sys.stderr.write("dump_syms stderr:\n" + stderr.decode(errors='replace') + "\n")
+  return stdout.decode()
 
 
 def mkdir_p(path):
@@ -73,6 +74,7 @@ def GenerateSymbols(options, binaries):
       if module_line == None:
         with print_lock:
           print("Failed to get symbols for %s" % binary)
+          print("dump_syms output (first 500 bytes): %r" % syms[:500])
         q.task_done()
         continue
 
@@ -80,9 +82,8 @@ def GenerateSymbols(options, binaries):
                                  module_line.group(1))
       mkdir_p(output_path)
       symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
-      f = open(os.path.join(output_path, symbol_file), 'w')
-      f.write(syms)
-      f.close()
+      with open(os.path.join(output_path, symbol_file), 'wb') as f:
+        f.write(syms.encode('utf-8'))
 
       q.task_done()
 

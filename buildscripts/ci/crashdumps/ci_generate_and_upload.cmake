@@ -5,12 +5,14 @@ set(APP_BIN "" CACHE STRING "Path to app binary")
 set(ARCH "" CACHE STRING "System architecture")
 set(GENERATE_ARCHS "" CACHE STRING "Generate symbols for architectures")
 set(BUILD_DIR "${CMAKE_SOURCE_DIR}/build.release" CACHE STRING "Path to build directory")
+set(DUMPSYMS_BIN "" CACHE STRING "Path to dump_syms binary (override bundled)")
 
 set(CONFIG
     -DAPP_BIN=${APP_BIN}
     -DARCH=${ARCH}
     -DGENERATE_ARCHS=${GENERATE_ARCHS}
     -DBUILD_DIR=${BUILD_DIR}
+    -DDUMPSYMS_BIN=${DUMPSYMS_BIN}
 )
 
 execute_process(
