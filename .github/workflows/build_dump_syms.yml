@@ -1,0 +1,123 @@
+name: 'Build: dump_syms'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_dump_syms_windows:
+    runs-on: windows-2025
+    steps:
+    - name: Build dump_syms from Google Breakpad
+      shell: cmd
+      run: |
+        echo "=== git clone ==="
+        git clone --depth=1 https://github.com/google/breakpad.git breakpad-src
+        IF NOT "%ERRORLEVEL%"=="0" EXIT /b 1
+
+        echo "=== vswhere (picking first VS that actually has atlbase.h on disk) ==="
+        SET "VSWHERE=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+        powershell -NoProfile -Command "& '%VSWHERE%' -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath | Where-Object { Test-Path -Path ($_ + '\VC\Tools\MSVC\*\atlmfc\include\atlbase.h') } | Select-Object -First 1 | Out-File -FilePath vs_path.txt -Encoding ascii"
+        SET /p VS_INSTALL_DIR=<vs_path.txt
+        echo "VS_INSTALL_DIR=%VS_INSTALL_DIR%"
+        IF "%VS_INSTALL_DIR%"=="" (
+          echo "ERROR: no VS install with a usable ATL on this runner"
+          EXIT /b 1
+        )
+
+        echo "=== detect MSVC toolset that has ATL and matching PlatformToolset ==="
+        powershell -NoProfile -Command "(Get-Item -Path '%VS_INSTALL_DIR%\VC\Tools\MSVC\*\atlmfc\include\atlbase.h' | Select-Object -First 1).Directory.Parent.Parent.Name" > toolset_ver.txt
+        SET /p TOOLSET_VER=<toolset_ver.txt
+        powershell -NoProfile -Command "$v=[int]('%TOOLSET_VER%'.Split('.')[1]); if ($v -ge 50) {'v145'} else {'v143'}" > toolset_family.txt
+        SET /p TOOLSET_FAMILY=<toolset_family.txt
+        echo "TOOLSET_VER=%TOOLSET_VER%  TOOLSET_FAMILY=%TOOLSET_FAMILY%"
+
+        echo "=== vcvars64 ==="
+        CALL "%VS_INSTALL_DIR%\VC\Auxiliary\Build\vcvars64.bat"
+        IF NOT "%ERRORLEVEL%"=="0" EXIT /b 1
+
+        echo "=== msbuild (PlatformToolset=%TOOLSET_FAMILY%, VCToolsVersion=%TOOLSET_VER%) ==="
+        cd breakpad-src\src\tools\windows\dump_syms
+        powershell -NoProfile -Command "$f='dump_syms.vcxproj'; (Get-Content $f -Raw).Replace('imagehlp.lib;%%(AdditionalDependencies)', 'imagehlp.lib;Dbghelp.lib;%%(AdditionalDependencies)') | Set-Content $f"
+        msbuild dump_syms.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=%TOOLSET_FAMILY% /p:VCToolsVersion=%TOOLSET_VER% || EXIT /b 1
+
+        echo "=== bundle dump_syms.exe + msdia140.dll into dump_syms.7z ==="
+        copy "%VS_INSTALL_DIR%\DIA SDK\bin\msdia140.dll" "Release\msdia140.dll"
+        cd Release
+        7z a -t7z dump_syms.7z dump_syms.exe msdia140.dll
+        dir dump_syms.7z
+
+    - name: Upload dump_syms artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: dump_syms-windows
+        path: breakpad-src/src/tools/windows/dump_syms/Release/dump_syms.7z
+
+  build_dump_syms_macos:
+    runs-on: macos-26
+    steps:
+    - name: Build dump_syms from Google Breakpad
+      run: |
+        echo "=== git clone ==="
+        git clone --depth=1 https://github.com/google/breakpad.git breakpad-src
+
+        echo "=== xcodebuild (universal x86_64 + arm64) ==="
+        cd breakpad-src/src/tools/mac/dump_syms
+        xcodebuild -project dump_syms.xcodeproj -target dump_syms -configuration Release build \
+            SYMROOT="$(pwd)/build" \
+            ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO
+
+        echo "=== verify universal binary ==="
+        cd build/Release
+        file dump_syms
+        lipo -info dump_syms
+
+        echo "=== bundle dump_syms into dump_syms.7z ==="
+        command -v 7z >/dev/null || brew install p7zip
+        7z a -t7z dump_syms.7z dump_syms
+        ls -la dump_syms.7z
+
+    - name: Upload dump_syms artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: dump_syms-macos
+        path: breakpad-src/src/tools/mac/dump_syms/build/Release/dump_syms.7z
+
+  build_dump_syms_linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runs-on: ubuntu-22.04
+          - arch: aarch64
+            runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+    - name: Build dump_syms from Google Breakpad
+      run: |
+        echo "=== git clone ==="
+        git clone --depth=1 https://github.com/google/breakpad.git breakpad-src
+        cd breakpad-src
+        git clone --depth=1 https://chromium.googlesource.com/linux-syscall-support src/third_party/lss
+
+        echo "=== patch missing <cstddef> include (std::max_align_t) ==="
+        sed -i '0,/^#include/{s|^#include|#include <cstddef>\n#include|}' src/common/memory_allocator.h
+
+        echo "=== configure + make ==="
+        ./configure
+        make src/tools/linux/dump_syms/dump_syms
+
+        echo "=== verify binary ==="
+        cd src/tools/linux/dump_syms
+        file dump_syms
+
+        echo "=== bundle dump_syms into dump_syms.7z ==="
+        command -v 7z >/dev/null || sudo apt-get install -y --no-install-recommends p7zip-full
+        7z a -t7z dump_syms.7z dump_syms
+        ls -la dump_syms.7z
+
+    - name: Upload dump_syms artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: dump_syms-linux-${{ matrix.arch }}
+        path: breakpad-src/src/tools/linux/dump_syms/dump_syms.7z
