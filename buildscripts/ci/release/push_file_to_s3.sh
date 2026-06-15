@@ -52,11 +52,9 @@ fi
 
 cat >~/.s3cfg <<EOL
 [default]
+# updates.musescore.org
 access_key = ${S3_KEY}
 secret_key = ${S3_SECRET}
-host_base = ${S3_BUCKET}
-host_bucket = ${S3_BUCKET}
-website_endpoint = https://${S3_BUCKET}
 EOL
 
 echo "=== Publish to S3 ==="
