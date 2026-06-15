@@ -278,7 +278,7 @@ jobs:
         ZIP_NAME="$(cat ./build.artifacts/env/artifact_name_zip.env)"
         BUILD_VERSION="$(cat ./build.artifacts/env/build_version.env)"
         MAJOR_MINOR_PATCH="$(cut -d. -f1,2,3 <<< "$BUILD_VERSION")"
-        S3_URL="s3://updates.musescore.org/${MAJOR_MINOR_PATCH}/macOS/${ZIP_NAME}"
+        S3_URL="s3://extensions.musescore.org/update/${MAJOR_MINOR_PATCH}/macOS/${ZIP_NAME}"
 
         bash ./buildscripts/ci/release/push_file_to_s3.sh \
           --s3_key '${{ secrets.S3_KEY_UPDATE }}' \
