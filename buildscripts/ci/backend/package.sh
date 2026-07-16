@@ -82,7 +82,7 @@ cp $HERE/convertor.in $APP_DIR/convertor
 chmod 775 $APP_DIR/convertor
 
 # Pack to 7z
-7z a "$ARTIFACT_NAME.7z" "$APP_DIR/*"
+7z a -snl "$ARTIFACT_NAME.7z" "$APP_DIR/*"
 chmod a+rw "$ARTIFACT_NAME.7z"
 
 # Clean up
