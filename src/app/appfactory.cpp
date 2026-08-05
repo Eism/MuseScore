@@ -93,7 +93,7 @@
 #endif
 
 #ifdef MUSE_MODULE_SHORTCUTS
-#include "framework/shortcuts/shortcutsmodule.h"
+#include "shortcuts/shortcutsmodule.h"
 #else
 #include "framework/stubs/shortcuts/shortcutsstubmodule.h"
 #endif
