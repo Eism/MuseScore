@@ -104,13 +104,11 @@ jobs:
             runs-on: ubuntu-24.04
             qt-host: linux
             qt-arch: linux_gcc_64
-            dump-symbols-arch: x86-64
           - platform: linux_arm64
             arch: aarch64
             runs-on: ubuntu-24.04-arm
             qt-host: linux_arm64
             qt-arch: linux_gcc_arm64
-            dump-symbols-arch: aarch64
     steps:
     - name: Clone repository
       uses: actions/checkout@v7
@@ -268,21 +266,22 @@ jobs:
     - name: Checksum
       run: |
         bash ./buildscripts/ci/tools/checksum.sh
+
     - name: Generate and upload dump symbols
       if: env.DO_UPLOAD_SYMBOLS == 'true'
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_MUSE_AUTH_TOKEN }}
       run: |
         APP_BIN=$(find "$(pwd)/build.release/src/app/" -type f -name "mscore4portable*" -print -quit)
-        ARCH=${{ matrix.dump-symbols-arch }}
+
         sudo cmake -DAPP_BIN=${APP_BIN} \
-                   -DARCH=${ARCH} \
                    -DSENTRY_URL=https://sentry.musescore.com \
                    -DSENTRY_ORG=sentry \
                    -DSENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}" \
                    -DSENTRY_PROJECT=${SENTRY_PROJECT} \
                    -DSTAGE=${BUILD_MODE} \
-                   -P buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
+                   -P muse/buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
+
     - name: Publish to OSUOSL
       if: env.DO_PUBLISH == 'true'
       env:
