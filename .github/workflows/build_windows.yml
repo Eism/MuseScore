@@ -254,6 +254,7 @@ jobs:
     - name: Checksum
       run: |
         bash ./buildscripts/ci/tools/checksum.sh
+
     - name: Generate and upload dump symbols
       if: env.DO_UPLOAD_SYMBOLS == 'true'
       shell: bash
@@ -267,7 +268,8 @@ jobs:
               -DSENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}" \
               -DSENTRY_PROJECT=${SENTRY_PROJECT} \
               -DSTAGE=${BUILD_MODE} \
-              -P buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
+              -P muse/buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
+
     - name: Publish to OSUOSL
       if: env.DO_PUBLISH == 'true'
       shell: bash
