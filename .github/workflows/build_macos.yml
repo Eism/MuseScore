@@ -283,11 +283,9 @@ jobs:
       run: |
         APP_BIN=$(pwd)/applebuild/mscore.app/Contents/MacOS/mscore
         GENERATE_ARCHS=("x86_64 arm64")
-        BUILD_DIR=$(pwd)/applebuild
 
         cmake -DAPP_BIN=${APP_BIN} \
               -DGENERATE_ARCHS="${GENERATE_ARCHS}" \
-              -DBUILD_DIR=${BUILD_DIR} \
               -DSENTRY_URL=https://sentry.musescore.com \
               -DSENTRY_ORG=sentry \
               -DSENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}" \
