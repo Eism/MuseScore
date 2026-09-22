@@ -2,12 +2,14 @@ set(HERE ${CMAKE_CURRENT_LIST_DIR})
 
 # Options for generate
 set(APP_BIN "" CACHE STRING "Path to app binary")
+set(APP_DSYM "" CACHE STRING "Path to the dSYM bundle of the app binary (macOS)")
 set(ARCH "" CACHE STRING "System architecture")
 set(GENERATE_ARCHS "" CACHE STRING "Generate symbols for architectures")
 set(BUILD_DIR "${CMAKE_SOURCE_DIR}/build.release" CACHE STRING "Path to build directory")
 
 set(CONFIG
     -DAPP_BIN=${APP_BIN}
+    -DAPP_DSYM=${APP_DSYM}
     -DARCH=${ARCH}
     -DGENERATE_ARCHS=${GENERATE_ARCHS}
     -DBUILD_DIR=${BUILD_DIR}
@@ -28,6 +30,7 @@ set(SENTRY_AUTH_TOKEN "" CACHE STRING "Sentry Auth Token")
 set(SENTRY_ORG "" CACHE STRING "Sentry Organization")
 set(SENTRY_PROJECT "" CACHE STRING "Sentry Project")
 set(STAGE "" CACHE STRING "Build stage (e.g. stable, testing, nightly, devel)")
+set(EXTRA_DIF_PATHS "" CACHE STRING "Additional debug information files to upload")
 
 set(CONFIG
     -DSENTRY_URL=${SENTRY_URL}
@@ -35,6 +38,7 @@ set(CONFIG
     -DSENTRY_ORG=${SENTRY_ORG}
     -DSENTRY_PROJECT=${SENTRY_PROJECT}
     -DSTAGE=${STAGE}
+    "-DEXTRA_DIF_PATHS=${EXTRA_DIF_PATHS}"
 )
 
 execute_process(

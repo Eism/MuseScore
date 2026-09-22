@@ -339,6 +339,10 @@ def GenerateSymbols(options, binaries):
   print_lock = threading.Lock()
   exceptions_lock = threading.Lock()
 
+  # The dSYM describes the application binary only, not its dependencies.
+  main_binary = os.path.abspath(options.binary)
+  dsym = os.path.abspath(options.dsym) if options.dsym else ''
+
   def _Worker():
     dump_syms = options.dumpsyms_bin
     while True:
@@ -406,6 +410,10 @@ def GenerateSymbols(options, binaries):
           dump_syms_command = [dump_syms, '-r']
           if options.arch:
             dump_syms_command.extend(['-a', options.arch])
+          if dsym and os.path.abspath(binary) == main_binary:
+            # -g: take the DWARF from the dSYM, -d: emit INLINE records, which
+            # release builds need because most frames are inlined.
+            dump_syms_command.extend(['-d', '-g', dsym])
           dump_syms_command.append(binary)
           subprocess.check_call(dump_syms_command, stdout=f)
       except Exception as e:
@@ -440,6 +448,10 @@ def main():
                     help='The directory where to write the symbols file.')
   parser.add_option('', '--binary', default='',
                     help='The path of the binary to generate symbols for.')
+  parser.add_option('', '--dsym', default='',
+                    help='path to the dSYM bundle holding the debug info for '
+                         '--binary (macOS). Lets dump_syms emit file names, '
+                         'line numbers and inline frames.')
   parser.add_option('', '--arch', default='',
                     help='The architecture of the binary.')
   parser.add_option('', '--clear', default=False, action='store_true',

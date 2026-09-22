@@ -197,22 +197,13 @@ jobs:
       run: |
         ccache -sv
 
-    # NOTE: Should be before Package, because in Package we remove debug symbols files
-    - name: Generate and upload dump symbols
+    # NOTE: Must be before Package: macdeployqt strips the binary and package.sh
+    # deletes the dSYM bundles, and dsymutil needs the debug map of the
+    # unstripped binary plus the object files it points at.
+    - name: Generate dSYM
       if: env.DO_UPLOAD_SYMBOLS == 'true'
       run: |
-        APP_BIN=$(pwd)/applebuild/mscore.app/Contents/MacOS/mscore
-        GENERATE_ARCHS=("x86_64 arm64")
-        BUILD_DIR=$(pwd)/applebuild
-        cmake -DAPP_BIN=${APP_BIN} \
-              -DGENERATE_ARCHS="${GENERATE_ARCHS}" \
-              -DBUILD_DIR=${BUILD_DIR} \
-              -DSENTRY_URL=https://sentry.musescore.com \
-              -DSENTRY_ORG=sentry \
-              -DSENTRY_AUTH_TOKEN=${{ secrets.SENTRY_MUSE_AUTH_TOKEN }} \
-              -DSENTRY_PROJECT=${SENTRY_PROJECT} \
-              -DSTAGE=${BUILD_MODE} \
-              -P buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
+        bash ./buildscripts/ci/macos/generate_dsym.sh
 
     - name: Package
       run: |
@@ -230,6 +221,24 @@ jobs:
     - name: Checksum
       run: |
         bash ./buildscripts/ci/tools/checksum.sh
+    - name: Generate and upload dump symbols
+      if: env.DO_UPLOAD_SYMBOLS == 'true'
+      run: |
+        APP_BIN=$(pwd)/applebuild/mscore.app/Contents/MacOS/mscore
+        APP_DSYM=$(pwd)/applebuild/mscore.dSYM
+        GENERATE_ARCHS=("x86_64 arm64")
+        BUILD_DIR=$(pwd)/applebuild
+        cmake -DAPP_BIN=${APP_BIN} \
+              -DAPP_DSYM=${APP_DSYM} \
+              -DEXTRA_DIF_PATHS="${APP_BIN};${APP_DSYM}" \
+              -DGENERATE_ARCHS="${GENERATE_ARCHS}" \
+              -DBUILD_DIR=${BUILD_DIR} \
+              -DSENTRY_URL=https://sentry.musescore.com \
+              -DSENTRY_ORG=sentry \
+              -DSENTRY_AUTH_TOKEN=${{ secrets.SENTRY_MUSE_AUTH_TOKEN }} \
+              -DSENTRY_PROJECT=${SENTRY_PROJECT} \
+              -DSTAGE=${BUILD_MODE} \
+              -P buildscripts/ci/crashdumps/ci_generate_and_upload.cmake
     - name: Publish to OSUOSL
       if: env.DO_PUBLISH == 'true'
       run: |

@@ -6,6 +6,7 @@ set(DUMPSYMS_BIN "" CACHE STRING "Path to dump_syms binary")
 set(BUILD_DIR "" CACHE STRING "Path to build directory")
 set(SYMBOLS_DIR "" CACHE STRING "Path to output symbols directory")
 set(APP_BIN "" CACHE STRING "Path to app binary")
+set(APP_DSYM "" CACHE STRING "Path to the dSYM bundle of the app binary (macOS)")
 
 set(GENERATE_ARCHS "" CACHE STRING "Generate symbols for architectures")
 separate_arguments(GENERATE_ARCHS_LIST UNIX_COMMAND "${GENERATE_ARCHS}")
@@ -17,7 +18,8 @@ if(SHOW_HELP)
     message(STATUS "    -DDUMPSYMS_BIN=path    path to dump_syms binary, default use path from environment path")
     message(STATUS "    -DBUILD_DIR=path      path to build dir")
     message(STATUS "    -DSYMBOLS_DIR=path    path to output symbols dir, default '../../build.symbols'")
-    message(STATUS "    -DAPP_BIN=path     path to mscore binary")
+    message(STATUS "    -DAPP_BIN=path     path to mscore binary
+    -DAPP_DSYM=path       path to the dSYM bundle of the app binary (macOS)")
     message(STATUS "    -DGENERATE_ARCHS=archs  generate symbols for architectures")
     message(STATUS "    -DSHOW_HELP=ON        display this help and exit")
     message(STATUS " ")
@@ -49,6 +51,12 @@ message(STATUS "DUMPSYMS_BIN: ${DUMPSYMS_BIN}")
 message(STATUS "BUILD_DIR: ${BUILD_DIR}")
 message(STATUS "SYMBOLS_DIR: ${SYMBOLS_DIR}")
 message(STATUS "APP_BIN: ${APP_BIN}")
+message(STATUS "APP_DSYM: ${APP_DSYM}")
+
+set(DSYM_ARG "")
+if(APP_DSYM)
+    set(DSYM_ARG --dsym=${APP_DSYM})
+endif()
 
 if(NOT GENERATE_ARCHS_LIST)
     message(STATUS "Generate symbols")
@@ -58,6 +66,7 @@ if(NOT GENERATE_ARCHS_LIST)
         --symbols-dir=${SYMBOLS_DIR}
         --build-dir=${BUILD_DIR}
         --binary=${APP_BIN}
+        ${DSYM_ARG}
         --clear
         --verbose
     )
@@ -80,6 +89,7 @@ else()
             --symbols-dir=${SYMBOLS_DIR}
             --build-dir=${BUILD_DIR}
             --binary=${APP_BIN}
+            ${DSYM_ARG}
             --arch=${ARCH}
         )
 

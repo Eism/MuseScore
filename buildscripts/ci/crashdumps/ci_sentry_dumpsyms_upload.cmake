@@ -11,6 +11,7 @@ set(SENTRY_AUTH_TOKEN "" CACHE STRING "Sentry Auth Token")
 set(SENTRY_ORG "" CACHE STRING "Sentry Organization")
 set(SENTRY_PROJECT "" CACHE STRING "Sentry Project")
 set(STAGE "" CACHE STRING "Build stage (e.g. stable, testing, nightly, devel)")
+set(EXTRA_DIF_PATHS "" CACHE STRING "Additional debug information files to upload")
 
 # Check
 if(NOT SYMBOLS_PATH)
@@ -36,6 +37,7 @@ message(STATUS "SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}")
 message(STATUS "SENTRY_ORG: ${SENTRY_ORG}")
 message(STATUS "SENTRY_PROJECT: ${SENTRY_PROJECT}")
 message(STATUS "STAGE: ${STAGE}")
+message(STATUS "EXTRA_DIF_PATHS: ${EXTRA_DIF_PATHS}")
 
 # Upload symbols
 set(ENV{SENTRY_URL} ${SENTRY_URL})
@@ -57,7 +59,7 @@ else()
 endif()
 
 execute_process(
-    COMMAND ${SENTRY_CLI} upload-dif -o ${SENTRY_ORG} -p ${SENTRY_PROJECT} ${SYMBOLS_PATH}
+    COMMAND ${SENTRY_CLI} upload-dif -o ${SENTRY_ORG} -p ${SENTRY_PROJECT} ${SYMBOLS_PATH} ${EXTRA_DIF_PATHS}
     RESULT_VARIABLE result
     OUTPUT_VARIABLE output
     ERROR_VARIABLE output
