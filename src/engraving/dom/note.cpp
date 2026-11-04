@@ -4259,3 +4259,4 @@ staff_idx_t Note::vStaffIdx() const
     return c ? c->vStaffIdx() : EngravingItem::vStaffIdx();
 }
 }
+
