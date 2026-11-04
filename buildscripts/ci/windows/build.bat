@@ -63,6 +63,8 @@ SET MUSESCORE_BUILD_VST_MODULE="ON"
 SET MUSESCORE_BUILD_WEBSOCKET="ON"
 SET MUSESCORE_RUN_WINDEPLOYQT="ON"
 SET MUSESCORE_MODULE_DOCKWINDOW_KDDOCKWIDGETS_V2=%DOCKWIDGETS_V2%
+REM MSVC precompiled headers differ on every build, so ccache would never get a hit
+SET MUSESCORE_COMPILE_USE_PCH=OFF
 
 CALL ninja_build.bat -t installrelwithdebinfo || exit \b 1
 
