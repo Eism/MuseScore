@@ -108,7 +108,7 @@ function do_build() {
         -DMUSE_COMPILE_USE_UNITY="${MUSESCORE_COMPILE_USE_UNITY}" \
         -DMUSE_COMPILE_USE_PCH="${MUSESCORE_COMPILE_USE_PCH}"
 
-    ninja -j $JOBS
+    ninja -k 0 -j $JOBS # TEMP: collect all compile errors
 }
 
 case $TARGET in
